@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale-1.0">
     <title>Ask Cat</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
-        /* All CSS remains the same as before */
+        /* All CSS remains the same */
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; font-family: 'Press Start 2P', cursive; }
         .screen { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; text-align: center; flex-direction: column; }
         #start-screen { background: linear-gradient(-45deg, #ffffff, #f2f2f2, #e8e8e8, #fdfdfd); background-size: 400% 400%; animation: gradientShift 15s ease infinite; }
@@ -56,9 +56,9 @@
         </div>
     </div>
 
-    <!-- NEW: Audio element for the menu music -->
+    <!-- UPDATED: Audio element for the menu music -->
     <audio id="menu-audio" loop autoplay>
-        <source src="Menu.flac" type="audio/flac">
+        <source src="Menu.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
 
@@ -69,17 +69,15 @@
         const gameScreen = document.getElementById('game-screen');
         const catImage = document.getElementById('cat-image');
         const speechBubble = document.getElementById('speech-bubble');
-        const menuAudio = document.getElementById('menu-audio'); // NEW: Get the audio element
+        const menuAudio = document.getElementById('menu-audio');
 
         // --- Part 1: Switch screens and control music ---
         playButton.addEventListener('click', function(event) {
             event.preventDefault(); 
             
-            // NEW: Pause and reset the menu music
             menuAudio.pause();
             menuAudio.currentTime = 0;
 
-            // Hide the start screen and show the game screen
             startScreen.style.display = 'none';
             gameScreen.style.display = 'flex';
         });
