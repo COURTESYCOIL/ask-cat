@@ -16,20 +16,27 @@
             height: 100%;
             overflow: hidden;
             font-family: 'Press Start 2P', cursive;
-            background-color: #f0f0f0; /* Fallback color */
         }
 
-        body {
-            /* The animated white gradient background */
-            background: linear-gradient(-45deg, #ffffff, #f2f2f2, #e8e8e8, #fdfdfd);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
-            
-            /* Center all content */
+        /* Generic container to center content */
+        .screen {
+            width: 100%;
+            height: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
             text-align: center;
+            flex-direction: column;
+        }
+
+        /* =================================== */
+        /* ==     START SCREEN STYLES       == */
+        /* =================================== */
+
+        #start-screen {
+            background: linear-gradient(-45deg, #ffffff, #f2f2f2, #e8e8e8, #fdfdfd);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
         }
 
         @keyframes gradientShift {
@@ -37,59 +44,35 @@
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-
-        /* 2. Main Content Container */
-        .container {
-            padding: 2rem;
-        }
-
-        /* 3. Sketch Style Header "Ask Cat" */
+        
         .header {
             display: flex;
             justify-content: center;
-            align-items: baseline; /* Aligns the bottom of the text */
-            gap: 15px; /* Space between title and version */
+            align-items: baseline;
+            gap: 15px;
         }
 
         .sketch-title {
             font-size: 4rem;
             color: #000;
             text-transform: uppercase;
-            /* Apply the sketchy animation */
             animation: sketchy 2s steps(2, end) infinite;
         }
 
         .version-text {
             font-size: 1rem;
             color: #333;
-            transform: translateY(-5px); /* Nudge it up slightly */
+            transform: translateY(-5px);
         }
         
-        /* The animation that creates the "pencil sketch" wobble effect */
         @keyframes sketchy {
-            0% {
-                transform: translate(0, 0) rotate(0);
-                text-shadow: 1px 1px 0 #ddd, -1px -1px 0 #ddd;
-            }
-            25% {
-                transform: translate(-1px, 1px) rotate(-0.5deg);
-                text-shadow: -1px 1px 0 #ddd, 1px -1px 0 #ddd;
-            }
-            50% {
-                transform: translate(1px, -1px) rotate(0.5deg);
-                text-shadow: 1px -1px 0 #ddd, -1px 1px 0 #ddd;
-            }
-            75% {
-                transform: translate(1px, 1px) rotate(0);
-                text-shadow: 1px 1px 0 #ddd, -1px 1px 0 #ddd;
-            }
-            100% {
-                transform: translate(0, 0) rotate(0);
-                text-shadow: -1px -1px 0 #ddd, 1px 1px 0 #ddd;
-            }
+            0% { transform: translate(0, 0) rotate(0); }
+            25% { transform: translate(-1px, 1px) rotate(-0.5deg); }
+            50% { transform: translate(1px, -1px) rotate(0.5deg); }
+            75% { transform: translate(1px, 1px) rotate(0); }
+            100% { transform: translate(0, 0) rotate(0); }
         }
         
-        /* 4. Menu Option "Play" */
         .menu {
             margin-top: 40px;
         }
@@ -102,11 +85,7 @@
             background-color: transparent;
             text-decoration: none;
             text-transform: uppercase;
-            
-            /* Thick, blocky border inspired by the reference image */
             border: 4px solid #000;
-            
-            /* Smooth transition for hover effect */
             transition: all 0.15s ease-out;
         }
 
@@ -114,41 +93,98 @@
             color: #fff;
             background-color: #000;
             transform: translateY(-4px);
-            /* Add a shadow to make it pop out */
             box-shadow: 0 8px 0 rgba(0,0,0,0.2);
             cursor: pointer;
         }
 
-        /* Responsive adjustments for smaller screens */
+        /* =================================== */
+        /* ==      GAME SCREEN STYLES       == */
+        /* =================================== */
+
+        #game-screen {
+            display: none; /* Initially hidden */
+            position: relative; /* Needed for child positioning */
+            
+            /* The "3D" animated background */
+            background-color: #ffffff;
+            background-image: repeating-linear-gradient(
+                45deg, 
+                #f7f7f7, 
+                #f7f7f7 10px, 
+                #ffffff 10px, 
+                #ffffff 20px
+            );
+            animation: moveBackground 40s linear infinite;
+        }
+
+        @keyframes moveBackground {
+            from { background-position: 0 0; }
+            to { background-position: 200px 200px; }
+        }
+
+        .cat-gif {
+            position: absolute; /* Position relative to the #game-screen */
+            bottom: 20px;
+            right: 20px;
+            width: 200px; /* Adjust size as needed */
+            height: auto;
+        }
+
+
+        /* =================================== */
+        /* ==      RESPONSIVE STYLES        == */
+        /* =================================== */
+
         @media (max-width: 600px) {
-            .sketch-title {
-                font-size: 2.5rem;
-            }
-            .version-text {
-                font-size: 0.8rem;
-            }
-            .menu-button {
-                font-size: 1.2rem;
-                padding: 12px 28px;
-            }
+            .sketch-title { font-size: 2.5rem; }
+            .version-text { font-size: 0.8rem; }
+            .menu-button { font-size: 1.2rem; padding: 12px 28px; }
+            .cat-gif { width: 120px; bottom: 10px; right: 10px; }
         }
 
     </style>
 </head>
 <body>
 
-    <div class="container">
-        
-        <header class="header">
-            <h1 class="sketch-title">Ask Cat</h1>
-            <span class="version-text">v0.1</span>
-        </header>
+    <!-- Screen 1: The Start Menu -->
+    <div id="start-screen" class="screen">
+        <div class="container">
+            <header class="header">
+                <h1 class="sketch-title">Ask Cat</h1>
+                <span class="version-text">v0.1</span>
+            </header>
+            <nav class="menu">
+                <a href="#" id="play-button" class="menu-button">Play</a>
+            </nav>
+        </div>
+    </div>
 
-        <nav class="menu">
-            <a href="#" class="menu-button">Play</a>
-        </nav>
+    <!-- Screen 2: The Game Area (initially hidden) -->
+    <div id="game-screen" class="screen">
+        <!-- The Cat GIF will be positioned in the bottom right -->
+        <img src="ezgif-300a09fbddc6f2.gif" alt="Sitting Cat" class="cat-gif">
+        
+        <!-- You can add other game elements here later -->
 
     </div>
+
+
+    <script>
+        // Simple JavaScript to switch between screens
+        const playButton = document.getElementById('play-button');
+        const startScreen = document.getElementById('start-screen');
+        const gameScreen = document.getElementById('game-screen');
+
+        playButton.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevents the link from trying to navigate
+
+            // Hide the start screen
+            startScreen.style.display = 'none';
+            
+            // Show the game screen
+            gameScreen.style.display = 'flex'; // Use flex to maintain centering if needed
+        });
+    </script>
 
 </body>
 </html>
