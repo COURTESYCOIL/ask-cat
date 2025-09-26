@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale-1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ask Cat</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,8 +34,7 @@
     </style>
 </head>
 <body>
-
-    <!-- Screen 1: The Start Menu -->
+    <!-- All HTML is the same -->
     <div id="start-screen" class="screen">
         <div class="container">
             <header class="header">
@@ -47,8 +46,6 @@
             </nav>
         </div>
     </div>
-
-    <!-- Screen 2: The Game Area (initially hidden) -->
     <div id="game-screen" class="screen">
         <div class="cat-container">
             <img id="cat-image" class="cat-gif" src="ezgif-300a09fbddc6f2.gif" alt="Sitting Cat">
@@ -56,8 +53,8 @@
         </div>
     </div>
 
-    <!-- Audio element pointing to Supabase -->
-    <audio id="menu-audio" loop autoplay>
+    <!-- UPDATED: Audio element NO LONGER has 'autoplay' -->
+    <audio id="menu-audio" loop>
         <source src="https://evzxirgylircpnblikrw.supabase.co/storage/v1/object/public/MOOZIK/Menu.flac" type="audio/flac">
         Your browser does not support the audio element.
     </audio>
@@ -71,7 +68,20 @@
         const speechBubble = document.getElementById('speech-bubble');
         const menuAudio = document.getElementById('menu-audio');
 
-        // --- Part 1: Switch screens and control music ---
+        // --- NEW: Function to start music on the first user interaction ---
+        function startMusicOnFirstInteraction() {
+            // The .play() method returns a promise. We can safely ignore errors
+            // which usually happen if the user clicks again before it's ready.
+            menuAudio.play().catch(error => console.log("Audio play prevented: ", error));
+            
+            // IMPORTANT: Remove this listener so it only ever runs once.
+            document.removeEventListener('click', startMusicOnFirstInteraction);
+        }
+        // Listen for the very first click anywhere on the page.
+        document.addEventListener('click', startMusicOnFirstInteraction);
+        
+
+        // --- Part 1: Switch screens and control music (this logic is still correct) ---
         playButton.addEventListener('click', function(event) {
             event.preventDefault(); 
             
