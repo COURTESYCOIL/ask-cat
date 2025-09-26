@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale-1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ask Cat</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,37 +26,34 @@
         .sketch-title { font-size: 4rem; color: #000; text-transform: uppercase; animation: sketchy 2s steps(2, end) infinite; }
         .version-text { font-size: 1rem; color: #333; transform: translateY(-5px); }
         @keyframes sketchy { 0% { transform: translate(0, 0) rotate(0); } 25% { transform: translate(-1px, 1px) rotate(-0.5deg); } 50% { transform: translate(1px, -1px) rotate(0.5deg); } 75% { transform: translate(1px, 1px) rotate(0); } 100% { transform: translate(0, 0) rotate(0); } }
-        
-        /* UPDATED: Menu styles for multiple buttons */
-        .menu { 
-            margin-top: 40px; 
-            display: flex; /* Arrange buttons side-by-side */
-            gap: 20px; /* Space between buttons */
-            justify-content: center;
-        }
-
+        .menu { margin-top: 40px; display: flex; gap: 20px; justify-content: center; }
         .menu-button { display: inline-block; padding: 15px 35px; font-size: 1.5rem; text-decoration: none; text-transform: uppercase; border: 4px solid; transition: all 0.15s ease-out; }
         #start-screen .menu-button { color: #000; border-color: #000; }
         #start-screen .menu-button:hover { color: #fff; background-color: #000; transform: translateY(-4px); box-shadow: 0 8px 0 rgba(0,0,0,0.2); cursor: pointer; }
+        .feedback-message { color: #e63946; font-size: 1rem; margin-top: 25px; height: 1.2em; opacity: 0; transition: opacity 0.3s ease-in-out; text-transform: none; }
         
-        /* NEW: Styles for the feedback message */
-        .feedback-message {
-            color: #e63946; /* A strong red */
-            font-size: 1rem;
-            margin-top: 25px;
-            height: 1.2em; /* Prevents layout shift when text appears */
-            opacity: 0; /* Hidden by default */
-            transition: opacity 0.3s ease-in-out; /* Smooth fade effect */
-            text-transform: none; /* Keep it lowercase */
-        }
-
         /* Game Screen Styles */
-        #game-screen { display: none; position: relative; background-color: #ffffff; background-image: repeating-linear-gradient(45deg, #f7f7f7, #f7f7f7 10px, #ffffff 10px, #ffffff 20px); animation: moveBackground 40s linear infinite; }
+        #game-screen { display: none; position: relative; justify-content: center; align-items: center; background-color: #ffffff; background-image: repeating-linear-gradient(45deg, #f7f7f7, #f7f7f7 10px, #ffffff 10px, #ffffff 20px); animation: moveBackground 40s linear infinite; }
         @keyframes moveBackground { from { background-position: 0 0; } to { background-position: 200px 200px; } }
         .cat-container { position: absolute; bottom: 20px; right: 20px; width: 200px; }
         .cat-gif { width: 100%; height: auto; cursor: pointer; }
         .speech-bubble { display: none; position: absolute; top: -120px; left: -200px; width: 250px; z-index: 10; }
         
+        /* NEW: Back button styles */
+        #back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #000;
+            border-color: #000;
+            padding: 10px 20px; /* Make it smaller than main buttons */
+            font-size: 1rem;
+        }
+        #back-button:hover {
+            color: #fff;
+            background-color: #000;
+        }
+
         /* Responsive Styles */
         @media (max-width: 600px) {
             .tos-title { font-size: 1.8rem; } .tos-text { font-size: 1rem; }
@@ -64,19 +61,18 @@
             .menu-button { font-size: 1.2rem; padding: 12px 28px; }
             .cat-container { width: 120px; bottom: 10px; right: 10px; }
             .speech-bubble { width: 180px; top: -80px; left: -130px; }
+            #back-button { top: 10px; left: 10px; font-size: 0.8rem; padding: 8px 15px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Screen 1: The TOS Screen -->
     <div id="tos-screen" class="screen">
         <h1 class="tos-title">Ask Cat TOS</h1>
         <p class="tos-text">Idk what to type here :P</p>
         <a href="#" id="accept-button" class="menu-button">Accept</a>
     </div>
 
-    <!-- Screen 2: The Start Menu -->
     <div id="start-screen" class="screen">
         <header class="header">
             <h1 class="sketch-title">Ask Cat</h1>
@@ -84,22 +80,21 @@
         </header>
         <nav class="menu">
             <a href="#" id="play-button" class="menu-button">Play</a>
-            <!-- NEW: Achievements button -->
             <a href="#" id="achievements-button" class="menu-button">Achievements</a>
         </nav>
-        <!-- NEW: Hidden message element -->
         <p id="achievements-message" class="feedback-message">you cant go there yet.</p>
     </div>
 
-    <!-- Screen 3: The Game Area -->
     <div id="game-screen" class="screen">
+        <!-- NEW: Back button added -->
+        <a href="#" id="back-button" class="menu-button">Back</a>
+
         <div class="cat-container">
             <img id="cat-image" class="cat-gif" src="ezgif-300a09fbddc6f2.gif" alt="Sitting Cat">
             <img id="speech-bubble" class="speech-bubble" src="ezgif.com-cut.gif" alt="Speech Bubble">
         </div>
     </div>
 
-    <!-- Audio element -->
     <audio id="menu-audio" loop>
         <source src="https://evzxirgylircpnblikrw.supabase.co/storage/v1/object/public/MOOZIK/Menu.flac" type="audio/flac">
     </audio>
@@ -114,11 +109,11 @@
         const catImage = document.getElementById('cat-image');
         const speechBubble = document.getElementById('speech-bubble');
         const menuAudio = document.getElementById('menu-audio');
-        // NEW: Get the new elements
         const achievementsButton = document.getElementById('achievements-button');
         const achievementsMessage = document.getElementById('achievements-message');
+        const backButton = document.getElementById('back-button'); // NEW
 
-        // --- Part 1: Accept TOS ---
+        // --- Event Listeners ---
         acceptButton.addEventListener('click', function(event) {
             event.preventDefault();
             tosScreen.style.display = 'none';
@@ -126,7 +121,6 @@
             menuAudio.play().catch(error => console.log("Audio play failed:", error));
         });
 
-        // --- Part 2: Click Play ---
         playButton.addEventListener('click', function(event) {
             event.preventDefault(); 
             menuAudio.pause();
@@ -135,25 +129,30 @@
             gameScreen.style.display = 'flex';
         });
         
-        // --- Part 3: Click Cat ---
         catImage.addEventListener('click', function() {
             speechBubble.style.display = 'block';
         });
 
-        // --- NEW Part 4: Handle Achievements Button Click ---
         achievementsButton.addEventListener('click', function(event) {
             event.preventDefault();
-            
-            // Show the message
             achievementsMessage.style.opacity = '1';
+            setTimeout(() => { achievementsMessage.style.opacity = '0'; }, 3000);
+        });
+
+        // NEW: Back button functionality
+        backButton.addEventListener('click', function(event) {
+            event.preventDefault();
             
-            // Hide the message after 3 seconds
-            setTimeout(function() {
-                achievementsMessage.style.opacity = '0';
-            }, 3000); // 3000 milliseconds = 3 seconds
+            // Hide game screen and show start screen
+            gameScreen.style.display = 'none';
+            startScreen.style.display = 'flex';
+
+            // Reset game state (hide speech bubble)
+            speechBubble.style.display = 'none';
+
+            // Restart menu music
+            menuAudio.play().catch(error => console.log("Audio play failed:", error));
         });
     </script>
-
 </body>
 </html>
-
