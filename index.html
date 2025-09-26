@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale-1.0">
     <title>Ask Cat</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,55 +12,45 @@
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; font-family: 'Press Start 2P', cursive; }
         .screen { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; text-align: center; flex-direction: column; box-sizing: border-box; padding: 20px; }
         
-        /* =================================== */
-        /* ==     NEW: TOS SCREEN STYLES    == */
-        /* =================================== */
-        #tos-screen {
-            background-color: #000;
-            color: #fff;
-        }
-        .tos-title {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-        }
-        .tos-text {
-            font-size: 1.2rem;
-            max-width: 600px;
-            line-height: 1.6;
-            margin-bottom: 40px;
-        }
-        /* Style the accept button for the dark background */
-        #tos-screen .menu-button {
-            color: #fff;
-            border-color: #fff;
-        }
-        #tos-screen .menu-button:hover {
-            color: #000;
-            background-color: #fff;
-        }
+        /* TOS Screen Styles */
+        #tos-screen { background-color: #000; color: #fff; }
+        .tos-title { font-size: 2.5rem; margin-bottom: 20px; }
+        .tos-text { font-size: 1.2rem; max-width: 600px; line-height: 1.6; margin-bottom: 40px; }
+        #tos-screen .menu-button { color: #fff; border-color: #fff; }
+        #tos-screen .menu-button:hover { color: #000; background-color: #fff; }
         
-        /* =================================== */
-        /* ==     START SCREEN STYLES       == */
-        /* =================================== */
-        #start-screen {
-            display: none; /* Initially hidden */
-            background: linear-gradient(-45deg, #ffffff, #f2f2f2, #e8e8e8, #fdfdfd);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
-        }
+        /* Start Screen Styles */
+        #start-screen { display: none; background: linear-gradient(-45deg, #ffffff, #f2f2f2, #e8e8e8, #fdfdfd); background-size: 400% 400%; animation: gradientShift 15s ease infinite; }
         @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
         .header { display: flex; justify-content: center; align-items: baseline; gap: 15px; }
         .sketch-title { font-size: 4rem; color: #000; text-transform: uppercase; animation: sketchy 2s steps(2, end) infinite; }
         .version-text { font-size: 1rem; color: #333; transform: translateY(-5px); }
         @keyframes sketchy { 0% { transform: translate(0, 0) rotate(0); } 25% { transform: translate(-1px, 1px) rotate(-0.5deg); } 50% { transform: translate(1px, -1px) rotate(0.5deg); } 75% { transform: translate(1px, 1px) rotate(0); } 100% { transform: translate(0, 0) rotate(0); } }
-        .menu { margin-top: 40px; }
+        
+        /* UPDATED: Menu styles for multiple buttons */
+        .menu { 
+            margin-top: 40px; 
+            display: flex; /* Arrange buttons side-by-side */
+            gap: 20px; /* Space between buttons */
+            justify-content: center;
+        }
+
         .menu-button { display: inline-block; padding: 15px 35px; font-size: 1.5rem; text-decoration: none; text-transform: uppercase; border: 4px solid; transition: all 0.15s ease-out; }
         #start-screen .menu-button { color: #000; border-color: #000; }
         #start-screen .menu-button:hover { color: #fff; background-color: #000; transform: translateY(-4px); box-shadow: 0 8px 0 rgba(0,0,0,0.2); cursor: pointer; }
         
-        /* =================================== */
-        /* ==      GAME SCREEN STYLES       == */
-        /* =================================== */
+        /* NEW: Styles for the feedback message */
+        .feedback-message {
+            color: #e63946; /* A strong red */
+            font-size: 1rem;
+            margin-top: 25px;
+            height: 1.2em; /* Prevents layout shift when text appears */
+            opacity: 0; /* Hidden by default */
+            transition: opacity 0.3s ease-in-out; /* Smooth fade effect */
+            text-transform: none; /* Keep it lowercase */
+        }
+
+        /* Game Screen Styles */
         #game-screen { display: none; position: relative; background-color: #ffffff; background-image: repeating-linear-gradient(45deg, #f7f7f7, #f7f7f7 10px, #ffffff 10px, #ffffff 20px); animation: moveBackground 40s linear infinite; }
         @keyframes moveBackground { from { background-position: 0 0; } to { background-position: 200px 200px; } }
         .cat-container { position: absolute; bottom: 20px; right: 20px; width: 200px; }
@@ -79,14 +69,14 @@
 </head>
 <body>
 
-    <!-- Screen 1: The TOS Screen (Starts Visible) -->
+    <!-- Screen 1: The TOS Screen -->
     <div id="tos-screen" class="screen">
         <h1 class="tos-title">Ask Cat TOS</h1>
         <p class="tos-text">Idk what to type here :P</p>
         <a href="#" id="accept-button" class="menu-button">Accept</a>
     </div>
 
-    <!-- Screen 2: The Start Menu (Initially Hidden) -->
+    <!-- Screen 2: The Start Menu -->
     <div id="start-screen" class="screen">
         <header class="header">
             <h1 class="sketch-title">Ask Cat</h1>
@@ -94,10 +84,14 @@
         </header>
         <nav class="menu">
             <a href="#" id="play-button" class="menu-button">Play</a>
+            <!-- NEW: Achievements button -->
+            <a href="#" id="achievements-button" class="menu-button">Achievements</a>
         </nav>
+        <!-- NEW: Hidden message element -->
+        <p id="achievements-message" class="feedback-message">you cant go there yet.</p>
     </div>
 
-    <!-- Screen 3: The Game Area (Initially Hidden) -->
+    <!-- Screen 3: The Game Area -->
     <div id="game-screen" class="screen">
         <div class="cat-container">
             <img id="cat-image" class="cat-gif" src="ezgif-300a09fbddc6f2.gif" alt="Sitting Cat">
@@ -105,14 +99,13 @@
         </div>
     </div>
 
-    <!-- Audio element (no autoplay) -->
+    <!-- Audio element -->
     <audio id="menu-audio" loop>
         <source src="https://evzxirgylircpnblikrw.supabase.co/storage/v1/object/public/MOOZIK/Menu.flac" type="audio/flac">
-        Your browser does not support the audio element.
     </audio>
 
     <script>
-        // --- Get all the elements ---
+        // --- Get all elements ---
         const tosScreen = document.getElementById('tos-screen');
         const acceptButton = document.getElementById('accept-button');
         const startScreen = document.getElementById('start-screen');
@@ -121,35 +114,43 @@
         const catImage = document.getElementById('cat-image');
         const speechBubble = document.getElementById('speech-bubble');
         const menuAudio = document.getElementById('menu-audio');
+        // NEW: Get the new elements
+        const achievementsButton = document.getElementById('achievements-button');
+        const achievementsMessage = document.getElementById('achievements-message');
 
-        // --- Part 1: Accept TOS, go to menu, and start music ---
+        // --- Part 1: Accept TOS ---
         acceptButton.addEventListener('click', function(event) {
             event.preventDefault();
-            
-            // Hide TOS screen
             tosScreen.style.display = 'none';
-            
-            // Show the main menu
             startScreen.style.display = 'flex';
-
-            // Play the music (this is the first user interaction)
             menuAudio.play().catch(error => console.log("Audio play failed:", error));
         });
 
-        // --- Part 2: Click Play, go to game, and stop music ---
+        // --- Part 2: Click Play ---
         playButton.addEventListener('click', function(event) {
             event.preventDefault(); 
-            
             menuAudio.pause();
             menuAudio.currentTime = 0;
-
             startScreen.style.display = 'none';
             gameScreen.style.display = 'flex';
         });
-
-        // --- Part 3: Show speech bubble on cat click ---
+        
+        // --- Part 3: Click Cat ---
         catImage.addEventListener('click', function() {
             speechBubble.style.display = 'block';
+        });
+
+        // --- NEW Part 4: Handle Achievements Button Click ---
+        achievementsButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            
+            // Show the message
+            achievementsMessage.style.opacity = '1';
+            
+            // Hide the message after 3 seconds
+            setTimeout(function() {
+                achievementsMessage.style.opacity = '0';
+            }, 3000); // 3000 milliseconds = 3 seconds
         });
     </script>
 
