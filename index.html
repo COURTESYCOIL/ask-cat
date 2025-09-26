@@ -18,7 +18,6 @@
             font-family: 'Press Start 2P', cursive;
         }
 
-        /* Generic container to center content */
         .screen {
             width: 100%;
             height: 100%;
@@ -45,75 +44,27 @@
             100% { background-position: 0% 50%; }
         }
         
-        .header {
-            display: flex;
-            justify-content: center;
-            align-items: baseline;
-            gap: 15px;
-        }
-
-        .sketch-title {
-            font-size: 4rem;
-            color: #000;
-            text-transform: uppercase;
-            animation: sketchy 2s steps(2, end) infinite;
-        }
-
-        .version-text {
-            font-size: 1rem;
-            color: #333;
-            transform: translateY(-5px);
-        }
-        
+        .header { display: flex; justify-content: center; align-items: baseline; gap: 15px; }
+        .sketch-title { font-size: 4rem; color: #000; text-transform: uppercase; animation: sketchy 2s steps(2, end) infinite; }
+        .version-text { font-size: 1rem; color: #333; transform: translateY(-5px); }
         @keyframes sketchy {
-            0% { transform: translate(0, 0) rotate(0); }
-            25% { transform: translate(-1px, 1px) rotate(-0.5deg); }
-            50% { transform: translate(1px, -1px) rotate(0.5deg); }
-            75% { transform: translate(1px, 1px) rotate(0); }
+            0% { transform: translate(0, 0) rotate(0); } 25% { transform: translate(-1px, 1px) rotate(-0.5deg); }
+            50% { transform: translate(1px, -1px) rotate(0.5deg); } 75% { transform: translate(1px, 1px) rotate(0); }
             100% { transform: translate(0, 0) rotate(0); }
         }
-        
-        .menu {
-            margin-top: 40px;
-        }
-
-        .menu-button {
-            display: inline-block;
-            padding: 15px 35px;
-            font-size: 1.5rem;
-            color: #000;
-            background-color: transparent;
-            text-decoration: none;
-            text-transform: uppercase;
-            border: 4px solid #000;
-            transition: all 0.15s ease-out;
-        }
-
-        .menu-button:hover {
-            color: #fff;
-            background-color: #000;
-            transform: translateY(-4px);
-            box-shadow: 0 8px 0 rgba(0,0,0,0.2);
-            cursor: pointer;
-        }
+        .menu { margin-top: 40px; }
+        .menu-button { display: inline-block; padding: 15px 35px; font-size: 1.5rem; color: #000; background-color: transparent; text-decoration: none; text-transform: uppercase; border: 4px solid #000; transition: all 0.15s ease-out; }
+        .menu-button:hover { color: #fff; background-color: #000; transform: translateY(-4px); box-shadow: 0 8px 0 rgba(0,0,0,0.2); cursor: pointer; }
 
         /* =================================== */
         /* ==      GAME SCREEN STYLES       == */
         /* =================================== */
 
         #game-screen {
-            display: none; /* Initially hidden */
-            position: relative; /* Needed for child positioning */
-            
-            /* The "3D" animated background */
+            display: none;
+            position: relative;
             background-color: #ffffff;
-            background-image: repeating-linear-gradient(
-                45deg, 
-                #f7f7f7, 
-                #f7f7f7 10px, 
-                #ffffff 10px, 
-                #ffffff 20px
-            );
+            background-image: repeating-linear-gradient(45deg, #f7f7f7, #f7f7f7 10px, #ffffff 10px, #ffffff 20px);
             animation: moveBackground 40s linear infinite;
         }
 
@@ -122,14 +73,30 @@
             to { background-position: 200px 200px; }
         }
 
-        .cat-gif {
-            position: absolute; /* Position relative to the #game-screen */
+        /* NEW: Container for the cat and its speech bubble */
+        .cat-container {
+            position: absolute;
             bottom: 20px;
             right: 20px;
-            width: 200px; /* Adjust size as needed */
-            height: auto;
+            width: 200px; /* Base width */
         }
 
+        .cat-gif {
+            width: 100%;
+            height: auto;
+            cursor: pointer; /* Indicates the cat is clickable */
+        }
+
+        /* NEW: Speech bubble styling */
+        .speech-bubble {
+            display: none; /* Hidden by default */
+            position: absolute;
+            /* Positioned relative to the cat-container */
+            top: -60px;   /* Move it above the cat */
+            left: -120px; /* Move it to the left of the cat */
+            width: 250px;
+            z-index: 10; /* Ensure it appears on top */
+        }
 
         /* =================================== */
         /* ==      RESPONSIVE STYLES        == */
@@ -139,9 +106,10 @@
             .sketch-title { font-size: 2.5rem; }
             .version-text { font-size: 0.8rem; }
             .menu-button { font-size: 1.2rem; padding: 12px 28px; }
-            .cat-gif { width: 120px; bottom: 10px; right: 10px; }
+            
+            .cat-container { width: 120px; bottom: 10px; right: 10px; }
+            .speech-bubble { width: 180px; top: -40px; left: -80px; }
         }
-
     </style>
 </head>
 <body>
@@ -161,28 +129,37 @@
 
     <!-- Screen 2: The Game Area (initially hidden) -->
     <div id="game-screen" class="screen">
-        <!-- The Cat GIF will be positioned in the bottom right -->
-        <img src="ezgif-300a09fbddc6f2.gif" alt="Sitting Cat" class="cat-gif">
         
-        <!-- You can add other game elements here later -->
+        <!-- NEW: A container to hold both the cat and its speech bubble for easy positioning -->
+        <div class="cat-container">
+            <!-- The Cat GIF - now has an ID for JavaScript -->
+            <img id="cat-image" class="cat-gif" src="ezgif-300a09fbddc6f2.gif" alt="Sitting Cat">
+            
+            <!-- The Speech Bubble GIF - hidden by default -->
+            <img id="speech-bubble" class="speech-bubble" src="ezgif.com-cut.gif" alt="Speech Bubble">
+        </div>
 
     </div>
 
-
     <script>
-        // Simple JavaScript to switch between screens
+        // --- Part 1: Switch between screens ---
         const playButton = document.getElementById('play-button');
         const startScreen = document.getElementById('start-screen');
         const gameScreen = document.getElementById('game-screen');
 
         playButton.addEventListener('click', function(event) {
-            event.preventDefault(); // Prevents the link from trying to navigate
-
-            // Hide the start screen
+            event.preventDefault(); 
             startScreen.style.display = 'none';
-            
-            // Show the game screen
-            gameScreen.style.display = 'flex'; // Use flex to maintain centering if needed
+            gameScreen.style.display = 'flex';
+        });
+
+        // --- Part 2: Show speech bubble on cat click ---
+        const catImage = document.getElementById('cat-image');
+        const speechBubble = document.getElementById('speech-bubble');
+
+        catImage.addEventListener('click', function() {
+            // Make the speech bubble visible
+            speechBubble.style.display = 'block';
         });
     </script>
 
