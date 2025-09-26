@@ -8,21 +8,17 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <!-- NEW: Puter.js AI Library -->
+    <!-- Puter.js AI Library -->
     <script src="https://js.puter.com/v2/"></script>
     <style>
-        /* Global Styles */
+        /* All CSS is the same as before, no changes needed here */
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; font-family: 'Press Start 2P', cursive; }
         .screen { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; text-align: center; flex-direction: column; box-sizing: border-box; padding: 20px; }
-        
-        /* TOS Screen Styles */
         #tos-screen { background-color: #000; color: #fff; }
         .tos-title { font-size: 2.5rem; margin-bottom: 20px; }
         .tos-text { font-size: 1.2rem; max-width: 600px; line-height: 1.6; margin-bottom: 40px; }
         #tos-screen .menu-button { color: #fff; border-color: #fff; }
         #tos-screen .menu-button:hover { color: #000; background-color: #fff; }
-        
-        /* Start Screen Styles */
         #start-screen { display: none; background: linear-gradient(-45deg, #ffffff, #f2f2f2, #e8e8e8, #fdfdfd); background-size: 400% 400%; animation: gradientShift 15s ease infinite; }
         @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
         .header { display: flex; justify-content: center; align-items: baseline; gap: 15px; }
@@ -34,61 +30,19 @@
         #start-screen .menu-button { color: #000; border-color: #000; }
         #start-screen .menu-button:hover { color: #fff; background-color: #000; transform: translateY(-4px); box-shadow: 0 8px 0 rgba(0,0,0,0.2); cursor: pointer; }
         .feedback-message { color: #e63946; font-size: 1rem; margin-top: 25px; height: 1.2em; opacity: 0; transition: opacity 0.3s ease-in-out; text-transform: none; }
-        
-        /* Game Screen Styles */
         #game-screen { display: none; position: relative; justify-content: center; align-items: center; background-color: #ffffff; background-image: repeating-linear-gradient(45deg, #f7f7f7, #f7f7f7 10px, #ffffff 10px, #ffffff 20px); animation: moveBackground 40s linear infinite; }
         @keyframes moveBackground { from { background-position: 0 0; } to { background-position: 200px 200px; } }
         .cat-container { position: absolute; bottom: 20px; right: 20px; width: 200px; }
         .cat-gif { width: 100%; height: auto; cursor: pointer; }
-        
-        /* Back button styles */
         #back-button { position: absolute; top: 20px; left: 20px; color: #000; border-color: #000; padding: 10px 20px; font-size: 1rem; }
         #back-button:hover { color: #fff; background-color: #000; }
-
-        /* NEW: AI Speech Bubble Styles */
-        #ai-bubble {
-            display: none;
-            position: absolute;
-            top: -160px;
-            left: -240px;
-            width: 300px;
-            background: #fff;
-            border: 4px solid #000;
-            padding: 15px;
-            z-index: 10;
-            flex-direction: column;
-            gap: 10px;
-            text-align: left;
-        }
-        #ai-response-text {
-            font-size: 0.8rem;
-            line-height: 1.5;
-            text-transform: none;
-            max-height: 120px;
-            overflow-y: auto;
-            word-wrap: break-word;
-        }
+        #ai-bubble { display: none; position: absolute; top: -160px; left: -240px; width: 300px; background: #fff; border: 4px solid #000; padding: 15px; z-index: 10; flex-direction: column; gap: 10px; text-align: left; }
+        #ai-response-text { font-size: 0.8rem; line-height: 1.5; text-transform: none; max-height: 120px; overflow-y: auto; word-wrap: break-word; }
         #prompt-form { display: flex; gap: 5px; }
-        #prompt-input {
-            flex-grow: 1;
-            border: 2px solid #000;
-            padding: 8px;
-            font-family: 'Press Start 2P', cursive;
-            font-size: 0.7rem;
-        }
-        #prompt-submit {
-            border: 2px solid #000;
-            background: #fff;
-            color: #000;
-            padding: 8px;
-            font-family: 'Press Start 2P', cursive;
-            font-size: 0.7rem;
-            cursor: pointer;
-        }
+        #prompt-input { flex-grow: 1; border: 2px solid #000; padding: 8px; font-family: 'Press Start 2P', cursive; font-size: 0.7rem; }
+        #prompt-submit { border: 2px solid #000; background: #fff; color: #000; padding: 8px; font-family: 'Press Start 2P', cursive; font-size: 0.7rem; cursor: pointer; }
         #prompt-submit:hover { background: #000; color: #fff; }
         #prompt-submit:disabled { background: #ccc; cursor: not-allowed; }
-
-        /* Responsive */
         @media (max-width: 600px) {
             .sketch-title { font-size: 2.5rem; }
             .cat-container { width: 120px; bottom: 10px; right: 10px; }
@@ -116,8 +70,6 @@
         <a href="#" id="back-button" class="menu-button">Back</a>
         <div class="cat-container">
             <img id="cat-image" class="cat-gif" src="ezgif-300a09fbddc6f2.gif" alt="Sitting Cat">
-            
-            <!-- NEW: Dynamic AI Bubble, replaces old GIF -->
             <div id="ai-bubble">
                 <p id="ai-response-text">Ask me something...</p>
                 <form id="prompt-form">
@@ -131,7 +83,7 @@
     <audio id="menu-audio" loop> <source src="https://evzxirgylircpnblikrw.supabase.co/storage/v1/object/public/MOOZIK/Menu.flac" type="audio/flac"> </audio>
 
     <script>
-        // --- Get all elements ---
+        // --- All element getters are the same ---
         const tosScreen = document.getElementById('tos-screen');
         const acceptButton = document.getElementById('accept-button');
         const startScreen = document.getElementById('start-screen');
@@ -142,69 +94,49 @@
         const achievementsButton = document.getElementById('achievements-button');
         const achievementsMessage = document.getElementById('achievements-message');
         const backButton = document.getElementById('back-button');
-        
-        // NEW: AI Bubble elements
         const aiBubble = document.getElementById('ai-bubble');
         const aiResponseText = document.getElementById('ai-response-text');
         const promptForm = document.getElementById('prompt-form');
         const promptInput = document.getElementById('prompt-input');
         const promptSubmit = document.getElementById('prompt-submit');
 
-        // --- Event Listeners ---
+        // --- All other event listeners are the same ---
         acceptButton.addEventListener('click', (e) => { e.preventDefault(); tosScreen.style.display = 'none'; startScreen.style.display = 'flex'; menuAudio.play().catch(console.error); });
         playButton.addEventListener('click', (e) => { e.preventDefault(); menuAudio.pause(); menuAudio.currentTime = 0; startScreen.style.display = 'none'; gameScreen.style.display = 'flex'; });
         achievementsButton.addEventListener('click', (e) => { e.preventDefault(); achievementsMessage.style.opacity = '1'; setTimeout(() => { achievementsMessage.style.opacity = '0'; }, 3000); });
+        catImage.addEventListener('click', () => { const isHidden = aiBubble.style.display === 'none' || aiBubble.style.display === ''; aiBubble.style.display = isHidden ? 'flex' : 'none'; });
+        backButton.addEventListener('click', (e) => { e.preventDefault(); gameScreen.style.display = 'none'; startScreen.style.display = 'flex'; aiBubble.style.display = 'none'; aiResponseText.innerHTML = 'Ask me something...'; menuAudio.play().catch(console.error); });
 
-        // UPDATED: Cat click now toggles the AI bubble's visibility
-        catImage.addEventListener('click', () => {
-            const isHidden = aiBubble.style.display === 'none' || aiBubble.style.display === '';
-            aiBubble.style.display = isHidden ? 'flex' : 'none';
-        });
-
-        // UPDATED: Back button also hides the AI bubble and resets state
-        backButton.addEventListener('click', (e) => {
-            e.preventDefault();
-            gameScreen.style.display = 'none';
-            startScreen.style.display = 'flex';
-            aiBubble.style.display = 'none'; // Hide bubble
-            aiResponseText.innerHTML = 'Ask me something...'; // Reset text
-            menuAudio.play().catch(console.error);
-        });
-
-        // NEW: Handle form submission to chat with Puter.js AI
+        // --- UPDATED AND SIMPLIFIED AI FORM SUBMISSION ---
         promptForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const userPrompt = promptInput.value.trim();
             if (!userPrompt) return;
 
-            // Set loading state
             aiResponseText.innerHTML = 'Meow... (thinking...)';
             promptInput.disabled = true;
             promptSubmit.disabled = true;
 
             try {
-                // We add a system prompt to make the AI act like a cat
-                const systemPrompt = "You are a cute, slightly mischievous, and helpful cat. Respond to all prompts as this cat character. Keep your answers concise and use cat-like language (e.g., 'purrfect', 'meow', etc.) where appropriate.";
+                // --- KEY CHANGE 1: Combine instructions into a single prompt ---
+                // This is a much simpler and more reliable way to give the AI instructions.
+                const fullPrompt = `You are a cute, slightly mischievous, and helpful cat. Respond to the following prompt as this cat character. Keep your answers concise and use cat-like language (e.g., 'purrfect', 'meow', etc.) where appropriate. The user's question is: "${userPrompt}"`;
                 
+                // --- KEY CHANGE 2: Use the simplified chat format and a reliable free model ---
                 const response = await puter.ai.chat(
-                    [
-                        { role: 'system', content: systemPrompt },
-                        { role: 'user', content: userPrompt }
-                    ],
+                    fullPrompt, // Just pass the single prompt string
                     {
-                        model: 'google/gemini-flash-1.5', // Feel free to change this model!
+                        model: 'google/gemma-2-9b-it:free', // Using an explicitly free model
                         stream: true,
                     }
                 );
 
-                // Clear the loading text before streaming
                 aiResponseText.innerHTML = '';
                 
-                // Stream the response
                 for await (const part of response) {
                     if (part.text) {
-                        aiResponseText.innerHTML += part.text;
-                        // Auto-scroll to the bottom
+                        // Replace newlines with <br> for proper HTML rendering
+                        aiResponseText.innerHTML += part.text.replaceAll('\n', '<br>');
                         aiResponseText.scrollTop = aiResponseText.scrollHeight;
                     }
                 }
@@ -212,7 +144,6 @@
                 console.error("AI Error:", error);
                 aiResponseText.innerHTML = "Uh oh, I have a hairball... (an error occurred). Please try again.";
             } finally {
-                // Restore form state
                 promptInput.value = '';
                 promptInput.disabled = false;
                 promptSubmit.disabled = false;
