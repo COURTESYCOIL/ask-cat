@@ -32,18 +32,14 @@
         .menu { margin-top: 40px; display: flex; gap: 20px; justify-content: center; }
         .menu-button { display: inline-block; padding: 15px 35px; font-size: 1.5rem; text-decoration: none; text-transform: uppercase; border: 4px solid; transition: all 0.15s ease-out; color: #000; border-color: #000; }
         .menu-button:hover { color: #fff; background-color: #000; transform: translateY(-4px); box-shadow: 0 8px 0 rgba(0,0,0,0.2); cursor: pointer; }
-        .feedback-message { color: #e63946; font-size: 1rem; margin-top: 25px; height: 1.2em; opacity: 0; transition: opacity 0.3s ease-in-out; text-transform: none; }
         
-        /* ========================================= */
-        /* ==   NEW SIMPLIFIED GAME SCREEN STYLES   == */
-        /* ========================================= */
+        /* Simplified Game Screen Styles */
         #game-screen {
             display: none; 
             position: relative; 
-            background-color: #f0f0f0; /* Simple light gray background */
+            background-color: #f0f0f0;
         }
         
-        /* New Back Button Style & Position */
         #game-back-button {
             position: absolute;
             top: 30px;
@@ -61,13 +57,11 @@
         }
         #game-back-button:hover { background: #000; color: #fff; }
 
-        /* Cat position and AI bubble */
         .cat-container { position: absolute; bottom: 100px; right: 30px; width: 200px; }
         .cat-gif { width: 100%; height: auto; cursor: pointer; }
         #ai-bubble { display: none; position: absolute; top: -120px; left: -180px; width: 350px; z-index: 10; padding: 15px; background: #fff; border: 2px solid #000; border-radius: 12px; }
         #ai-response-text { font-family: 'Press Start 2P', cursive; max-height: 150px; overflow-y: auto; text-align: left; font-size: 0.9rem; line-height: 1.5; color: #000;}
 
-        /* New User Input Style */
         #user-input-container {
             position: absolute;
             bottom: 30px;
@@ -105,7 +99,7 @@
         #prompt-submit:hover { background: #000; color: #fff; }
         #prompt-submit:disabled { background: #ccc; cursor: not-allowed; }
 
-        /* Achievements Screen Styles (unchanged) */
+        /* Achievements Screen Styles */
         #achievements-screen { display: none; background-color: var(--black); overflow: hidden; width: 100%; height: 100%; }
         .stars, .stars2, .stars3 { position: absolute; top: 0; left: 0; right: 0; bottom: 0; width: 100%; height: 100%; display: block; }
         .stars { background: transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAHBJREFUWAnF2EEKACAMAkDnf8rsX3so1Y1R0lIqDPnkaeK25zgp26AFLAAVeACa8AEiwAV4xG2gAbwBXeAEOIAbeAdkQAOEwA34AEnQA2ZAnsIGXAAz4A4cgDbwBDwBTuAt8AF5A1iFDf4h+gEw3y2jBwM6nAAAAABJRU5ErkJggg==) repeat top center; animation: move-twink-back 200s linear infinite; }
@@ -134,17 +128,14 @@
     </div>
     
     <div id="game-screen" class="screen">
-        <!-- Back button with new ID and simple structure -->
         <a href="#" id="game-back-button">BACK</a>
-        
         <div class="cat-container">
-            <!-- Make sure you have 'new-cat.gif' in your repository! -->
-            <img id="cat-image" class="cat-gif" src="new-cat.gif" alt="A friendly cat">
+            <!-- FIXED: Restored the original animated cat GIF -->
+            <img id="cat-image" class="cat-gif" src="ezgif-300a09fbddc6f2.gif" alt="A friendly cat">
             <div id="ai-bubble"> 
                 <div id="ai-response-text">Ask me something...</div> 
             </div>
         </div>
-        
         <div id="user-input-container">
             <form id="prompt-form">
                 <input id="prompt-input" type="text" autocomplete="off" placeholder="Ask Cat a question...">
@@ -235,7 +226,8 @@
             promptSubmit.disabled = true;
             try {
                 const fullPrompt = `You are a cat. Respond to the user's question as a cat would. Keep your answers short and cute. The user's question is: "${userPrompt}"`;
-                const response = await puter.ai.chat(fullPrompt, { model: 'google/gemini-2-9b-it:free', stream: true, });
+                // FIXED: Switched to a more stable model to prevent errors
+                const response = await puter.ai.chat(fullPrompt, { model: 'google/gemini-flash-1.5', stream: true, });
                 aiResponseText.innerHTML = '';
                 for await (const part of response) {
                     if (part.text) {
