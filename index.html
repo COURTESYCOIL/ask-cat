@@ -65,7 +65,6 @@
         #achievements-back-button { position: absolute; top: 20px; left: 20px; z-index: 20; color: var(--white); border: 2px solid var(--white); background: transparent; padding: 10px 20px; font-size: 1rem; text-decoration: none; cursor: pointer; }
         #achievements-back-button:hover { background: var(--white); color: var(--black); }
         
-        /* NEW: Achievement Unlocked Popup */
         #achievement-popup {
             position: absolute;
             top: 30px;
@@ -110,7 +109,6 @@
                 <button id="prompt-submit" type="submit">ASK</button>
             </form>
         </div>
-        <!-- NEW: Hidden popup element -->
         <div id="achievement-popup"></div>
     </div>
 
@@ -119,7 +117,6 @@
         <a href="#" id="achievements-back-button">Back</a>
         <div class="achievements-content">
             <h2 class="achievements-title">ACHIEVEMENTS</h2>
-            <!-- NEW: Added ID to the card and icon -->
             <div id="ach-first-words" class="achievement-card locked">
                 <div id="ach-first-words-icon" class="achievement-icon">?</div>
                 <div class="achievement-details">
@@ -152,12 +149,10 @@
         const achievementsScreen = document.getElementById('achievements-screen');
         const achievementsAudio = document.getElementById('achievements-audio');
         const achievementsBackButton = document.getElementById('achievements-back-button');
-        
-        // NEW: Achievement-related elements
         const achievementPopup = document.getElementById('achievement-popup');
         const achFirstWordsCard = document.getElementById('ach-first-words');
         const achFirstWordsIcon = document.getElementById('ach-first-words-icon');
-        let isFirstWordsUnlocked = false; // State variable
+        let isFirstWordsUnlocked = false;
 
         // Event Listeners
         acceptButton.addEventListener('click', (e) => { e.preventDefault(); tosScreen.style.display = 'none'; startScreen.style.display = 'flex'; menuAudio.play().catch(console.error); });
@@ -177,25 +172,27 @@
             promptSubmit.disabled = true;
             try {
                 const fullPrompt = `You are a cat. Respond to the user's question as a cat would. Keep your answers short and cute. The user's question is: "${userPrompt}"`;
-                const response = await puter.ai.chat(fullPrompt, { model: 'google/gemini-flash-1.5', stream: true, });
+                
+                // --- FIXED: Restored the correct, working AI model ---
+                const response = await puter.ai.chat(fullPrompt, { 
+                    model: 'google/gemma-2-9b-it:free', 
+                    stream: true, 
+                });
                 
                 aiResponseText.innerHTML = '';
-                let isFirstChunk = true; // To only trigger achievement on the first piece of text
+                let isFirstChunk = true;
                 
                 for await (const part of response) {
                     if (part.text) {
-                        // If this is the first response and the achievement is not unlocked yet
                         if (isFirstChunk && !isFirstWordsUnlocked) {
                             isFirstWordsUnlocked = true;
-                            // Update the card in the achievements menu
                             achFirstWordsCard.classList.remove('locked');
                             achFirstWordsIcon.textContent = '✔';
-                            // Show the popup notification
                             achievementPopup.textContent = "Achievement Unlocked: First Words!";
                             achievementPopup.classList.add('show');
-                            setTimeout(() => { achievementPopup.classList.remove('show'); }, 4000); // Hide after 4 seconds
+                            setTimeout(() => { achievementPopup.classList.remove('show'); }, 4000);
                         }
-                        isFirstChunk = false; // It's no longer the first chunk
+                        isFirstChunk = false;
 
                         aiResponseText.innerHTML += part.text.replaceAll('\n', '<br>');
                         aiResponseText.scrollTop = aiResponseText.scrollHeight;
