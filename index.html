@@ -17,12 +17,14 @@
             --green: #5fad56;
         }
 
-        /* General & Menu Styles (unchanged) */
+        /* General & Menu Styles */
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; font-family: 'Press Start 2P', cursive; }
         .screen { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; text-align: center; flex-direction: column; box-sizing: border-box; padding: 20px; }
         #tos-screen { background-color: var(--black); color: var(--white); }
         .tos-title { font-size: 2.5rem; margin-bottom: 20px; }
         .tos-text { font-size: 1.2rem; max-width: 600px; line-height: 1.6; margin-bottom: 40px; }
+        #tos-screen .menu-button { color: var(--white); border-color: var(--white); }
+        #tos-screen .menu-button:hover { color: var(--black); background-color: var(--white); }
         #start-screen { display: none; background: linear-gradient(-45deg, #ffffff, #f2f2f2, #e8e8e8, #fdfdfd); background-size: 400% 400%; animation: gradientShift 15s ease infinite; }
         @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
         .header { display: flex; justify-content: center; align-items: baseline; gap: 15px; }
@@ -30,23 +32,36 @@
         .version-text { font-size: 1rem; color: #333; transform: translateY(-5px); }
         @keyframes sketchy { 0% { transform: translate(0, 0) rotate(0); } 25% { transform: translate(-1px, 1px) rotate(-0.5deg); } 50% { transform: translate(1px, -1px) rotate(0.5deg); } 75% { transform: translate(1px, 1px) rotate(0); } 100% { transform: translate(0, 0) rotate(0); } }
         .menu { margin-top: 40px; display: flex; gap: 20px; justify-content: center; }
-        .menu-button { display: inline-block; padding: 15px 35px; font-size: 1.5rem; text-decoration: none; text-transform: uppercase; border: 4px solid; transition: all 0.15s ease-out; color: #000; border-color: #000; }
-        .menu-button:hover { color: #fff; background-color: #000; transform: translateY(-4px); box-shadow: 0 8px 0 rgba(0,0,0,0.2); cursor: pointer; }
+        .menu-button { display: inline-block; padding: 15px 35px; font-size: 1.5rem; text-decoration: none; text-transform: uppercase; border: 4px solid; transition: all 0.15s ease-out; }
+        #start-screen .menu-button { color: #000; border-color: #000; }
+        #start-screen .menu-button:hover { color: #fff; background-color: #000; transform: translateY(-4px); box-shadow: 0 8px 0 rgba(0,0,0,0.2); cursor: pointer; }
+        .feedback-message { color: #e63946; font-size: 1rem; margin-top: 25px; height: 1.2em; opacity: 0; transition: opacity 0.3s ease-in-out; text-transform: none; }
         
-        /* Simplified Game Screen Styles */
-        #game-screen { display: none; position: relative; background-color: #f0f0f0; }
-        #game-back-button { position: absolute; top: 30px; left: 30px; z-index: 20; padding: 10px 20px; border: 2px solid #000; border-radius: 8px; background: #f0f0f0; font-size: 1rem; text-decoration: none; color: #000; cursor: pointer; transition: all 0.2s ease; }
-        #game-back-button:hover { background: #000; color: #fff; }
-        .cat-container { position: absolute; bottom: 100px; right: 30px; width: 200px; }
+        /* Game Screen Styles */
+        #game-screen { display: none; position: relative; justify-content: center; align-items: center; background: linear-gradient(-45deg, #ffffff, #f2f2f2, #e8e8e8, #fdfdfd); background-size: 400% 400%; animation: gradientShift 15s ease infinite; }
+        .cat-container { position: absolute; bottom: 120px; right: 20px; width: 200px; }
         .cat-gif { width: 100%; height: auto; cursor: pointer; }
-        #ai-bubble { display: none; position: absolute; top: -120px; left: -180px; width: 350px; z-index: 10; padding: 15px; background: #fff; border: 2px solid #000; border-radius: 12px; }
-        #ai-response-text { font-family: 'Press Start 2P', cursive; max-height: 150px; overflow-y: auto; text-align: left; font-size: 0.9rem; line-height: 1.5; color: #000;}
-        #user-input-container { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); width: 80%; max-width: 600px; z-index: 20; background: #fff; border: 2px solid #000; border-radius: 12px; padding: 5px; }
+        .pixelbubble { font-size: 1rem; font-family: "Press Start 2P", cursive; position: relative; display: inline-block; background-color: #fff; color: #000; box-shadow: 0 -3px #fff, 0 -6px #000, 3px 0 #fff, 3px -3px #000, 6px 0 #000, 0 3px #fff, 0 6px #000, -3px 0 #fff, -3px 3px #000, -6px 0 #000, -3px -3px #000, 3px 3px #000; box-sizing: border-box; line-height: 1.4em; letter-spacing: 0.08em; padding: 1em 1.5em; }
+        .pixelbubble--input { padding: 0; }
+        .pixelbubble--input button, .pixelbubble--input input { padding: 1em; border: 0; outline: none; background: transparent; }
+        .pixelbubble--loud { text-transform: uppercase; }
+        .pixelbubble--control { cursor: pointer; }
+        .pixelbubble--control:active { transform: scale(0.95); }
+        .pixelbubble button, .pixelbubble input { font-family: "Press Start 2P", cursive; box-sizing: border-box; letter-spacing: inherit; font-size: 1rem; }
+        #ai-bubble { display: none; position: absolute; top: -120px; left: -180px; width: 350px; z-index: 10; }
+        #ai-response-text { max-height: 150px; overflow-y: auto; text-align: left; }
+        #user-input-container { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); width: 80%; max-width: 700px; z-index: 20; }
         #prompt-form { display: flex; }
-        #prompt-input { flex-grow: 1; border: none; padding: 15px; font-family: 'Press Start 2P', cursive; font-size: 0.8rem; background: transparent; outline: none; }
-        #prompt-submit { border: none; border-left: 2px solid #000; background: transparent; color: #000; padding: 15px 25px; font-family: 'Press Start 2P', cursive; font-size: 0.8rem; cursor: pointer; transition: all 0.2s ease; }
-        #prompt-submit:hover { background: #000; color: #fff; }
-        #prompt-submit:disabled { background: #ccc; cursor: not-allowed; }
+        #prompt-input { flex-grow: 1; }
+        
+        /* --- THIS IS THE ONLY CHANGE --- */
+        /* Positions the game screen's back button correctly */
+        #game-back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 20;
+        }
 
         /* Achievements Screen Styles */
         #achievements-screen { display: none; background-color: var(--black); overflow: hidden; width: 100%; height: 100%; }
@@ -62,7 +77,7 @@
         .achievement-icon { width: 80px; height: 80px; border: 3px solid var(--blue); flex-shrink: 0; display: flex; justify-content: center; align-items: center; font-size: 2rem; color: var(--white); }
         .achievement-details h3 { font-size: 1rem; margin-bottom: 10px; color: var(--yellow); }
         .achievement-details p { font-size: 0.8rem; color: var(--white); text-transform: none; }
-        #achievements-back-button { position: absolute; top: 20px; left: 20px; z-index: 20; color: var(--white); border: 2px solid var(--white); background: transparent; padding: 10px 20px; font-size: 1rem; text-decoration: none; }
+        #achievements-back-button { position: absolute; top: 20px; left: 20px; z-index: 20; color: var(--white); border: 2px solid var(--white); background: transparent; }
         #achievements-back-button:hover { background: var(--white); color: var(--black); }
     </style>
 </head>
@@ -74,28 +89,26 @@
     <div id="start-screen" class="screen">
         <header class="header"> <h1 class="sketch-title">Ask Cat</h1> <span class="version-text">v0.1</span> </header>
         <nav class="menu"> <a href="#" id="play-button" class="menu-button">Play</a> <a href="#" id="achievements-button" class="menu-button">Achievements</a> </nav>
+        <p id="achievements-message" class="feedback-message"></p>
     </div>
     
     <div id="game-screen" class="screen">
-        <a href="#" id="game-back-button">BACK</a>
+        <a href="#" id="game-back-button" class="pixelbubble pixelbubble--control pixelbubble--loud">Back</a>
         <div class="cat-container">
-            <!-- FIXED: Restored the original animated cat GIF -->
             <img id="cat-image" class="cat-gif" src="ezgif-300a09fbddc6f2.gif" alt="A friendly cat">
-            <div id="ai-bubble"> 
-                <div id="ai-response-text">Ask me something...</div> 
-            </div>
+            <div id="ai-bubble" class="pixelbubble pixelbubble--loud"> <div id="ai-response-text" class="message">Ask me something...</div> </div>
         </div>
-        <div id="user-input-container">
+        <div id="user-input-container" class="pixelbubble pixelbubble--input">
             <form id="prompt-form">
                 <input id="prompt-input" type="text" autocomplete="off" placeholder="Ask Cat a question...">
-                <button id="prompt-submit" type="submit">ASK</button>
+                <button id="prompt-submit" type="submit" class="pixelbubble--control pixelbubble--loud">Ask</button>
             </form>
         </div>
     </div>
 
     <div id="achievements-screen" class="screen">
         <div class="stars"></div><div class="stars2"></div><div class="stars3"></div>
-        <a href="#" id="achievements-back-button">Back</a>
+        <a href="#" id="achievements-back-button" class="pixelbubble pixelbubble--control pixelbubble--loud">Back</a>
         <div class="achievements-content">
             <h2 class="achievements-title">ACHIEVEMENTS</h2>
             <div class="achievement-card locked">
@@ -112,7 +125,7 @@
     <audio id="achievements-audio" loop><source src="https://dn721605.ca.archive.org/0/items/undertaleost_202004/Undertale%20-%20Lossless%20Soundtrack%20%28toby%20fox%29/toby%20fox%20-%20UNDERTALE%20Soundtrack%20-%2020%20Mysterious%20Place.flac" type="audio/flac"></audio>
 
     <script>
-        // All element getters are the same
+        // Get all elements
         const tosScreen = document.getElementById('tos-screen');
         const acceptButton = document.getElementById('accept-button');
         const startScreen = document.getElementById('start-screen');
@@ -131,9 +144,10 @@
         const achievementsAudio = document.getElementById('achievements-audio');
         const achievementsBackButton = document.getElementById('achievements-back-button');
         
-        // All event listeners are the same
+        // Event Listeners
         acceptButton.addEventListener('click', (e) => { e.preventDefault(); tosScreen.style.display = 'none'; startScreen.style.display = 'flex'; menuAudio.play().catch(console.error); });
         playButton.addEventListener('click', (e) => { e.preventDefault(); menuAudio.pause(); menuAudio.currentTime = 0; startScreen.style.display = 'none'; gameScreen.style.display = 'flex'; });
+        
         achievementsButton.addEventListener('click', (e) => {
             e.preventDefault();
             startScreen.style.display = 'none';
@@ -142,6 +156,7 @@
             achievementsAudio.currentTime = 0;
             achievementsAudio.play().catch(console.error);
         });
+
         achievementsBackButton.addEventListener('click', (e) => {
             e.preventDefault();
             achievementsScreen.style.display = 'none';
@@ -150,7 +165,9 @@
             menuAudio.currentTime = 0;
             menuAudio.play().catch(console.error);
         });
+        
         catImage.addEventListener('click', () => { const isHidden = aiBubble.style.display === 'none' || aiBubble.style.display === ''; aiBubble.style.display = isHidden ? 'block' : 'none'; });
+        
         gameBackButton.addEventListener('click', (e) => {
             e.preventDefault();
             gameScreen.style.display = 'none';
@@ -161,7 +178,6 @@
             menuAudio.play().catch(console.error);
         });
 
-        // --- FIXED PUTER.JS SUBMISSION ---
         promptForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const userPrompt = promptInput.value.trim();
@@ -171,17 +187,8 @@
             promptInput.disabled = true;
             promptSubmit.disabled = true;
             try {
-                // FIXED: Simplified the prompt structure to be more direct, as per the documentation.
-                const finalPrompt = `You are a cat. Answer this question in a short, cute way: "${userPrompt}"`;
-                
-                const response = await puter.ai.chat(
-                    finalPrompt, 
-                    {
-                        model: 'google/gemini-flash-1.5', // Using a reliable model
-                        stream: true, 
-                    }
-                );
-
+                const fullPrompt = `You are a cat. Respond to the user's question as a cat would. Keep your answers short and cute. The user's question is: "${userPrompt}"`;
+                const response = await puter.ai.chat(fullPrompt, { model: 'google/gemma-2-9b-it:free', stream: true, });
                 aiResponseText.innerHTML = '';
                 for await (const part of response) {
                     if (part.text) {
