@@ -17,8 +17,17 @@
         .tos-text { font-size: 1.2rem; max-width: 600px; line-height: 1.6; margin-bottom: 40px; }
         #tos-screen .menu-button { color: #fff; border-color: #fff; }
         #tos-screen .menu-button:hover { color: #000; background-color: #fff; }
+        
+        /* Start Screen (already has the white gradient) */
         #start-screen { display: none; background: linear-gradient(-45deg, #ffffff, #f2f2f2, #e8e8e8, #fdfdfd); background-size: 400% 400%; animation: gradientShift 15s ease infinite; }
-        @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        
+        /* Re-add the gradientShift animation keyframes */
+        @keyframes gradientShift { 
+            0% { background-position: 0% 50%; } 
+            50% { background-position: 100% 50%; } 
+            100% { background-position: 0% 50%; } 
+        }
+
         .header { display: flex; justify-content: center; align-items: baseline; gap: 15px; }
         .sketch-title { font-size: 4rem; color: #000; text-transform: uppercase; animation: sketchy 2s steps(2, end) infinite; }
         .version-text { font-size: 1rem; color: #333; transform: translateY(-5px); }
@@ -29,17 +38,22 @@
         #start-screen .menu-button:hover { color: #fff; background-color: #000; transform: translateY(-4px); box-shadow: 0 8px 0 rgba(0,0,0,0.2); cursor: pointer; }
         .feedback-message { color: #e63946; font-size: 1rem; margin-top: 25px; height: 1.2em; opacity: 0; transition: opacity 0.3s ease-in-out; text-transform: none; }
         
-        /* UPDATED: Game Screen now has the new gradient background */
-        #game-screen { display: none; position: relative; justify-content: center; align-items: center; background: linear-gradient(135deg, #0000a3 0%, #ff00ac 100%); }
+        /* UPDATED: Game Screen now has the white animated gradient */
+        #game-screen { 
+            display: none; 
+            position: relative; 
+            justify-content: center; 
+            align-items: center; 
+            background: linear-gradient(-45deg, #ffffff, #f2f2f2, #e8e8e8, #fdfdfd);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
         
-        /* Back button now uses the new style */
         #back-button { position: absolute; top: 20px; left: 20px; z-index: 20; }
         .cat-container { position: absolute; bottom: 120px; right: 20px; width: 200px; }
         .cat-gif { width: 100%; height: auto; cursor: pointer; }
         
-        /* =============================================== */
-        /* ==   NEW PIXEL BUBBLE CSS FROM YOUR CODEPEN  == */
-        /* =============================================== */
+        /* Pixel Bubble CSS from your CodePen */
         .pixelbubble {
             font-size: 1rem;
             font-family: "Press Start 2P", cursive;
@@ -105,18 +119,13 @@
         <p id="achievements-message" class="feedback-message">you cant go there yet.</p>
     </div>
     <div id="game-screen" class="screen">
-        <!-- Back button now uses the new style -->
         <a href="#" id="back-button" class="pixelbubble pixelbubble--control pixelbubble--loud">Back</a>
-        
         <div class="cat-container">
             <img id="cat-image" class="cat-gif" src="ezgif-300a09fbddc6f2.gif" alt="A friendly cat">
-            <!-- NEW: AI bubble with the new style -->
             <div id="ai-bubble" class="pixelbubble pixelbubble--loud">
                 <div id="ai-response-text" class="message">Ask me something...</div>
             </div>
         </div>
-        
-        <!-- NEW: User input area with the new style -->
         <div id="user-input-container" class="pixelbubble pixelbubble--input">
             <form id="prompt-form">
                 <input id="prompt-input" type="text" autocomplete="off" placeholder="Ask Cat a question...">
