@@ -152,8 +152,8 @@
             promptSubmit.disabled = true;
             try {
                 // --- THE ONLY CHANGE IS HERE ---
-                // A much stricter prompt to prevent the AI from breaking character.
-                const fullPrompt = `Your ONLY role is to act as a cute and playful cat. You MUST respond as this cat character, no matter what the user says. NEVER break character. NEVER act like an AI assistant or mention grammar. Respond to the user's message: "${userPrompt}"`;
+                // This is the simplest, most direct prompt. It is the most reliable.
+                const fullPrompt = `Act as a cat and respond to the following message: "${userPrompt}"`;
                 
                 const response = await puter.ai.chat(fullPrompt, { 
                     model: 'google/gemma-2-9b-it:free', 
