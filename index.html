@@ -134,22 +134,27 @@
         const achFirstWordsIcon = document.getElementById('ach-first-words-icon');
         let isFirstWordsUnlocked = false;
 
-        // --- NEW: Cat's "Brain" ---
-        // You can easily add more keywords and responses here!
+        // --- UPDATED: Cat's "Brain" with more emoji responses! ---
         const catResponses = {
-            "hello": "Mrow!?",
-            "hi": "Mrow!?",
-            "food": "Meow!",
-            "treats": "Prrrr!",
-            "play": "*pounces*",
-            "cute": "*purrs softly*",
-            "love": "*rubs against you*",
-            "cat": "Meow."
+            "hello": "Mrow!? 👋",
+            "hi": "Mrow!? 👋",
+            "food": "Meow! 🐟",
+            "treats": "Prrrr! 😻",
+            "play": "*pounces* 😼",
+            "cute": "*purrs softly* 🥰",
+            "love": "*rubs against you* ❤️",
+            "cat": "Meow. 🐾",
+            "how are you": "Feelin' purrfect! ✨",
+            "hungry": "Always ready for a snack! 🐟",
+            "sleepy": "Time for a cat nap... 😴",
+            "name": "I'm just a cat! 🐈",
+            "pet": "*happy purring noises* 🥰",
+            "good kitty": "Hehe, I know! 😇"
         };
 
-        const defaultCatResponses = ["...?", "*stares blankly*", "*tilts head*", "prrrr...", "mrow?"];
+        const defaultCatResponses = ["...?", "*stares blankly* 👀", "*tilts head*", "prrrr... ❤️", "mrow? 🥺"];
 
-        // --- NEW: Function to get a response ---
+        // All other JavaScript functions are the same
         function getCatResponse(userInput) {
             const lowerInput = userInput.toLowerCase();
             for (const keyword in catResponses) {
@@ -157,12 +162,10 @@
                     return catResponses[keyword];
                 }
             }
-            // If no keyword is found, return a random default response
             const randomIndex = Math.floor(Math.random() * defaultCatResponses.length);
             return defaultCatResponses[randomIndex];
         }
 
-        // --- NEW: Typewriter function ---
         function typeResponse(text) {
             let i = 0;
             aiResponseText.innerHTML = '';
@@ -172,15 +175,14 @@
                     i++;
                 } else {
                     clearInterval(typingInterval);
-                    // Re-enable form after typing is done
                     promptInput.disabled = false;
                     promptSubmit.disabled = false;
                     promptInput.focus();
                 }
-            }, 50); // 50ms delay between characters
+            }, 50);
         }
 
-        // Event Listeners
+        // All event listeners are the same
         acceptButton.addEventListener('click', (e) => { e.preventDefault(); tosScreen.style.display = 'none'; startScreen.style.display = 'flex'; menuAudio.play().catch(console.error); });
         playButton.addEventListener('click', (e) => { e.preventDefault(); menuAudio.pause(); menuAudio.currentTime = 0; startScreen.style.display = 'none'; gameScreen.style.display = 'flex'; });
         achievementsButton.addEventListener('click', (e) => { e.preventDefault(); startScreen.style.display = 'none'; achievementsScreen.style.display = 'flex'; menuAudio.pause(); achievementsAudio.currentTime = 0; achievementsAudio.play().catch(console.error); });
@@ -188,7 +190,6 @@
         catImage.addEventListener('click', () => { const isHidden = aiBubble.style.display === 'none' || aiBubble.style.display === ''; aiBubble.style.display = isHidden ? 'block' : 'none'; });
         gameBackButton.addEventListener('click', (e) => { e.preventDefault(); gameScreen.style.display = 'none'; startScreen.style.display = 'flex'; aiBubble.style.display = 'none'; aiResponseText.innerHTML = 'Ask me something...'; promptInput.value = ''; menuAudio.play().catch(console.error); });
 
-        // --- UPDATED: Form submission now uses our local cat brain ---
         promptForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const userPrompt = promptInput.value.trim();
@@ -201,7 +202,6 @@
             const catResponse = getCatResponse(userPrompt);
             typeResponse(catResponse);
 
-            // Unlock achievement on first successful response
             if (!isFirstWordsUnlocked) {
                 isFirstWordsUnlocked = true;
                 achFirstWordsCard.classList.remove('locked');
