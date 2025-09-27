@@ -40,12 +40,13 @@
         #ai-bubble { display: none; position: absolute; top: -120px; left: -180px; width: 350px; z-index: 10; padding: 15px; background: #fff; border: 2px solid #000; border-radius: 12px; }
         #ai-response-text { font-family: 'Press Start 2P', cursive; max-height: 150px; overflow-y: auto; text-align: left; font-size: 0.9rem; line-height: 1.5; color: #000;}
         
-        /* NEW: Styles for the GIF bubble */
+        /* --- THIS IS THE ONLY CHANGE --- */
+        /* Updated GIF bubble position */
         #gif-bubble {
             display: none;
             position: absolute;
-            top: -90px;
-            left: -120px;
+            top: -150px;   /* Moved further up */
+            left: -200px;  /* Moved further left */
             width: 250px;
             z-index: 9;
         }
@@ -92,7 +93,6 @@
         <div class="cat-container">
             <img id="cat-image" class="cat-gif" src="ezgif-300a09fbddc6f2.gif" alt="A friendly cat">
             <div id="ai-bubble"> <div id="ai-response-text">Ask me something...</div> </div>
-            <!-- NEW: GIF bubble element -->
             <img id="gif-bubble" src="ezgif.com-cut.gif" alt="cat says hello">
         </div>
         <div id="user-input-container">
@@ -146,10 +146,8 @@
         const achFirstWordsIcon = document.getElementById('ach-first-words-icon');
         let isFirstWordsUnlocked = false;
         
-        // NEW: Get the GIF bubble
         const gifBubble = document.getElementById('gif-bubble');
 
-        // Local cat brain (unchanged)
         const catResponses = { "hello": "Mrow!? 👋", "hi": "Mrow!? 👋", "food": "Meow! 🐟", "treats": "Prrrr! 😻", "play": "*pounces* 😼", "cute": "*purrs softly* 🥰", "love": "*rubs against you* ❤️", "cat": "Meow. 🐾", "how are you": "Feelin' purrfect! ✨", "hungry": "Always ready for a snack! 🐟", "sleepy": "Time for a cat nap... 😴", "name": "I'm just a cat! 🐈", "pet": "*happy purring noises* 🥰", "good kitty": "Hehe, I know! 😇" };
         const defaultCatResponses = ["...?", "*stares blankly* 👀", "*tilts head*", "prrrr... ❤️", "mrow? 🥺"];
         function getCatResponse(userInput) { const lowerInput = userInput.toLowerCase(); for (const keyword in catResponses) { if (lowerInput.includes(keyword)) { return catResponses[keyword]; } } const randomIndex = Math.floor(Math.random() * defaultCatResponses.length); return defaultCatResponses[randomIndex]; }
@@ -161,11 +159,10 @@
         achievementsButton.addEventListener('click', (e) => { e.preventDefault(); startScreen.style.display = 'none'; achievementsScreen.style.display = 'flex'; menuAudio.pause(); achievementsAudio.currentTime = 0; achievementsAudio.play().catch(console.error); });
         achievementsBackButton.addEventListener('click', (e) => { e.preventDefault(); achievementsScreen.style.display = 'none'; startScreen.style.display = 'flex'; achievementsAudio.pause(); menuAudio.currentTime = 0; menuAudio.play().catch(console.error); });
         
-        // UPDATED: Cat click now toggles the GIF bubble
         catImage.addEventListener('click', () => {
             const isHidden = gifBubble.style.display === 'none' || gifBubble.style.display === '';
             gifBubble.style.display = isHidden ? 'block' : 'none';
-            aiBubble.style.display = 'none'; // Always hide the text bubble
+            aiBubble.style.display = 'none';
         });
         
         gameBackButton.addEventListener('click', (e) => {
@@ -173,20 +170,19 @@
             gameScreen.style.display = 'none';
             startScreen.style.display = 'flex';
             aiBubble.style.display = 'none';
-            gifBubble.style.display = 'none'; // Also hide the gif bubble
+            gifBubble.style.display = 'none';
             aiResponseText.innerHTML = 'Ask me something...';
             promptInput.value = '';
             menuAudio.play().catch(console.error);
         });
 
-        // UPDATED: Form submission now handles both bubbles
         promptForm.addEventListener('submit', (e) => {
             e.preventDefault();
             const userPrompt = promptInput.value.trim();
             if (!userPrompt) return;
 
-            gifBubble.style.display = 'none'; // Hide the GIF bubble
-            aiBubble.style.display = 'block'; // Show the text bubble
+            gifBubble.style.display = 'none';
+            aiBubble.style.display = 'block';
             promptInput.disabled = true;
             promptSubmit.disabled = true;
 
