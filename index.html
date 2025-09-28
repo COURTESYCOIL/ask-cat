@@ -58,7 +58,11 @@
         .achievements-content { z-index: 10; width: 50%; max-width: 600px; height: calc(100% - 100px); display: flex; flex-direction: column; gap: 15px; overflow-y: auto; padding-right: 30px; }
         .achievements-content::-webkit-scrollbar { display: none; } .achievements-content { scrollbar-width: none; }
         .achievements-title { font-size: 1.5rem; color: var(--green); text-align: left; }
-        .achievement-category { font-size: 1rem; color: var(--white); text-align: left; padding-bottom: 8px; border-bottom: 2px solid #444; }
+        .category-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .category-title { font-size: 1rem; color: var(--white); text-align: left; padding-bottom: 8px; border-bottom: 2px solid #444; flex-grow: 1; }
+        .category-toggle { font-size: 1.2rem; color: var(--yellow); margin-left: 15px; }
+        .category-content.collapsed { display: none; }
+        .category-content .placeholder { color: #666; font-size: 0.8rem; text-align: left; margin-left: 20px; }
         .achievement-card { position: relative; display: flex; gap: 20px; background-color: transparent; border: 3px solid var(--white); padding: 20px; text-align: left; transition: opacity 0.4s ease; }
         .achievement-card.locked { opacity: 0.6; }
         .achievement-icon { width: 80px; height: 80px; border: 3px solid var(--blue); flex-shrink: 0; display: flex; justify-content: center; align-items: center; font-size: 2rem; color: var(--white); }
@@ -107,18 +111,67 @@
         <a href="#" id="achievements-back-button">Back</a>
         <div class="achievements-content">
             <h2 class="achievements-title">ACHIEVEMENTS</h2>
-            <h3 class="achievement-category">Common</h3>
-            <div id="ach-first-words" class="achievement-card locked">
-                <div class="achievement-icon">
-                    <span class="icon-text">???</span>
-                    <img class="icon-image" src="image-removebg-preview (1).png" alt="First Words Icon">
+            
+            <div class="category-container">
+                <div class="category-header">
+                    <h3 class="category-title">Common</h3>
+                    <span class="category-toggle">[-]</span>
                 </div>
-                <div class="achievement-details">
-                    <h3 id="ach-first-words-title">???</h3>
-                    <p id="ach-first-words-desc">???</p>
+                <div class="category-content">
+                    <div id="ach-first-words" class="achievement-card locked">
+                        <div class="achievement-icon">
+                            <span class="icon-text">???</span>
+                            <img class="icon-image" src="image-removebg-preview (1).png" alt="First Words Icon">
+                        </div>
+                        <div class="achievement-details">
+                            <h3 id="ach-first-words-title">???</h3>
+                            <p id="ach-first-words-desc">???</p>
+                        </div>
+                        <span class="achievement-status">Locked</span>
+                    </div>
                 </div>
-                <span class="achievement-status">Locked</span>
             </div>
+
+            <div class="category-container">
+                <div class="category-header">
+                    <h3 class="category-title">Uncommon</h3>
+                    <span class="category-toggle">[+]</span>
+                </div>
+                <div class="category-content collapsed">
+                    <p class="placeholder">More achievements coming soon...</p>
+                </div>
+            </div>
+
+            <div class="category-container">
+                <div class="category-header">
+                    <h3 class="category-title">Rare</h3>
+                    <span class="category-toggle">[+]</span>
+                </div>
+                <div class="category-content collapsed">
+                    <p class="placeholder">More achievements coming soon...</p>
+                </div>
+            </div>
+
+            <div class="category-container">
+                <div class="category-header">
+                    <h3 class="category-title">Epic</h3>
+                    <span class="category-toggle">[+]</span>
+                </div>
+                <div class="category-content collapsed">
+                    <p class="placeholder">More achievements coming soon...</p>
+                </div>
+            </div>
+            
+            <div class="category-container">
+                <div class="category-header">
+                    <h3 class="category-title">Legendary</h3>
+                    <span class="category-toggle">[+]</span>
+                </div>
+                <div class="category-content collapsed">
+                    <p class="placeholder">More achievements coming soon...</p>
+                </div>
+            </div>
+
         </div>
         <div class="scrollbar"><div class="scrollbar-thumb"></div></div>
     </div>
@@ -197,9 +250,24 @@
         function getCatResponse(userInput) { const lowerInput = userInput.toLowerCase(); for (const keyword in catResponses) { if (lowerInput.includes(keyword)) { return catResponses[keyword]; } } const randomIndex = Math.floor(Math.random() * defaultCatResponses.length); return defaultCatResponses[randomIndex]; }
         function typeResponse(text) { let i = 0; aiResponseText.innerHTML = ''; const typingInterval = setInterval(() => { if (i < text.length) { aiResponseText.innerHTML += text.charAt(i); i++; } else { clearInterval(typingInterval); promptInput.disabled = false; promptSubmit.disabled = false; promptInput.focus(); } }, 50); }
 
-        // All event listeners are the same
+        // Event Listeners
         acceptButton.addEventListener('click', (e) => { e.preventDefault(); tosScreen.style.display = 'none'; startScreen.style.display = 'flex'; menuAudio.play().catch(console.error); });
         playButton.addEventListener('click', (e) => { e.preventDefault(); menuAudio.pause(); menuAudio.currentTime = 0; startScreen.style.display = 'none'; gameScreen.style.display = 'flex'; });
+        
+        const achievementToggles = document.querySelectorAll('.category-header');
+        achievementToggles.forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                const content = toggle.nextElementSibling;
+                const toggleButton = toggle.querySelector('.category-toggle');
+                content.classList.toggle('collapsed');
+                if (content.classList.contains('collapsed')) {
+                    toggleButton.textContent = '[+]';
+                } else {
+                    toggleButton.textContent = '[-]';
+                }
+            });
+        });
+
         achievementsButton.addEventListener('click', (e) => { e.preventDefault(); startScreen.style.display = 'none'; achievementsScreen.style.display = 'flex'; menuAudio.pause(); achievementsAudio.currentTime = 0; achievementsAudio.play().catch(console.error); });
         achievementsBackButton.addEventListener('click', (e) => { e.preventDefault(); achievementsScreen.style.display = 'none'; startScreen.style.display = 'flex'; achievementsAudio.pause(); menuAudio.currentTime = 0; menuAudio.play().catch(console.error); });
         catImage.addEventListener('click', () => { const isHidden = gifBubble.style.display === 'none' || gifBubble.style.display === ''; gifBubble.style.display = isHidden ? 'block' : 'none'; aiBubble.style.display = 'none'; });
