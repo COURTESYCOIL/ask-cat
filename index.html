@@ -17,22 +17,18 @@
             --red: #e63946;
         }
 
-        /* General & Menu Styles */
+        /* All CSS is the same as the last correct version */
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; font-family: 'Press Start 2P', cursive; }
         .screen { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; text-align: center; flex-direction: column; box-sizing: border-box; padding: 20px; }
-        
-        /* NEW: Loading Screen Styles */
         #loading-screen { background-color: var(--black); color: var(--white); }
         .loading-title { font-size: 2rem; margin-bottom: 40px; }
         #loading-screen .menu-button { color: var(--white); border-color: var(--white); }
         #loading-screen .menu-button:hover { color: var(--black); background-color: var(--white); }
-        
         #tos-screen { display: none; background-color: var(--black); color: var(--white); }
         .tos-title { font-size: 2.5rem; margin-bottom: 20px; }
         .tos-text { font-size: 1.2rem; max-width: 600px; line-height: 1.6; margin-bottom: 40px; }
         #tos-screen .menu-button { color: var(--white); border-color: var(--white); }
         #tos-screen .menu-button:hover { color: var(--black); background-color: var(--white); }
-        
         #start-screen { display: none; background: linear-gradient(-45deg, #ffffff, #f2f2f2, #e8e8e8, #fdfdfd); background-size: 400% 400%; animation: gradientShift 15s ease infinite; position: relative; }
         @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
         .header { display: flex; justify-content: center; align-items: baseline; gap: 15px; }
@@ -100,7 +96,6 @@
     </style>
 </head>
 <body>
-    <!-- NEW: Loading Screen -->
     <div id="loading-screen" class="screen">
         <h1 class="loading-title">Ask Cat</h1>
         <a href="#" id="start-button" class="menu-button">Start</a>
@@ -145,6 +140,7 @@
         <a href="#" id="achievements-back-button">Back</a>
         <div class="achievements-content">
             <h2 class="achievements-title">ACHIEVEMENTS</h2>
+            
             <div class="category-container">
                 <div class="category-header">
                     <h3 class="category-title">Common</h3>
@@ -164,6 +160,47 @@
                     </div>
                 </div>
             </div>
+
+            <div class="category-container">
+                <div class="category-header">
+                    <h3 class="category-title">Uncommon</h3>
+                    <span class="category-toggle">[+]</span>
+                </div>
+                <div class="category-content collapsed">
+                    <p class="placeholder">More achievements coming soon...</p>
+                </div>
+            </div>
+
+            <div class="category-container">
+                <div class="category-header">
+                    <h3 class="category-title">Rare</h3>
+                    <span class="category-toggle">[+]</span>
+                </div>
+                <div class="category-content collapsed">
+                    <p class="placeholder">More achievements coming soon...</p>
+                </div>
+            </div>
+
+            <div class="category-container">
+                <div class="category-header">
+                    <h3 class="category-title">Epic</h3>
+                    <span class="category-toggle">[+]</span>
+                </div>
+                <div class="category-content collapsed">
+                    <p class="placeholder">More achievements coming soon...</p>
+                </div>
+            </div>
+            
+            <div class="category-container">
+                <div class="category-header">
+                    <h3 class="category-title">Legendary</h3>
+                    <span class="category-toggle">[+]</span>
+                </div>
+                <div class="category-content collapsed">
+                    <p class="placeholder">More achievements coming soon...</p>
+                </div>
+            </div>
+
         </div>
         <div class="scrollbar"><div class="scrollbar-thumb"></div></div>
     </div>
@@ -175,7 +212,8 @@
                 <div class="title"> <h1>Ask Cat</h1> <h3>Pre-alpha (v0.1)</h3> </div>
                 <p>a simple web game inspired from a gif posted by Imangalilili_goofy.</p> <br><br>
                 <p>Development Team</p> <p>Lead Developer - painsel</p> <p>Lead Animator - that7mad</p> <p>Server Manager & Source of Inspiration - Imangalilili_goofy</p> <br><br>
-                <p>Early Access Supporters - Serious Boy, tom, and Jeriye</p> <br><br>
+                <!-- UPDATED: Added new supporter names -->
+                <p>Early Access Supporters - Serious Boy, tom, Jeriye, Honda, MAXXMUGA, Naughtlapis, and Squid</p> <br><br>
                 <h1>**End Of Credits**</h1>
             </div>
         </section>
@@ -213,29 +251,39 @@
         const creditsButton = document.getElementById('credits-button');
         const creditsScreen = document.getElementById('credits-screen');
         
-        // Audio elements
         const tosAudio = document.getElementById('tos-audio');
         const menuAudio = document.getElementById('menu-audio');
         const achievementsAudio = document.getElementById('achievements-audio');
         const creditsAudio = document.getElementById('credits-audio');
 
-        const catResponses = { "hello": "Mrow!? 👋", "hi": "Mrow!? 👋", "hey": "Prrr?", "morning": "*stretches* Mrrrrow... ☀️", "night": "*curls up* Zzzz... 🌙", "sup": "Napping. What's up with you? 😴", "food": "Meow! 🐟", "treats": "Prrrr! 😻", "play": "*pounces* 😼", "cute": "*purrs softly* 🥰", "love": "*rubs against you* ❤️", "cat": "Meow. 🐾", "hungry": "The bowl is HALF empty! A tragedy! 😿", "sleepy": "Time for a cat nap... 😴", "pet": "*happy purring noises* 🥰", "good kitty": "Hehe, I know! 😇", "bad kitty": "Wasn't me. It was the dog. 😇", "pspsps": "*ear twitches*... You called? 😼", "purr": "*purrrrrrrrrrrrrrrrrrr* ❤️", "how are you": "Feelin' purrfect! ✨", "what are you doing": "Cat things. You wouldn't understand. 😼", "name": "I'm just a cat! 🐈", "who are you": "Your supreme overlord. 👑", "where are you": "In my secret hiding spot. 🤫", "why": "Because I'm a cat. That's why. 🤷", "what's new": "I took a nap. Then another one. 😴", "are you real": "As real as the next meal you're getting me. 🤨", "sad": "Come here, I'll purr for you. ❤️", "happy": "*tail wags happily* Mrow! 😄", "angry": "Hiss! 😠", "scared": "*hides under the sofa* 🫣", "bored": "Entertain me, human. 🧐", "lonely": "Then you should pet me more. 🙏", "ball": "Ball! *pounces*", "yarn": "Ooh, string! 🧶", "laser": "*eyes widen* The red dot! ✨", "mouse": "Squeak! *pounces*", "toy": "Is it for pouncing on? 😼", "catnip": "Whoa... the colors... 😵‍💫", "sunbeam": "Must... lie... in... sun... ☀️", "window": "*chitters at the birds* 🐦", "door": "Let me out. No, let me in. No, out. 🤔", "outside": "I see birds out there! Let me out! 🐦", "rain": "I do not approve of wet. 🌧️", "bed": "You mean *my* bed? 🛏️", "beautiful": "I know, thank you. 💅", "fluffy": "The fluffiest! ☁️", "smart": "Of course I am. I'm a cat. 🧠", "silly": "I know you are, but what am I? 😜", "lazy": "It's called conserving energy. 🔋", "come here": "Make me. 😼", "speak": "I am! You just don't listen. 🗣️", "jump": "*boing* ✨", "run": "*zoomies activated* 💨", "lol": "Hehe! 😹", "wow": "I know, I'm amazing. ✨", "sorry": "You should be. Now where are the treats? 🤨", "friend": "You are my favorite human. For now. 🥰", "computer": "A warm place to sit. 💻", "phone": "Something to knock off the table. 📱", "book": "Also a warm place to sit. 📚", "music": "Does it have purring in it? 🎶", "dance": "*wiggles butt* 💃", "sing": "Meow meow meooooow! 🎤", "i'm home": "Finally! My food bowl attendant has returned. 🧐", };
+        // --- UPDATED: Cat's "Brain" is now gigantic! ---
+        const catResponses = { "hello": "Mrow!? 👋", "hi": "Mrow!? 👋", "hey": "Prrr?", "morning": "*stretches* Mrrrrow... ☀️", "night": "*curls up* Zzzz... 🌙", "sup": "Napping. What's up with you? 😴", "food": "Meow! 🐟", "treats": "Prrrr! 😻", "play": "*pounces* 😼", "cute": "*purrs softly* 🥰", "love": "*rubs against you* ❤️", "cat": "Meow. 🐾", "hungry": "The bowl is HALF empty! A tragedy! 😿", "sleepy": "Time for a cat nap... 😴", "pet": "*happy purring noises* 🥰", "good kitty": "Hehe, I know! 😇", "bad kitty": "Wasn't me. It was the dog. 😇", "pspsps": "*ear twitches*... You called? 😼", "purr": "*purrrrrrrrrrrrrrrrrrr* ❤️", "how are you": "Feelin' purrfect! ✨", "what are you doing": "Cat things. You wouldn't understand. 😼", "name": "I'm just a cat! 🐈", "who are you": "Your supreme overlord. 👑", "where are you": "In my secret hiding spot. 🤫", "why": "Because I'm a cat. That's why. 🤷", "what's new": "I took a nap. Then another one. 😴", "are you real": "As real as the next meal you're getting me. 🤨", "sad": "Come here, I'll purr for you. ❤️", "happy": "*tail wags happily* Mrow! 😄", "angry": "Hiss! 😠", "scared": "*hides under the sofa* 🫣", "bored": "Entertain me, human. 🧐", "lonely": "Then you should pet me more. 🙏", "ball": "Ball! *pounces*", "yarn": "Ooh, string! 🧶", "laser": "*eyes widen* The red dot! ✨", "mouse": "Squeak! *pounces*", "toy": "Is it for pouncing on? 😼", "catnip": "Whoa... the colors... 😵‍💫", "sunbeam": "Must... lie... in... sun... ☀️", "window": "*chitters at the birds* 🐦", "door": "Let me out. No, let me in. No, out. 🤔", "outside": "I see birds out there! Let me out! 🐦", "rain": "I do not approve of wet. 🌧️", "bed": "You mean *my* bed? 🛏️", "beautiful": "I know, thank you. 💅", "fluffy": "The fluffiest! ☁️", "smart": "Of course I am. I'm a cat. 🧠", "silly": "I know you are, but what am I? 😜", "lazy": "It's called conserving energy. 🔋", "come here": "Make me. 😼", "speak": "I am! You just don't listen. 🗣️", "jump": "*boing* ✨", "run": "*zoomies activated* 💨", "lol": "Hehe! 😹", "wow": "I know, I'm amazing. ✨", "sorry": "You should be. Now where are the treats? 🤨", "friend": "You are my favorite human. For now. 🥰", "computer": "A warm place to sit. 💻", "phone": "Something to knock off the table. 📱", "book": "Also a warm place to sit. 📚", "music": "Does it have purring in it? 🎶", "dance": "*wiggles butt* 💃", "sing": "Meow meow meooooow! 🎤", "i'm home": "Finally! My food bowl attendant has returned. 🧐", "what is": "It's a cat thing. 🤷", "can you": "Maybe. If there are treats involved. 🐟", "do you": "Sometimes. 😼", "tell me a secret": "I know where all the best napping spots are. 🤫", "joke": "Why don't cats play poker in the jungle? Too many cheetahs! 😹", "story": "Once upon a time, a cat took a nap. The end. 😴", "poem": "Soft kitty, warm kitty, little ball of fur... 🎶", "song": "Meow meow meow, meow meow meow... 🎵", "magic": "I can disappear whenever someone says 'bath time'. ✨", "dream": "I dream of chasing mice the size of dogs. 🐭", "biscuit": "*kneads paws happily* ❤️", "clean": "*licks paw* Gotta stay fabulous. 💅", "chaos": "Did someone say chaos? *knocks something over* 😈", "red": "The red dot is my mortal enemy. 💥", "green": "Like my eyes! Or catnip. 🌱", "blue": "The sky is nice to watch birds in. 🐦", "fight": "*puffs up fur* I'm big and scary! 😠", "friendship": "Is when you give me pets and food. 🥰", "water": "No thank you. 💧", "fire": "Warm and nice to sleep near. 🔥", "earth": "Good for digging. 🐾", "air": "Full of interesting smells. 👃", "human": "My loyal staff. 🧐", "robot": "Does it give treats? 🤖", "alien": "A strange-looking bird, maybe? 👽", "monster": "*hides* 🫣", "ghost": "I can see them, you can't. 👻", "party": "Is there tuna? 🥳", "nap": "Don't mind if I do. 😴", "cuddle": "Only on my terms. 😼", "scratch": "*scratches post vigorously* 💪", "stretch": "Ooooh big stretch! 🧘", "climb": "I am the king of this castle! 👑", };
         const defaultCatResponses = ["...?", "*stares blankly* 👀", "*tilts head*", "prrrr... ❤️", "mrow? 🥺"];
         function getCatResponse(userInput) { const lowerInput = userInput.toLowerCase(); for (const keyword in catResponses) { if (lowerInput.includes(keyword)) { return catResponses[keyword]; } } const randomIndex = Math.floor(Math.random() * defaultCatResponses.length); return defaultCatResponses[randomIndex]; }
         function typeResponse(text) { let i = 0; aiResponseText.innerHTML = ''; const typingInterval = setInterval(() => { if (i < text.length) { aiResponseText.innerHTML += text.charAt(i); i++; } else { clearInterval(typingInterval); promptInput.disabled = false; promptSubmit.disabled = false; promptInput.focus(); } }, 50); }
 
         // Event Listeners
-        startButton.addEventListener('click', (e) => {
-            e.preventDefault();
-            loadingScreen.style.display = 'none';
-            tosScreen.style.display = 'flex';
-            tosAudio.play().catch(console.error);
-        });
-
+        startButton.addEventListener('click', (e) => { e.preventDefault(); loadingScreen.style.display = 'none'; tosScreen.style.display = 'flex'; tosAudio.play().catch(console.error); });
         acceptButton.addEventListener('click', (e) => { e.preventDefault(); tosAudio.pause(); tosAudio.currentTime = 0; tosScreen.style.display = 'none'; startScreen.style.display = 'flex'; menuAudio.play().catch(console.error); });
         playButton.addEventListener('click', (e) => { e.preventDefault(); menuAudio.pause(); menuAudio.currentTime = 0; startScreen.style.display = 'none'; gameScreen.style.display = 'flex'; });
         creditsButton.addEventListener('click', (e) => { e.preventDefault(); menuAudio.pause(); menuAudio.currentTime = 0; startScreen.style.display = 'none'; creditsScreen.style.display = 'flex'; creditsAudio.play().catch(console.error); });
         creditsScreen.addEventListener('click', () => { creditsAudio.pause(); creditsAudio.currentTime = 0; creditsScreen.style.display = 'none'; startScreen.style.display = 'flex'; menuAudio.play().catch(console.error); });
+        
+        // --- FIXED: Achievement Toggle Logic ---
+        const achievementToggles = document.querySelectorAll('.category-header');
+        achievementToggles.forEach(header => {
+            header.addEventListener('click', () => {
+                const content = header.nextElementSibling;
+                const toggleButton = header.querySelector('.category-toggle');
+                content.classList.toggle('collapsed');
+                if (content.classList.contains('collapsed')) {
+                    toggleButton.textContent = '[+]';
+                } else {
+                    toggleButton.textContent = '[-]';
+                }
+            });
+        });
+
         achievementsButton.addEventListener('click', (e) => { e.preventDefault(); menuAudio.pause(); menuAudio.currentTime = 0; startScreen.style.display = 'none'; achievementsScreen.style.display = 'flex'; achievementsAudio.play().catch(console.error); });
         achievementsBackButton.addEventListener('click', (e) => { e.preventDefault(); achievementsAudio.pause(); achievementsAudio.currentTime = 0; achievementsScreen.style.display = 'none'; startScreen.style.display = 'flex'; menuAudio.play().catch(console.error); });
         catImage.addEventListener('click', () => { const isHidden = gifBubble.style.display === 'none' || gifBubble.style.display === ''; gifBubble.style.display = isHidden ? 'block' : 'none'; aiBubble.style.display = 'none'; });
