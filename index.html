@@ -92,7 +92,8 @@
         .crawl > .title h1 { margin: 0 0 100px; text-transform: uppercase; }
         @keyframes crawl { 0% { top: 800px; transform: rotateX(20deg)  translateZ(0); } 100% { top: -6000px; transform: rotateX(25deg) translateZ(-2500px); } }
 
-        #announcement-gif { position: absolute; top: 20px; right: 20px; width: 60px; cursor: pointer; }
+        /* UPDATED: Bigger Announcement GIF */
+        #announcement-gif { position: absolute; top: 20px; right: 20px; width: 80px; cursor: pointer; }
         #announcement-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 200; justify-content: center; align-items: center; }
         .modal-content { background: #fff; border: 4px solid #000; padding: 30px; width: 80%; max-width: 500px; text-align: left; }
         .modal-content h2 { font-size: 1.2rem; margin-top: 0; }
@@ -168,6 +169,22 @@
                     </div>
                 </div>
             </div>
+            <div class="category-container">
+                <div class="category-header"> <h3 class="category-title">Uncommon</h3> <span class="category-toggle">[+]</span> </div>
+                <div class="category-content collapsed"> <p class="placeholder">More achievements coming soon...</p> </div>
+            </div>
+            <div class="category-container">
+                <div class="category-header"> <h3 class="category-title">Rare</h3> <span class="category-toggle">[+]</span> </div>
+                <div class="category-content collapsed"> <p class="placeholder">More achievements coming soon...</p> </div>
+            </div>
+            <div class="category-container">
+                <div class="category-header"> <h3 class="category-title">Epic</h3> <span class="category-toggle">[+]</span> </div>
+                <div class="category-content collapsed"> <p class="placeholder">More achievements coming soon...</p> </div>
+            </div>
+            <div class="category-container">
+                <div class="category-header"> <h3 class="category-title">Legendary</h3> <span class="category-toggle">[+]</span> </div>
+                <div class="category-content collapsed"> <p class="placeholder">More achievements coming soon...</p> </div>
+            </div>
         </div>
         <div class="scrollbar"><div class="scrollbar-thumb"></div></div>
     </div>
@@ -240,16 +257,87 @@
             petpet: { unlocked: false, card: document.getElementById('ach-petpet'), title: document.getElementById('ach-petpet-title'), desc: document.getElementById('ach-petpet-desc'), status: document.querySelector('#ach-petpet .achievement-status') }
         };
 
-        const catResponses = { "hello": "Mrow!? 👋", "hi": "Mrow!? 👋", "petpet": "*vibrates happily*", "food": "Meow! 🐟", "treats": "Prrrr! 😻", "play": "*pounces* 😼", "cute": "*purrs softly* 🥰", "love": "*rubs against you* ❤️", "cat": "Meow. 🐾", "how are you": "Feelin' purrfect! ✨", "hungry": "Always ready for a snack! 🐟", "sleepy": "Time for a cat nap... 😴", "name": "I'm just a cat! 🐈", "pet": "*happy purring noises* 🥰", "good kitty": "Hehe, I know! 😇" };
+        // --- UPDATED: Cat's "Brain" is now GIGANTIC! ---
+        const catResponses = {
+            "hello": "Mrow!? 👋", "hi": "Mrow!? 👋", "hey": "Prrr?", "morning": "*stretches* Mrrrrow... ☀️", "night": "*curls up* Zzzz... 🌙", "sup": "Napping. What's up with you? 😴",
+            "food": "Meow! 🐟", "treats": "Prrrr! 😻", "play": "*pounces* 😼", "cute": "*purrs softly* 🥰", "love": "*rubs against you* ❤️", "cat": "Meow. 🐾",
+            "hungry": "The bowl is HALF empty! A tragedy! 😿", "sleepy": "Time for a cat nap... 😴", "pet": "*happy purring noises* 🥰", "good kitty": "Hehe, I know! 😇",
+            "bad kitty": "Wasn't me. It was the dog. 😇", "pspsps": "*ear twitches*... You called? 😼", "purr": "*purrrrrrrrrrrrrrrrrrr* ❤️",
+            "how are you": "Feelin' purrfect! ✨", "what are you doing": "Cat things. You wouldn't understand. 😼", "name": "I'm just a cat! 🐈",
+            "who are you": "Your supreme overlord. 👑", "where are you": "In my secret hiding spot. 🤫", "why": "Because I'm a cat. That's why. 🤷",
+            "what's new": "I took a nap. Then another one. 😴", "are you real": "As real as the next meal you're getting me. 🤨",
+            "sad": "Come here, I'll purr for you. ❤️", "happy": "*tail wags happily* Mrow! 😄", "angry": "Hiss! 😠", "scared": "*hides under the sofa* 🫣",
+            "bored": "Entertain me, human. 🧐", "lonely": "Then you should pet me more. 🙏",
+            "ball": "Ball! *pounces*", "yarn": "Ooh, string! 🧶", "laser": "*eyes widen* The red dot! ✨", "mouse": "Squeak! *pounces*",
+            "toy": "Is it for pouncing on? 😼", "catnip": "Whoa... the colors... 😵‍💫",
+            "sunbeam": "Must... lie... in... sun... ☀️", "window": "*chitters at the birds* 🐦", "door": "Let me out. No, let me in. No, out. 🤔",
+            "outside": "I see birds out there! Let me out! 🐦", "rain": "I do not approve of wet. 🌧️", "bed": "You mean *my* bed? 🛏️",
+            "beautiful": "I know, thank you. 💅", "fluffy": "The fluffiest! ☁️", "smart": "Of course I am. I'm a cat. 🧠",
+            "silly": "I know you are, but what am I? 😜", "lazy": "It's called conserving energy. 🔋",
+            "come here": "Make me. 😼", "speak": "I am! You just don't listen. 🗣️",
+            "jump": "*boing* ✨", "run": "*zoomies activated* 💨", "lol": "Hehe! 😹", "wow": "I know, I'm amazing. ✨",
+            "sorry": "You should be. Now where are the treats? 🤨", "friend": "You are my favorite human. For now. 🥰",
+            "computer": "A warm place to sit. 💻", "phone": "Something to knock off the table. 📱", "book": "Also a warm place to sit. 📚",
+            "music": "Does it have purring in it? 🎶", "dance": "*wiggles butt* 💃", "sing": "Meow meow meooooow! 🎤",
+            "i'm home": "Finally! My food bowl attendant has returned. 🧐",
+            "what is": "It's a cat thing. 🤷", "can you": "Maybe. If there are treats involved. 🐟", "do you": "Sometimes. 😼",
+            "tell me a secret": "I know where all the best napping spots are. 🤫", "joke": "Why don't cats play poker in the jungle? Too many cheetahs! 😹",
+            "story": "Once upon a time, a cat took a nap. The end. 😴", "poem": "Soft kitty, warm kitty, little ball of fur... 🎶",
+            "song": "Meow meow meow, meow meow meow... 🎵", "magic": "I can disappear whenever someone says 'bath time'. ✨",
+            "dream": "I dream of chasing mice the size of dogs. 🐭", "biscuit": "*kneads paws happily* ❤️", "clean": "*licks paw* Gotta stay fabulous. 💅",
+            "chaos": "Did someone say chaos? *knocks something over* 😈", "red": "The red dot is my mortal enemy. 💥",
+            "green": "Like my eyes! Or catnip. 🌱", "blue": "The sky is nice to watch birds in. 🐦",
+            "fight": "*puffs up fur* I'm big and scary! 😠", "friendship": "Is when you give me pets and food. 🥰",
+            "water": "No thank you. 💧", "fire": "Warm and nice to sleep near. 🔥", "earth": "Good for digging. 🐾",
+            "air": "Full of interesting smells. 👃", "human": "My loyal staff. 🧐", "robot": "Does it give treats? 🤖",
+            "alien": "A strange-looking bird, maybe? 👽", "monster": "*hides* 🫣", "ghost": "I can see them, you can't. 👻",
+            "party": "Is there tuna? 🥳", "nap": "Don't mind if I do. 😴", "cuddle": "Only on my terms. 😼",
+            "scratch": "*scratches post vigorously* 💪", "stretch": "Ooooh big stretch! 🧘", "climb": "I am the king of this castle! 👑",
+            "question": "I have the answers. If I feel like sharing. 😼", "idea": "My idea is that it's time for a nap. 😴",
+            "help": "I require assistance opening this can of tuna. 🥫", "boredom": "The solution is to entertain me. Now. 🧐",
+            "game": "The only game is 'chase the red dot'. ✨", "win": "I always win. 🏆", "lose": "I never lose. I simply choose to stop playing. 💅",
+            "work": "That's for humans. I'm in management. 👔", "money": "The currency of treats. 🐟", "time": "It's either nap time or food time. 🕰️",
+            "space": "I must explore every box in the universe. 🚀", "art": "I am the art. Admire me. 🖼️", "science": "The science of getting food from your plate to my mouth. 🧑‍🔬",
+            "history": "In ancient times, we were worshipped as gods. As it should be. 👑", "future": "I see... many naps in my future. 🔮",
+            "philosophy": "To nap, or not to nap? That is a silly question. 😴", "mystery": "The greatest mystery is where the red dot goes. 🕵️",
+            "danger": "*fur on end* What was that noise!? 😳", "adventure": "Let's go explore that rustling bag! 🗺️",
+            "sleep": "Yes, please. 😴", "wake up": "Five more minutes... or hours... ⏰", "tired": "I was born tired. 🥱",
+            " energetic": "*zooms around the room at 3 AM* 💨", "zoomies": "I am speed! ⚡", "attack": "*wiggles butt before pouncing* 😼",
+            "defend": "This cardboard box is my fortress! 🏰", "king": "You may now address me as 'Your Majesty'. 👑",
+            "queen": "That's 'Her Royal Highness' to you. 👑", "prince": "One day, this kingdom of cardboard will be mine. 🏰",
+            "princess": "Where is my royal tuna? 💅", "baby": "Mew! 🍼", "old": "I am wise and demand respect (and soft food). 🧐",
+
+        };
         const defaultCatResponses = ["...?", "*stares blankly* 👀", "*tilts head*", "prrrr... ❤️", "mrow? 🥺"];
         function getCatResponse(userInput) { const lowerInput = userInput.toLowerCase(); for (const keyword in catResponses) { if (lowerInput.includes(keyword)) { return catResponses[keyword]; } } const randomIndex = Math.floor(Math.random() * defaultCatResponses.length); return defaultCatResponses[randomIndex]; }
         function typeResponse(text) { let i = 0; aiResponseText.innerHTML = ''; const typingInterval = setInterval(() => { if (i < text.length) { aiResponseText.innerHTML += text.charAt(i); i++; } else { clearInterval(typingInterval); promptInput.disabled = false; promptSubmit.disabled = false; promptInput.focus(); } }, 50); }
+        function checkForPetpet(userInput) {
+            const lowerInput = userInput.toLowerCase();
+            const petpetTriggers = ["petpet", "pet the cat", "good kitty", "good boy", "good girl", "head pats", "who's a good kitty"];
+            return petpetTriggers.some(trigger => lowerInput.includes(trigger));
+        }
 
+        // Event Listeners
         startButton.addEventListener('click', (e) => { e.preventDefault(); loadingScreen.style.display = 'none'; tosScreen.style.display = 'flex'; tosAudio.play().catch(console.error); });
         acceptButton.addEventListener('click', (e) => { e.preventDefault(); tosAudio.pause(); tosAudio.currentTime = 0; tosScreen.style.display = 'none'; startScreen.style.display = 'flex'; menuAudio.play().catch(console.error); });
         playButton.addEventListener('click', (e) => { e.preventDefault(); menuAudio.pause(); menuAudio.currentTime = 0; startScreen.style.display = 'none'; gameScreen.style.display = 'flex'; });
         creditsButton.addEventListener('click', (e) => { e.preventDefault(); menuAudio.pause(); menuAudio.currentTime = 0; startScreen.style.display = 'none'; creditsScreen.style.display = 'flex'; creditsAudio.play().catch(console.error); });
         creditsScreen.addEventListener('click', () => { creditsAudio.pause(); creditsAudio.currentTime = 0; creditsScreen.style.display = 'none'; startScreen.style.display = 'flex'; menuAudio.play().catch(console.error); });
+        
+        const achievementToggles = document.querySelectorAll('.category-header');
+        achievementToggles.forEach(header => {
+            header.addEventListener('click', () => {
+                const content = header.nextElementSibling;
+                const toggleButton = header.querySelector('.category-toggle');
+                content.classList.toggle('collapsed');
+                if (content.classList.contains('collapsed')) {
+                    toggleButton.textContent = '[+]';
+                } else {
+                    toggleButton.textContent = '[-]';
+                }
+            });
+        });
+
         achievementsButton.addEventListener('click', (e) => { e.preventDefault(); menuAudio.pause(); menuAudio.currentTime = 0; startScreen.style.display = 'none'; achievementsScreen.style.display = 'flex'; achievementsAudio.play().catch(console.error); });
         achievementsBackButton.addEventListener('click', (e) => { e.preventDefault(); achievementsAudio.pause(); achievementsAudio.currentTime = 0; achievementsScreen.style.display = 'none'; startScreen.style.display = 'flex'; menuAudio.play().catch(console.error); });
         catImage.addEventListener('click', () => { const isHidden = gifBubble.style.display === 'none' || gifBubble.style.display === ''; gifBubble.style.display = isHidden ? 'block' : 'none'; aiBubble.style.display = 'none'; });
@@ -263,6 +351,7 @@
             if (!userPrompt) return;
             gifBubble.style.display = 'none'; aiBubble.style.display = 'block';
             promptInput.disabled = true; promptSubmit.disabled = true;
+            
             const catResponse = getCatResponse(userPrompt);
             typeResponse(catResponse);
             
@@ -290,7 +379,7 @@
                 setTimeout(() => { achievementPopup.classList.remove('show'); }, 4000);
             }
 
-            if (userPrompt.toLowerCase().includes("petpet") && !achievements.petpet.unlocked) {
+            if (checkForPetpet(userPrompt) && !achievements.petpet.unlocked) {
                 achievements.petpet.unlocked = true;
                 achievements.petpet.card.classList.remove('locked'); achievements.petpet.card.classList.add('unlocked');
                 achievements.petpet.status.textContent = 'Unlocked';
