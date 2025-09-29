@@ -162,7 +162,7 @@
                         <span class="achievement-status">Locked</span>
                     </div>
                     <div id="ach-petpet" class="achievement-card locked">
-                        <div class="achievement-icon"> <span class="icon-text">???</span> <img class="icon-image" src="2fb22c59-ff7f-4a27-b26d-c0946111c7b5.gif" alt="Icon"> </div>
+                        <div class="achievement-icon"> <span class="icon-text">???</span> <img class="icon-image" src="petpet.png" alt="Icon"> </div>
                         <div class="achievement-details"> <h3 id="ach-petpet-title">???</h3> <p id="ach-petpet-desc">???</p> </div>
                         <span class="achievement-status">Locked</span>
                     </div>
@@ -228,13 +228,11 @@
         const announcementModal = document.getElementById('announcement-modal');
         const modalCloseButton = document.querySelector('.modal-close');
 
-        // Audio elements
         const tosAudio = document.getElementById('tos-audio');
         const menuAudio = document.getElementById('menu-audio');
         const achievementsAudio = document.getElementById('achievements-audio');
         const creditsAudio = document.getElementById('credits-audio');
 
-        // Achievement State
         let interactionCount = 0;
         let achievements = {
             firstWords: { unlocked: false, card: document.getElementById('ach-first-words'), title: document.getElementById('ach-first-words-title'), desc: document.getElementById('ach-first-words-desc'), status: document.querySelector('#ach-first-words .achievement-status') },
@@ -247,7 +245,6 @@
         function getCatResponse(userInput) { const lowerInput = userInput.toLowerCase(); for (const keyword in catResponses) { if (lowerInput.includes(keyword)) { return catResponses[keyword]; } } const randomIndex = Math.floor(Math.random() * defaultCatResponses.length); return defaultCatResponses[randomIndex]; }
         function typeResponse(text) { let i = 0; aiResponseText.innerHTML = ''; const typingInterval = setInterval(() => { if (i < text.length) { aiResponseText.innerHTML += text.charAt(i); i++; } else { clearInterval(typingInterval); promptInput.disabled = false; promptSubmit.disabled = false; promptInput.focus(); } }, 50); }
 
-        // Event Listeners
         startButton.addEventListener('click', (e) => { e.preventDefault(); loadingScreen.style.display = 'none'; tosScreen.style.display = 'flex'; tosAudio.play().catch(console.error); });
         acceptButton.addEventListener('click', (e) => { e.preventDefault(); tosAudio.pause(); tosAudio.currentTime = 0; tosScreen.style.display = 'none'; startScreen.style.display = 'flex'; menuAudio.play().catch(console.error); });
         playButton.addEventListener('click', (e) => { e.preventDefault(); menuAudio.pause(); menuAudio.currentTime = 0; startScreen.style.display = 'none'; gameScreen.style.display = 'flex'; });
@@ -304,7 +301,6 @@
                 setTimeout(() => { achievementPopup.classList.remove('show'); }, 4000);
 
                 const originalSrc = catImage.src;
-                // --- UPDATED: Using the new GIF filename ---
                 catImage.src = '2fb22c59-ff7f-4a27-b26d-c0946111c7b5.gif';
                 setTimeout(() => { catImage.src = originalSrc; }, 10000);
             }
