@@ -17,7 +17,7 @@
             --red: #e63946;
         }
 
-        /* All General CSS is the same */
+        /* All CSS is the same */
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; font-family: 'Press Start 2P', cursive; }
         .screen { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; text-align: center; flex-direction: column; box-sizing: border-box; padding: 20px; }
         #loading-screen { background-color: var(--black); color: var(--white); }
@@ -92,37 +92,13 @@
         .crawl > .title h1 { margin: 0 0 100px; text-transform: uppercase; }
         @keyframes crawl { 0% { top: 800px; transform: rotateX(20deg)  translateZ(0); } 100% { top: -6000px; transform: rotateX(25deg) translateZ(-2500px); } }
 
-        /* NEW: Announcement Styles */
         #announcement-gif { position: absolute; top: 20px; right: 20px; width: 60px; cursor: pointer; }
-        #announcement-modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 200;
-            justify-content: center;
-            align-items: center;
-        }
-        .modal-content {
-            background: #fff;
-            border: 4px solid #000;
-            padding: 30px;
-            width: 80%;
-            max-width: 500px;
-            text-align: left;
-        }
+        #announcement-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 200; justify-content: center; align-items: center; }
+        .modal-content { background: #fff; border: 4px solid #000; padding: 30px; width: 80%; max-width: 500px; text-align: left; }
         .modal-content h2 { font-size: 1.2rem; margin-top: 0; }
         .modal-content ul { list-style: '- '; padding-left: 20px; }
         .modal-content li { font-size: 1rem; margin-bottom: 10px; }
-        .modal-close {
-            margin-top: 20px;
-            padding: 10px 20px;
-            font-size: 1rem;
-            cursor: pointer;
-            border: 2px solid #000;
-            background: #fff;
-        }
+        .modal-close { margin-top: 20px; padding: 10px 20px; font-size: 1rem; cursor: pointer; border: 2px solid #000; background: #fff; }
         .modal-close:hover { background: #000; color: #fff; }
     </style>
 </head>
@@ -186,7 +162,7 @@
                         <span class="achievement-status">Locked</span>
                     </div>
                     <div id="ach-petpet" class="achievement-card locked">
-                        <div class="achievement-icon"> <span class="icon-text">???</span> <img class="icon-image" src="petpet.png" alt="Icon"> </div>
+                        <div class="achievement-icon"> <span class="icon-text">???</span> <img class="icon-image" src="2fb22c59-ff7f-4a27-b26d-c0946111c7b5.gif" alt="Icon"> </div>
                         <div class="achievement-details"> <h3 id="ach-petpet-title">???</h3> <p id="ach-petpet-desc">???</p> </div>
                         <span class="achievement-status">Locked</span>
                     </div>
@@ -209,7 +185,6 @@
         </section>
     </div>
 
-    <!-- NEW: Announcement Modal -->
     <div id="announcement-modal">
         <div class="modal-content">
             <h2>v0.2 UPDATE! Part 1/20</h2>
@@ -267,7 +242,6 @@
             petpet: { unlocked: false, card: document.getElementById('ach-petpet'), title: document.getElementById('ach-petpet-title'), desc: document.getElementById('ach-petpet-desc'), status: document.querySelector('#ach-petpet .achievement-status') }
         };
 
-        // Local cat brain
         const catResponses = { "hello": "Mrow!? 👋", "hi": "Mrow!? 👋", "petpet": "*vibrates happily*", "food": "Meow! 🐟", "treats": "Prrrr! 😻", "play": "*pounces* 😼", "cute": "*purrs softly* 🥰", "love": "*rubs against you* ❤️", "cat": "Meow. 🐾", "how are you": "Feelin' purrfect! ✨", "hungry": "Always ready for a snack! 🐟", "sleepy": "Time for a cat nap... 😴", "name": "I'm just a cat! 🐈", "pet": "*happy purring noises* 🥰", "good kitty": "Hehe, I know! 😇" };
         const defaultCatResponses = ["...?", "*stares blankly* 👀", "*tilts head*", "prrrr... ❤️", "mrow? 🥺"];
         function getCatResponse(userInput) { const lowerInput = userInput.toLowerCase(); for (const keyword in catResponses) { if (lowerInput.includes(keyword)) { return catResponses[keyword]; } } const randomIndex = Math.floor(Math.random() * defaultCatResponses.length); return defaultCatResponses[randomIndex]; }
@@ -295,7 +269,6 @@
             const catResponse = getCatResponse(userPrompt);
             typeResponse(catResponse);
             
-            // --- Achievement Logic ---
             interactionCount++;
 
             if (!achievements.firstWords.unlocked) {
@@ -331,8 +304,9 @@
                 setTimeout(() => { achievementPopup.classList.remove('show'); }, 4000);
 
                 const originalSrc = catImage.src;
-                catImage.src = 'petpet.png';
-                setTimeout(() => { catImage.src = originalSrc; }, 10000); // Revert after 10 seconds
+                // --- UPDATED: Using the new GIF filename ---
+                catImage.src = '2fb22c59-ff7f-4a27-b26d-c0946111c7b5.gif';
+                setTimeout(() => { catImage.src = originalSrc; }, 10000);
             }
 
             promptInput.value = '';
