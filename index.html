@@ -16,7 +16,8 @@
             --green: #5fad56;
             --red: #e63946;
         }
-        
+
+        /* All CSS is the same */
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; font-family: 'Press Start 2P', cursive; }
         .screen { width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; text-align: center; flex-direction: column; box-sizing: border-box; padding: 20px; }
         #loading-screen { background-color: var(--black); color: var(--white); }
@@ -95,8 +96,6 @@
         .modal-content li { font-size: 1rem; margin-bottom: 10px; }
         .modal-close { margin-top: 20px; padding: 10px 20px; font-size: 1rem; cursor: pointer; border: 2px solid #000; background: #fff; }
         .modal-close:hover { background: #000; color: #fff; }
-
-        /* NEW: Community Screen Styles */
         #community-screen { display: none; background-color: var(--black); }
         #community-back-button { position: absolute; top: 20px; left: 20px; z-index: 20; color: var(--white); border: 2px solid var(--white); background: transparent; padding: 10px 20px; font-size: 1rem; text-decoration: none; cursor: pointer; }
         #community-back-button:hover { background: var(--white); color: var(--black); }
@@ -119,7 +118,6 @@
             </div>
             <div class="menu-row">
                 <a href="#" id="credits-button" class="menu-button">Credits</a>
-                <!-- NEW: Community Button Added -->
                 <a href="#" id="community-button" class="menu-button">Community</a>
             </div>
         </nav>
@@ -197,7 +195,6 @@
             </div>
         </section>
     </div>
-    <!-- NEW: Community Screen -->
     <div id="community-screen" class="screen">
         <a href="#" id="community-back-button">Back</a>
         <iframe src="https://discord.com/widget?id=1421121490463490071&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
@@ -259,7 +256,8 @@
             petpet: { unlocked: false, card: document.getElementById('ach-petpet'), title: document.getElementById('ach-petpet-title'), desc: document.getElementById('ach-petpet-desc'), status: document.querySelector('#ach-petpet .achievement-status') }
         };
 
-        const catResponses = { "hello": "Mrow!? 👋", "hi": "Mrow!? 👋", "petpet": "*vibrates happily*", "food": "Meow! 🐟", "treats": "Prrrr! 😻", "play": "*pounces* 😼", "cute": "*purrs softly* 🥰", "love": "*rubs against you* ❤️", "cat": "Meow. 🐾", "how are you": "Feelin' purrfect! ✨", "hungry": "Always ready for a snack! 🐟", "sleepy": "Time for a cat nap... 😴", "name": "I'm just a cat! 🐈", "pet": "*happy purring noises* 🥰", "good kitty": "Hehe, I know! 😇" };
+        // --- RESTORED: The gigantic cat "brain" ---
+        const catResponses = { "hello": "Mrow!? 👋", "hi": "Mrow!? 👋", "hey": "Prrr?", "morning": "*stretches* Mrrrrow... ☀️", "night": "*curls up* Zzzz... 🌙", "sup": "Napping. What's up with you? 😴", "food": "Meow! 🐟", "treats": "Prrrr! 😻", "play": "*pounces* 😼", "cute": "*purrs softly* 🥰", "love": "*rubs against you* ❤️", "cat": "Meow. 🐾", "hungry": "The bowl is HALF empty! A tragedy! 😿", "sleepy": "Time for a cat nap... 😴", "pet": "*happy purring noises* 🥰", "good kitty": "Hehe, I know! 😇", "bad kitty": "Wasn't me. It was the dog. 😇", "pspsps": "*ear twitches*... You called? 😼", "purr": "*purrrrrrrrrrrrrrrrrrr* ❤️", "how are you": "Feelin' purrfect! ✨", "what are you doing": "Cat things. You wouldn't understand. 😼", "name": "I'm just a cat! 🐈", "who are you": "Your supreme overlord. 👑", "where are you": "In my secret hiding spot. 🤫", "why": "Because I'm a cat. That's why. 🤷", "what's new": "I took a nap. Then another one. 😴", "are you real": "As real as the next meal you're getting me. 🤨", "sad": "Come here, I'll purr for you. ❤️", "happy": "*tail wags happily* Mrow! 😄", "angry": "Hiss! 😠", "scared": "*hides under the sofa* 🫣", "bored": "Entertain me, human. 🧐", "lonely": "Then you should pet me more. 🙏", "ball": "Ball! *pounces*", "yarn": "Ooh, string! 🧶", "laser": "*eyes widen* The red dot! ✨", "mouse": "Squeak! *pounces*", "toy": "Is it for pouncing on? 😼", "catnip": "Whoa... the colors... 😵‍💫", "sunbeam": "Must... lie... in... sun... ☀️", "window": "*chitters at the birds* 🐦", "door": "Let me out. No, let me in. No, out. 🤔", "outside": "I see birds out there! Let me out! 🐦", "rain": "I do not approve of wet. 🌧️", "bed": "You mean *my* bed? 🛏️", "beautiful": "I know, thank you. 💅", "fluffy": "The fluffiest! ☁️", "smart": "Of course I am. I'm a cat. 🧠", "silly": "I know you are, but what am I? 😜", "lazy": "It's called conserving energy. 🔋", "come here": "Make me. 😼", "speak": "I am! You just don't listen. 🗣️", "jump": "*boing* ✨", "run": "*zoomies activated* 💨", "lol": "Hehe! 😹", "wow": "I know, I'm amazing. ✨", "sorry": "You should be. Now where are the treats? 🤨", "friend": "You are my favorite human. For now. 🥰", "computer": "A warm place to sit. 💻", "phone": "Something to knock off the table. 📱", "book": "Also a warm place to sit. 📚", "music": "Does it have purring in it? 🎶", "dance": "*wiggles butt* 💃", "sing": "Meow meow meooooow! 🎤", "i'm home": "Finally! My food bowl attendant has returned. 🧐", "what is": "It's a cat thing. 🤷", "can you": "Maybe. If there are treats involved. 🐟", "do you": "Sometimes. 😼", "tell me a secret": "I know where all the best napping spots are. 🤫", "joke": "Why don't cats play poker in the jungle? Too many cheetahs! 😹", "story": "Once upon a time, a cat took a nap. The end. 😴", "poem": "Soft kitty, warm kitty, little ball of fur... 🎶", "song": "Meow meow meow, meow meow meow... 🎵", "magic": "I can disappear whenever someone says 'bath time'. ✨", "dream": "I dream of chasing mice the size of dogs. 🐭", "biscuit": "*kneads paws happily* ❤️", "clean": "*licks paw* Gotta stay fabulous. 💅", "chaos": "Did someone say chaos? *knocks something over* 😈", "red": "The red dot is my mortal enemy. 💥", "green": "Like my eyes! Or catnip. 🌱", "blue": "The sky is nice to watch birds in. 🐦", "fight": "*puffs up fur* I'm big and scary! 😠", "friendship": "Is when you give me pets and food. 🥰", "water": "No thank you. 💧", "fire": "Warm and nice to sleep near. 🔥", "earth": "Good for digging. 🐾", "air": "Full of interesting smells. 👃", "human": "My loyal staff. 🧐", "robot": "Does it give treats? 🤖", "alien": "A strange-looking bird, maybe? 👽", "monster": "*hides* 🫣", "ghost": "I can see them, you can't. 👻", "party": "Is there tuna? 🥳", "nap": "Don't mind if I do. 😴", "cuddle": "Only on my terms. 😼", "scratch": "*scratches post vigorously* 💪", "stretch": "Ooooh big stretch! 🧘", "climb": "I am the king of this castle! 👑", };
         const defaultCatResponses = ["...?", "*stares blankly* 👀", "*tilts head*", "prrrr... ❤️", "mrow? 🥺"];
         function getCatResponse(userInput) { const lowerInput = userInput.toLowerCase(); for (const keyword in catResponses) { if (lowerInput.includes(keyword)) { return catResponses[keyword]; } } const randomIndex = Math.floor(Math.random() * defaultCatResponses.length); return defaultCatResponses[randomIndex]; }
         function typeResponse(text) { let i = 0; aiResponseText.innerHTML = ''; const typingInterval = setInterval(() => { if (i < text.length) { aiResponseText.innerHTML += text.charAt(i); i++; } else { clearInterval(typingInterval); promptInput.disabled = false; promptSubmit.disabled = false; promptInput.focus(); } }, 50); }
@@ -271,7 +269,6 @@
         playButton.addEventListener('click', (e) => { e.preventDefault(); menuAudio.pause(); menuAudio.currentTime = 0; startScreen.style.display = 'none'; gameScreen.style.display = 'flex'; });
         creditsButton.addEventListener('click', (e) => { e.preventDefault(); menuAudio.pause(); menuAudio.currentTime = 0; startScreen.style.display = 'none'; creditsScreen.style.display = 'flex'; creditsAudio.play().catch(console.error); });
         creditsScreen.addEventListener('click', () => { creditsAudio.pause(); creditsAudio.currentTime = 0; creditsScreen.style.display = 'none'; startScreen.style.display = 'flex'; menuAudio.play().catch(console.error); });
-        
         communityButton.addEventListener('click', (e) => { e.preventDefault(); menuAudio.pause(); menuAudio.currentTime = 0; startScreen.style.display = 'none'; communityScreen.style.display = 'flex'; });
         communityBackButton.addEventListener('click', (e) => { e.preventDefault(); communityScreen.style.display = 'none'; startScreen.style.display = 'flex'; menuAudio.play().catch(console.error); });
         
