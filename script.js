@@ -27,6 +27,7 @@ const elements = {
     communityButton: document.getElementById('community-button'),
     communityScreen: document.getElementById('community-screen'),
     communityBackButton: document.getElementById('community-back-button'),
+    deleteProgressButton: document.getElementById('delete-progress-button'), // New button
     tosAudio: document.getElementById('tos-audio'),
     menuAudio: document.getElementById('menu-audio'),
     achievementsAudio: document.getElementById('achievements-audio'),
@@ -56,7 +57,6 @@ function getCatResponse(userInput) { const lowerInput = userInput.toLowerCase();
 function typeResponse(text) { let i = 0; elements.aiResponseText.innerHTML = ''; const typingInterval = setInterval(() => { if (i < text.length) { elements.aiResponseText.innerHTML += text.charAt(i); i++; } else { clearInterval(typingInterval); elements.promptInput.disabled = false; elements.promptSubmit.disabled = false; elements.promptInput.focus(); } }, 50); }
 function checkForPetpet(userInput) { const lowerInput = userInput.toLowerCase(); const petpetTriggers = ["petpet", "pet the cat", "good kitty", "good boy", "good girl", "head pats", "who's a good kitty"]; return petpetTriggers.some(trigger => lowerInput.includes(trigger)); }
 
-// --- NEW: Achievement Persistence Functions ---
 function saveProgress() {
     const progress = {
         interactionCount: interactionCount,
@@ -82,7 +82,6 @@ function loadProgress() {
 
 function unlockAchievement(key, showPopup = true) {
     if (!achievements[key] || achievements[key].unlocked) return;
-
     achievements[key].unlocked = true;
     const ach = achievements[key];
     
@@ -104,6 +103,25 @@ function unlockAchievement(key, showPopup = true) {
 
     saveProgress();
 }
+
+// --- NEW: Reset Progress Function ---
+function resetProgress() {
+    localStorage.removeItem('askCatProgress');
+    interactionCount = 0;
+    
+    for (const key in achievements) {
+        const ach = achievements[key];
+        ach.unlocked = false;
+        ach.card.classList.add('locked');
+        ach.card.classList.remove('unlocked');
+        ach.status.textContent = 'Locked';
+        ach.title.textContent = '???';
+        ach.desc.textContent = '???';
+    }
+    
+    alert('Progress has been deleted.');
+}
+
 
 // --- 4. EVENT LISTENERS ---
 function initEventListeners() {
@@ -132,6 +150,14 @@ function initEventListeners() {
     elements.announcementGif.addEventListener('click', () => { elements.announcementModal.style.display = 'flex'; });
     elements.modalCloseButton.addEventListener('click', () => { elements.announcementModal.style.display = 'none'; });
 
+    // NEW: Delete Progress Listener
+    elements.deleteProgressButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (confirm('Are you sure you want to delete all your progress? This cannot be undone.')) {
+            resetProgress();
+        }
+    });
+
     elements.promptForm.addEventListener('submit', (e) => {
         e.preventDefault();
         const userPrompt = elements.promptInput.value.trim();
@@ -143,15 +169,10 @@ function initEventListeners() {
         typeResponse(catResponse);
         
         interactionCount++;
-        saveProgress(); // Save count every time
+        saveProgress();
 
-        // Achievement checks
-        if (!achievements.firstWords.unlocked) {
-            unlockAchievement('firstWords');
-        }
-        if (interactionCount >= 100 && !achievements.interactions100.unlocked) {
-            unlockAchievement('interactions100');
-        }
+        if (!achievements.firstWords.unlocked) { unlockAchievement('firstWords'); }
+        if (interactionCount >= 100 && !achievements.interactions100.unlocked) { unlockAchievement('interactions100'); }
         if (checkForPetpet(userPrompt) && !achievements.petpet.unlocked) {
             unlockAchievement('petpet');
             const originalSrc = elements.catImage.src;
