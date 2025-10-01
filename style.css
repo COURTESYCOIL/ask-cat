@@ -67,8 +67,13 @@ body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
 .locked .achievement-status { color: var(--red); } .unlocked .achievement-status { color: var(--green); }
 .scrollbar { position: absolute; right: 30px; top: 25%; height: 50%; width: 2px; background-color: #555; }
 .scrollbar-thumb { width: 10px; height: 10px; background-color: var(--white); border-radius: 50%; position: absolute; top: 0; left: 50%; transform: translateX(-50%); }
-#achievements-back-button { position: absolute; top: 20px; left: 20px; z-index: 20; color: var(--white); border: 2px solid var(--white); background: transparent; padding: 10px 20px; font-size: 1rem; text-decoration: none; cursor: pointer; }
+/* Back button is now on the right */
+#achievements-back-button { position: absolute; top: 20px; right: 20px; z-index: 20; color: var(--white); border: 2px solid var(--white); background: transparent; padding: 10px 20px; font-size: 1rem; text-decoration: none; cursor: pointer; }
 #achievements-back-button:hover { background: var(--white); color: var(--black); }
+/* NEW: Delete button on the left */
+#delete-progress-button { position: absolute; top: 20px; left: 20px; z-index: 20; color: var(--red); border: 2px solid var(--red); background: transparent; padding: 10px 20px; font-size: 1rem; text-decoration: none; cursor: pointer; }
+#delete-progress-button:hover { background: var(--red); color: var(--black); }
+
 #achievement-popup { position: absolute; top: 30px; left: 50%; transform: translateX(-50%); padding: 15px 25px; background: #fff; border: 2px solid #000; border-radius: 8px; color: #000; z-index: 100; font-size: 0.9rem; opacity: 0; visibility: hidden; transition: opacity 0.5s, visibility 0.5s; }
 #achievement-popup.show { opacity: 1; visibility: visible; }
 #credits-screen { display: none; background: #000; cursor: pointer; }
