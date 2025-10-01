@@ -27,7 +27,7 @@ const elements = {
     communityButton: document.getElementById('community-button'),
     communityScreen: document.getElementById('community-screen'),
     communityBackButton: document.getElementById('community-back-button'),
-    deleteProgressButton: document.getElementById('delete-progress-button'), // New button
+    deleteProgressButton: document.getElementById('delete-progress-button'),
     tosAudio: document.getElementById('tos-audio'),
     menuAudio: document.getElementById('menu-audio'),
     achievementsAudio: document.getElementById('achievements-audio'),
@@ -104,7 +104,6 @@ function unlockAchievement(key, showPopup = true) {
     saveProgress();
 }
 
-// --- NEW: Reset Progress Function ---
 function resetProgress() {
     localStorage.removeItem('askCatProgress');
     interactionCount = 0;
@@ -150,7 +149,6 @@ function initEventListeners() {
     elements.announcementGif.addEventListener('click', () => { elements.announcementModal.style.display = 'flex'; });
     elements.modalCloseButton.addEventListener('click', () => { elements.announcementModal.style.display = 'none'; });
 
-    // NEW: Delete Progress Listener
     elements.deleteProgressButton.addEventListener('click', (e) => {
         e.preventDefault();
         if (confirm('Are you sure you want to delete all your progress? This cannot be undone.')) {
