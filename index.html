@@ -7,12 +7,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Pathway+Gothic+One&display=swap" rel="stylesheet">
-    <!-- Link to the new stylesheet -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- ALL HTML STRUCTURE REMAINS EXACTLY THE SAME -->
-
     <div id="loading-screen" class="screen">
         <h1 class="loading-title">Ask Cat</h1>
         <a href="#" id="start-button" class="menu-button">Start</a>
@@ -34,16 +31,16 @@
                 <a href="#" id="community-button" class="menu-button">Community</a>
             </div>
         </nav>
-        <img id="menu-cat-gif" src="61efd4cf-f8ef-4bcb-b8eb-c23a18cf332e-ezgif.com-crop.gif" alt="A cute cat">
-        <img id="announcement-gif" src="giphy.gif" alt="Announcements">
+        <img id="menu-cat-gif" data-src="61efd4cf-f8ef-4bcb-b8eb-c23a18cf332e-ezgif.com-crop.gif" alt="A cute cat">
+        <img id="announcement-gif" data-src="giphy.gif" alt="Announcements">
     </div>
     
     <div id="game-screen" class="screen">
         <a href="#" id="game-back-button">BACK</a>
         <div class="cat-container">
-            <img id="cat-image" class="cat-gif" src="ezgif-300a09fbddc6f2.gif" alt="A friendly cat">
+            <img id="cat-image" class="cat-gif" data-src="ezgif-300a09fbddc6f2.gif" alt="A friendly cat">
             <div id="ai-bubble"> <div id="ai-response-text">Ask me something...</div> </div>
-            <img id="gif-bubble" src="ezgif.com-cut.gif" alt="cat says hello">
+            <img id="gif-bubble" data-src="ezgif.com-cut.gif" alt="cat says hello">
         </div>
         <div id="user-input-container">
             <form id="prompt-form">
@@ -63,25 +60,21 @@
                 <div class="category-header"> <h3 class="category-title">Common</h3> <span class="category-toggle">[-]</span> </div>
                 <div class="category-content">
                     <div id="ach-first-words" class="achievement-card locked">
-                        <div class="achievement-icon"> <span class="icon-text">???</span> <img class="icon-image" src="image-removebg-preview (1).png" alt="Icon"> </div>
+                        <div class="achievement-icon"> <span class="icon-text">???</span> <img class="icon-image" data-src="image-removebg-preview (1).png" alt="Icon"> </div>
                         <div class="achievement-details"> <h3 id="ach-first-words-title">???</h3> <p id="ach-first-words-desc">???</p> </div>
                         <span class="achievement-status">Locked</span>
                     </div>
                     <div id="ach-100-interactions" class="achievement-card locked">
-                        <div class="achievement-icon"> <span class="icon-text">???</span> <img class="icon-image" src="image-ezgif.com-crop.png" alt="Icon"> </div>
+                        <div class="achievement-icon"> <span class="icon-text">???</span> <img class="icon-image" data-src="image-ezgif.com-crop.png" alt="Icon"> </div>
                         <div class="achievement-details"> <h3 id="ach-100-interactions-title">???</h3> <p id="ach-100-interactions-desc">???</p> </div>
                         <span class="achievement-status">Locked</span>
                     </div>
                     <div id="ach-petpet" class="achievement-card locked">
-                        <div class="achievement-icon"> <span class="icon-text">???</span> <img class="icon-image" src="petpet.png" alt="Icon"> </div>
+                        <div class="achievement-icon"> <span class="icon-text">???</span> <img class="icon-image" data-src="petpet.png" alt="Icon"> </div>
                         <div class="achievement-details"> <h3 id="ach-petpet-title">???</h3> <p id="ach-petpet-desc">???</p> </div>
                         <span class="achievement-status">Locked</span>
                     </div>
                 </div>
-            </div>
-            <div class="category-container">
-                <div class="category-header"> <h3 class="category-title">Uncommon</h3> <span class="category-toggle">[+]</span> </div>
-                <div class="category-content collapsed"> <p class="placeholder">More achievements coming soon...</p> </div>
             </div>
         </div>
         <div class="scrollbar"><div class="scrollbar-thumb"></div></div>
@@ -121,7 +114,6 @@
     <audio id="achievements-audio" loop><source src="https://dn721605.ca.archive.org/0/items/undertaleost_202004/Undertale%20-%20Lossless%20Soundtrack%20%28toby%20fox%29/toby%20fox%20-%20UNDERTALE%20Soundtrack%20-%2020%20Mysterious%20Place.flac" type="audio/flac"></audio>
     <audio id="credits-audio" loop><source src="https://dn721605.ca.archive.org/0/items/undertaleost_202004/Undertale%20-%20Lossless%20Soundtrack%20%28toby%20fox%29/toby%20fox%20-%20UNDERTALE%20Soundtrack%20-%2005%20Ruins.flac" type="audio/flac"></audio>
 
-    <!-- Link to the new JavaScript file -->
     <script src="script.js" defer></script>
 </body>
 </html>
