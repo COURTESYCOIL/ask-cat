@@ -1,48 +1,37 @@
 // --- 1. GET ALL ELEMENTS ---
 const elements = {
-    loadingScreen: document.getElementById('loading-screen'),
-    startButton: document.getElementById('start-button'),
-    tosScreen: document.getElementById('tos-screen'),
-    acceptButton: document.getElementById('accept-button'),
-    startScreen: document.getElementById('start-screen'),
-    playButton: document.getElementById('play-button'),
-    gameScreen: document.getElementById('game-screen'),
-    catImage: document.getElementById('cat-image'),
-    achievementsButton: document.getElementById('achievements-button'),
-    aiBubble: document.getElementById('ai-bubble'),
-    aiResponseText: document.getElementById('ai-response-text'),
-    promptForm: document.getElementById('prompt-form'),
-    promptInput: document.getElementById('prompt-input'),
-    promptSubmit: document.getElementById('prompt-submit'),
-    gameBackButton: document.getElementById('game-back-button'),
-    achievementsScreen: document.getElementById('achievements-screen'),
-    achievementsBackButton: document.getElementById('achievements-back-button'),
-    achievementPopup: document.getElementById('achievement-popup'),
-    gifBubble: document.getElementById('gif-bubble'),
-    creditsButton: document.getElementById('credits-button'),
-    creditsScreen: document.getElementById('credits-screen'),
-    announcementGif: document.getElementById('announcement-gif'),
-    announcementModal: document.getElementById('announcement-modal'),
-    modalCloseButton: document.querySelector('.modal-close'),
-    communityButton: document.getElementById('community-button'),
-    communityScreen: document.getElementById('community-screen'),
-    communityBackButton: document.getElementById('community-back-button'),
-    deleteProgressButton: document.getElementById('delete-progress-button'),
-    tosAudio: document.getElementById('tos-audio'),
-    menuAudio: document.getElementById('menu-audio'),
-    achievementsAudio: document.getElementById('achievements-audio'),
-    creditsAudio: document.getElementById('credits-audio'),
+    loadingScreen: document.getElementById('loading-screen'), startButton: document.getElementById('start-button'),
+    tosScreen: document.getElementById('tos-screen'), acceptButton: document.getElementById('accept-button'),
+    startScreen: document.getElementById('start-screen'), playButton: document.getElementById('play-button'),
+    gameScreen: document.getElementById('game-screen'), catImage: document.getElementById('cat-image'),
+    achievementsButton: document.getElementById('achievements-button'), aiBubble: document.getElementById('ai-bubble'),
+    aiResponseText: document.getElementById('ai-response-text'), promptForm: document.getElementById('prompt-form'),
+    promptInput: document.getElementById('prompt-input'), promptSubmit: document.getElementById('prompt-submit'),
+    gameBackButton: document.getElementById('game-back-button'), achievementsScreen: document.getElementById('achievements-screen'),
+    achievementsBackButton: document.getElementById('achievements-back-button'), achievementPopup: document.getElementById('achievement-popup'),
+    gifBubble: document.getElementById('gif-bubble'), creditsButton: document.getElementById('credits-button'),
+    creditsScreen: document.getElementById('credits-screen'), announcementGif: document.getElementById('announcement-gif'),
+    announcementModal: document.getElementById('announcement-modal'), modalCloseButton: document.querySelector('.modal-close'),
+    communityButton: document.getElementById('community-button'), communityScreen: document.getElementById('community-screen'),
+    communityBackButton: document.getElementById('community-back-button'), deleteProgressButton: document.getElementById('delete-progress-button'),
+    tosAudio: document.getElementById('tos-audio'), menuAudio: document.getElementById('menu-audio'),
+    achievementsAudio: document.getElementById('achievements-audio'), creditsAudio: document.getElementById('credits-audio'),
+    jumpscareScreen: document.getElementById('jumpscare-screen'), runningCat: document.getElementById('running-cat'),
+    jumpscareExplosion: document.getElementById('jumpscare-explosion'), blackOverlay: document.getElementById('black-overlay'),
+    squeakAudio: document.getElementById('squeak-audio'), watchoutAudio: document.getElementById('watchout-audio'),
+    explosionAudio: document.getElementById('explosion-audio'), boomAudio: document.getElementById('boom-audio'),
 };
 
-const allScreens = [elements.loadingScreen, elements.tosScreen, elements.startScreen, elements.gameScreen, elements.achievementsScreen, elements.creditsScreen, elements.communityScreen];
-const allAudio = [elements.tosAudio, elements.menuAudio, elements.achievementsAudio, elements.creditsAudio];
+const allScreens = [elements.loadingScreen, elements.tosScreen, elements.startScreen, elements.gameScreen, elements.achievementsScreen, elements.creditsScreen, elements.communityScreen, elements.jumpscareScreen];
+const allAudio = [elements.tosAudio, elements.menuAudio, elements.achievementsAudio, elements.creditsAudio, elements.squeakAudio, elements.watchoutAudio, elements.explosionAudio, elements.boomAudio];
 
 // --- 2. STATE AND DATA ---
 let interactionCount = 0;
 let achievements = {
     firstWords: { unlocked: false, card: document.getElementById('ach-first-words'), title: document.getElementById('ach-first-words-title'), desc: document.getElementById('ach-first-words-desc'), status: document.querySelector('#ach-first-words .achievement-status') },
     interactions100: { unlocked: false, card: document.getElementById('ach-100-interactions'), title: document.getElementById('ach-100-interactions-title'), desc: document.getElementById('ach-100-interactions-desc'), status: document.querySelector('#ach-100-interactions .achievement-status') },
-    petpet: { unlocked: false, card: document.getElementById('ach-petpet'), title: document.getElementById('ach-petpet-title'), desc: document.getElementById('ach-petpet-desc'), status: document.querySelector('#ach-petpet .achievement-status') }
+    petpet: { unlocked: false, card: document.getElementById('ach-petpet'), title: document.getElementById('ach-petpet-title'), desc: document.getElementById('ach-petpet-desc'), status: document.querySelector('#ach-petpet .achievement-status') },
+    jumpscare: { unlocked: false, card: document.getElementById('ach-jumpscare'), title: document.getElementById('ach-jumpscare-title'), desc: document.getElementById('ach-jumpscare-desc'), status: document.querySelector('#ach-jumpscare .achievement-status') }
 };
 
 const catResponses = { "hello": "Mrow!? 👋", "hi": "Mrow!? 👋", "hey": "Prrr?", "morning": "*stretches* Mrrrrow... ☀️", "night": "*curls up* Zzzz... 🌙", "sup": "Napping. What's up with you? 😴", "food": "Meow! 🐟", "treats": "Prrrr! 😻", "play": "*pounces* 😼", "cute": "*purrs softly* 🥰", "love": "*rubs against you* ❤️", "cat": "Meow. 🐾", "hungry": "The bowl is HALF empty! A tragedy! 😿", "sleepy": "Time for a cat nap... 😴", "pet": "*happy purring noises* 🥰", "good kitty": "Hehe, I know! 😇", "bad kitty": "Wasn't me. It was the dog. 😇", "pspsps": "*ear twitches*... You called? 😼", "purr": "*purrrrrrrrrrrrrrrrrrr* ❤️", "how are you": "Feelin' purrfect! ✨", "what are you doing": "Cat things. You wouldn't understand. 😼", "name": "I'm just a cat! 🐈", "who are you": "Your supreme overlord. 👑", "where are you": "In my secret hiding spot. 🤫", "why": "Because I'm a cat. That's why. 🤷", "what's new": "I took a nap. Then another one. 😴", "are you real": "As real as the next meal you're getting me. 🤨", "sad": "Come here, I'll purr for you. ❤️", "happy": "*tail wags happily* Mrow! 😄", "angry": "Hiss! 😠", "scared": "*hides under the sofa* 🫣", "bored": "Entertain me, human. 🧐", "lonely": "Then you should pet me more. 🙏", "ball": "Ball! *pounces*", "yarn": "Ooh, string! 🧶", "laser": "*eyes widen* The red dot! ✨", "mouse": "Squeak! *pounces*", "toy": "Is it for pouncing on? 😼", "catnip": "Whoa... the colors... 😵‍💫", "sunbeam": "Must... lie... in... sun... ☀️", "window": "*chitters at the birds* 🐦", "door": "Let me out. No, let me in. No, out. 🤔", "outside": "I see birds out there! Let me out! 🐦", "rain": "I do not approve of wet. 🌧️", "bed": "You mean *my* bed? 🛏️", "beautiful": "I know, thank you. 💅", "fluffy": "The fluffiest! ☁️", "smart": "Of course I am. I'm a cat. 🧠", "silly": "I know you are, but what am I? 😜", "lazy": "It's called conserving energy. 🔋", "come here": "Make me. 😼", "speak": "I am! You just don't listen. 🗣️", "jump": "*boing* ✨", "run": "*zoomies activated* 💨", "lol": "Hehe! 😹", "wow": "I know, I'm amazing. ✨", "sorry": "You should be. Now where are the treats? 🤨", "friend": "You are my favorite human. For now. 🥰", "computer": "A warm place to sit. 💻", "phone": "Something to knock off the table. 📱", "book": "Also a warm place to sit. 📚", "music": "Does it have purring in it? 🎶", "dance": "*wiggles butt* 💃", "sing": "Meow meow meooooow! 🎤", "i'm home": "Finally! My food bowl attendant has returned. 🧐", };
@@ -60,10 +49,12 @@ function checkForPetpet(userInput) { const lowerInput = userInput.toLowerCase();
 function saveProgress() {
     const progress = {
         interactionCount: interactionCount,
+        jumpscareHasOccurred: localStorage.getItem('jumpscareHasOccurred') === 'true',
         unlockedAchievements: {
             firstWords: achievements.firstWords.unlocked,
             interactions100: achievements.interactions100.unlocked,
-            petpet: achievements.petpet.unlocked
+            petpet: achievements.petpet.unlocked,
+            jumpscare: achievements.jumpscare.unlocked,
         }
     };
     localStorage.setItem('askCatProgress', JSON.stringify(progress));
@@ -74,9 +65,11 @@ function loadProgress() {
     if (savedProgress) {
         const progress = JSON.parse(savedProgress);
         interactionCount = progress.interactionCount || 0;
+        if (progress.jumpscareHasOccurred) { localStorage.setItem('jumpscareHasOccurred', 'true'); }
         if (progress.unlockedAchievements.firstWords) unlockAchievement('firstWords', false);
         if (progress.unlockedAchievements.interactions100) unlockAchievement('interactions100', false);
         if (progress.unlockedAchievements.petpet) unlockAchievement('petpet', false);
+        if (progress.unlockedAchievements.jumpscare) unlockAchievement('jumpscare', false);
     }
 }
 
@@ -89,8 +82,8 @@ function unlockAchievement(key, showPopup = true) {
     ach.card.classList.add('unlocked');
     ach.status.textContent = 'Unlocked';
 
-    const titles = { firstWords: 'First Words', interactions100: '100 Interactions!', petpet: 'Petpet!' };
-    const descs = { firstWords: 'Begin your journey by asking the cat your first question.', interactions100: 'Reached 100 interactions with the cat.', petpet: "Who's a good kitty?" };
+    const titles = { firstWords: 'First Words', interactions100: '100 Interactions!', petpet: 'Petpet!', jumpscare: 'Cat Jumpscare' };
+    const descs = { firstWords: 'Begin your journey by asking the cat your first question.', interactions100: 'Reached 100 interactions with the cat.', petpet: "Who's a good kitty?", jumpscare: "You survived the surprise!" };
 
     ach.title.textContent = titles[key];
     ach.desc.textContent = descs[key];
@@ -106,6 +99,7 @@ function unlockAchievement(key, showPopup = true) {
 
 function resetProgress() {
     localStorage.removeItem('askCatProgress');
+    localStorage.removeItem('jumpscareHasOccurred');
     interactionCount = 0;
     
     for (const key in achievements) {
@@ -121,12 +115,65 @@ function resetProgress() {
     alert('Progress has been deleted.');
 }
 
+// --- Jumpscare Sequence ---
+function startJumpscare() {
+    stopAllAudio();
+    showScreen(elements.jumpscareScreen);
+    localStorage.setItem('jumpscareHasOccurred', 'true');
+    
+    elements.runningCat.src = 'ezgif.com-animated-gif-maker-(2).gif';
+    elements.squeakAudio.play();
+    elements.watchoutAudio.play();
+
+    setTimeout(climaxJumpscare, 3800);
+}
+
+function climaxJumpscare() {
+    elements.squeakAudio.pause();
+    elements.watchoutAudio.pause();
+    elements.jumpscareExplosion.style.display = 'block';
+    elements.jumpscareExplosion.src = 'giphy (1).gif';
+    elements.explosionAudio.play();
+
+    setTimeout(endJumpscare, 1500);
+}
+
+function endJumpscare() {
+    elements.jumpscareExplosion.style.display = 'none';
+    elements.blackOverlay.style.display = 'block';
+    showScreen(elements.startScreen);
+    playAudio(elements.menuAudio);
+
+    setTimeout(() => {
+        elements.blackOverlay.style.animation = 'fade-out 1s ease-out forwards';
+        setTimeout(() => {
+            elements.blackOverlay.style.display = 'none';
+            elements.blackOverlay.style.animation = ''; // Reset for next time if needed
+            unlockAchievement('jumpscare');
+            elements.boomAudio.play();
+        }, 1000);
+    }, 500);
+}
+
 
 // --- 4. EVENT LISTENERS ---
 function initEventListeners() {
     elements.startButton.addEventListener('click', (e) => { e.preventDefault(); showScreen(elements.tosScreen); playAudio(elements.tosAudio); });
     elements.acceptButton.addEventListener('click', (e) => { e.preventDefault(); showScreen(elements.startScreen); playAudio(elements.menuAudio); });
-    elements.playButton.addEventListener('click', (e) => { e.preventDefault(); showScreen(elements.gameScreen); stopAllAudio(); });
+    
+    elements.playButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        const hasHappened = localStorage.getItem('jumpscareHasOccurred') === 'true';
+        const chance = Math.floor(Math.random() * 10); // 0-9, so 1 in 10 chance if we check for 0
+        
+        if (!hasHappened && chance === 0) {
+            startJumpscare();
+        } else {
+            showScreen(elements.gameScreen); 
+            stopAllAudio();
+        }
+    });
+
     elements.creditsButton.addEventListener('click', (e) => { e.preventDefault(); showScreen(elements.creditsScreen); playAudio(elements.creditsAudio); });
     elements.creditsScreen.addEventListener('click', () => { showScreen(elements.startScreen); playAudio(elements.menuAudio); });
     elements.communityButton.addEventListener('click', (e) => { e.preventDefault(); showScreen(elements.communityScreen); stopAllAudio(); });
