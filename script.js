@@ -27,6 +27,7 @@ const allAudio = [elements.tosAudio, elements.menuAudio, elements.achievementsAu
 
 // --- 2. STATE AND DATA ---
 let interactionCount = 0;
+let isNewPlayer = true; // --- NEW: Assume player is new until progress is found ---
 let achievements = {
     firstWords: { unlocked: false, card: document.getElementById('ach-first-words'), title: document.getElementById('ach-first-words-title'), desc: document.getElementById('ach-first-words-desc'), status: document.querySelector('#ach-first-words .achievement-status') },
     interactions100: { unlocked: false, card: document.getElementById('ach-100-interactions'), title: document.getElementById('ach-100-interactions-title'), desc: document.getElementById('ach-100-interactions-desc'), status: document.querySelector('#ach-100-interactions .achievement-status') },
@@ -64,6 +65,7 @@ function saveProgress() {
 function loadProgress() {
     const savedProgress = localStorage.getItem('askCatProgress');
     if (savedProgress) {
+        isNewPlayer = false; // --- NEW: If progress exists, they are not a new player ---
         const progress = JSON.parse(savedProgress);
         interactionCount = progress.interactionCount || 0;
         if (progress.jumpscareHasOccurred) { localStorage.setItem('jumpscareHasOccurred', 'true'); }
@@ -101,7 +103,6 @@ function unlockAchievement(key, showPopup = true) {
 function resetProgress() {
     localStorage.removeItem('askCatProgress');
     localStorage.removeItem('jumpscareHasOccurred');
-    localStorage.removeItem('askCatLoadCount'); // --- NEW: Reset load count ---
     interactionCount = 0;
     
     for (const key in achievements) {
@@ -114,6 +115,7 @@ function resetProgress() {
         ach.desc.textContent = '???';
     }
     
+    isNewPlayer = true; // --- NEW: After reset, they are treated as a new player again ---
     alert('Progress has been deleted.');
 }
 
@@ -157,27 +159,18 @@ function endJumpscare() {
     }, 1000);
 }
 
-// --- NEW: Function to track game loads ---
-function trackGameLoads() {
-    let count = parseInt(localStorage.getItem('askCatLoadCount') || '0', 10);
-    count++;
-    localStorage.setItem('askCatLoadCount', count);
-}
-
-
 // --- 4. EVENT LISTENERS ---
 function initEventListeners() {
     elements.startButton.addEventListener('click', (e) => { e.preventDefault(); showScreen(elements.tosScreen); playAudio(elements.tosAudio); });
     elements.acceptButton.addEventListener('click', (e) => { e.preventDefault(); showScreen(elements.startScreen); playAudio(elements.menuAudio); });
     
-    // UPDATED: Play button now checks load count
+    // UPDATED: Play button now checks isNewPlayer flag
     elements.playButton.addEventListener('click', (e) => {
         e.preventDefault();
         const hasHappened = localStorage.getItem('jumpscareHasOccurred') === 'true';
-        const loadCount = parseInt(localStorage.getItem('askCatLoadCount') || '1', 10);
         const chance = Math.floor(Math.random() * 10);
         
-        if (loadCount >= 3 && !hasHappened && chance === 0) {
+        if (!isNewPlayer && !hasHappened && chance === 0) {
             startJumpscare();
         } else {
             showScreen(elements.gameScreen); 
@@ -241,6 +234,5 @@ function initEventListeners() {
 }
 
 // --- 5. START THE APP ---
-trackGameLoads();
 loadProgress();
 initEventListeners();
