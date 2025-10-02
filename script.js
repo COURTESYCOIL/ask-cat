@@ -46,6 +46,7 @@ function getCatResponse(userInput) { const lowerInput = userInput.toLowerCase();
 function typeResponse(text) { let i = 0; elements.aiResponseText.innerHTML = ''; const typingInterval = setInterval(() => { if (i < text.length) { elements.aiResponseText.innerHTML += text.charAt(i); i++; } else { clearInterval(typingInterval); elements.promptInput.disabled = false; elements.promptSubmit.disabled = false; elements.promptInput.focus(); } }, 50); }
 function checkForPetpet(userInput) { const lowerInput = userInput.toLowerCase(); const petpetTriggers = ["petpet", "pet the cat", "good kitty", "good boy", "good girl", "head pats", "who's a good kitty"]; return petpetTriggers.some(trigger => lowerInput.includes(trigger)); }
 
+// --- Achievement & Progress Logic ---
 function saveProgress() {
     const progress = {
         interactionCount: interactionCount,
@@ -99,7 +100,8 @@ function unlockAchievement(key, showPopup = true) {
 
 function resetProgress() {
     localStorage.removeItem('askCatProgress');
-    localStorage.removeItem('jumpscareHasOccurred'); // --- FIX #1: Reset the jumpscare flag ---
+    localStorage.removeItem('jumpscareHasOccurred');
+    localStorage.removeItem('askCatLoadCount'); // --- NEW: Reset load count ---
     interactionCount = 0;
     
     for (const key in achievements) {
@@ -115,12 +117,12 @@ function resetProgress() {
     alert('Progress has been deleted.');
 }
 
-// Jumpscare Sequence
+// --- Jumpscare Sequence ---
 function startJumpscare() {
     stopAllAudio();
     showScreen(elements.jumpscareScreen);
     localStorage.setItem('jumpscareHasOccurred', 'true');
-    saveProgress(); // Save the fact that it has now occurred
+    saveProgress();
     
     elements.runningCat.src = 'ezgif.com-animated-gif-maker-(2).gif';
     elements.squeakAudio.play();
@@ -145,7 +147,6 @@ function endJumpscare() {
     showScreen(elements.startScreen);
     playAudio(elements.menuAudio);
 
-    // --- FIX #2: Popup and sound now happen as the fade begins ---
     elements.blackOverlay.style.animation = 'fade-out 1s ease-out forwards';
     unlockAchievement('jumpscare');
     elements.boomAudio.play();
@@ -156,18 +157,27 @@ function endJumpscare() {
     }, 1000);
 }
 
+// --- NEW: Function to track game loads ---
+function trackGameLoads() {
+    let count = parseInt(localStorage.getItem('askCatLoadCount') || '0', 10);
+    count++;
+    localStorage.setItem('askCatLoadCount', count);
+}
+
 
 // --- 4. EVENT LISTENERS ---
 function initEventListeners() {
     elements.startButton.addEventListener('click', (e) => { e.preventDefault(); showScreen(elements.tosScreen); playAudio(elements.tosAudio); });
     elements.acceptButton.addEventListener('click', (e) => { e.preventDefault(); showScreen(elements.startScreen); playAudio(elements.menuAudio); });
     
+    // UPDATED: Play button now checks load count
     elements.playButton.addEventListener('click', (e) => {
         e.preventDefault();
         const hasHappened = localStorage.getItem('jumpscareHasOccurred') === 'true';
+        const loadCount = parseInt(localStorage.getItem('askCatLoadCount') || '1', 10);
         const chance = Math.floor(Math.random() * 10);
         
-        if (!hasHappened && chance === 0) {
+        if (loadCount >= 3 && !hasHappened && chance === 0) {
             startJumpscare();
         } else {
             showScreen(elements.gameScreen); 
@@ -231,5 +241,6 @@ function initEventListeners() {
 }
 
 // --- 5. START THE APP ---
+trackGameLoads();
 loadProgress();
 initEventListeners();
