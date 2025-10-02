@@ -28,7 +28,10 @@
             </div>
             <div class="menu-row">
                 <a href="#" id="credits-button" class="menu-button">Credits</a>
-                <a href="#" id="community-button" class="menu-button">Community</a>
+                <a href="#" id="community-button" class="menu-button">
+                    <img src="discord-logo-discord-logo-transparent-discord-icon-transparent-free-free-png.webp" alt="Discord">
+                    Community
+                </a>
             </div>
         </nav>
         <img id="menu-cat-gif" data-src="61efd4cf-f8ef-4bcb-b8eb-c23a18cf332e-ezgif.com-crop.gif" alt="A cute cat">
@@ -79,6 +82,25 @@
             </div>
             <div class="category-container">
                 <div class="category-header"> <h3 class="category-title">Uncommon</h3> <span class="category-toggle">[+]</span> </div>
+                <div class="category-content collapsed">
+                    <!-- MOVED: Jumpscare achievement is now here -->
+                    <div id="ach-jumpscare" class="achievement-card locked">
+                        <div class="achievement-icon"> <span class="icon-text">???</span> <img class="icon-image" data-src="Cat-Jumpscare.png" alt="Icon"> </div>
+                        <div class="achievement-details"> <h3 id="ach-jumpscare-title">???</h3> <p id="ach-jumpscare-desc">???</p> </div>
+                        <span class="achievement-status">Locked</span>
+                    </div>
+                </div>
+            </div>
+            <div class="category-container">
+                <div class="category-header"> <h3 class="category-title">Rare</h3> <span class="category-toggle">[+]</span> </div>
+                <div class="category-content collapsed"> <p class="placeholder">More achievements coming soon...</p> </div>
+            </div>
+            <div class="category-container">
+                <div class="category-header"> <h3 class="category-title">Epic</h3> <span class="category-toggle">[+]</span> </div>
+                <div class="category-content collapsed"> <p class="placeholder">More achievements coming soon...</p> </div>
+            </div>
+            <div class="category-container">
+                <div class="category-header"> <h3 class="category-title">Legendary</h3> <span class="category-toggle">[+]</span> </div>
                 <div class="category-content collapsed"> <p class="placeholder">More achievements coming soon...</p> </div>
             </div>
         </div>
@@ -114,11 +136,22 @@
         </div>
     </div>
 
+    <div id="jumpscare-screen" class="screen">
+        <img id="running-cat" src="#" alt="">
+        <img id="jumpscare-explosion" src="#" alt="">
+    </div>
+    <div id="black-overlay"></div>
+
     <audio id="tos-audio" loop><source src="https://dn721605.ca.archive.org/0/items/undertaleost_202004/Undertale%20-%20Lossless%20Soundtrack%20%28toby%20fox%29/toby%20fox%20-%20UNDERTALE%20Soundtrack%20-%2002%20Start%20Menu.flac" type="audio/flac"></audio>
     <audio id="menu-audio" loop> <source src="https://dn721605.ca.archive.org/0/items/undertaleost_202004/Undertale%20-%20Lossless%20Soundtrack%20%28toby%20fox%29/toby%20fox%20-%20UNDERTALE%20Soundtrack%20-%2093%20Menu%20%28Full%29.flac" type="audio/flac"> </audio>
     <audio id="achievements-audio" loop><source src="https://dn721605.ca.archive.org/0/items/undertaleost_202004/Undertale%20-%20Lossless%20Soundtrack%20%28toby%20fox%29/toby%20fox%20-%20UNDERTALE%20Soundtrack%20-%2020%20Mysterious%20Place.flac" type="audio/flac"></audio>
     <audio id="credits-audio" loop><source src="https://dn721605.ca.archive.org/0/items/undertaleost_202004/Undertale%20-%20Lossless%20Soundtrack%20%28toby%20fox%29/toby%20fox%20-%20UNDERTALE%20Soundtrack%20-%2005%20Ruins.flac" type="audio/flac"></audio>
-
+    
+    <audio id="squeak-audio"><source src="squeaky-running-feet.mp3" type="audio/mpeg"></audio>
+    <audio id="watchout-audio"><source src="watchout.mp3" type="audio/mpeg"></audio>
+    <audio id="explosion-audio"><source src="explosion-meme_dTCfAHs (1).mp3" type="audio/mpeg"></audio>
+    <audio id="boom-audio"><source src="vine-boom-sound-meme.mp3" type="audio/mpeg"></audio>
+    
     <script src="script.js" defer></script>
 </body>
 </html>
