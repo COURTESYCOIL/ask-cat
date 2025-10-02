@@ -99,7 +99,7 @@ function unlockAchievement(key, showPopup = true) {
 
 function resetProgress() {
     localStorage.removeItem('askCatProgress');
-    localStorage.removeItem('jumpscareHasOccurred');
+    localStorage.removeItem('jumpscareHasOccurred'); // --- FIX #1: Reset the jumpscare flag ---
     interactionCount = 0;
     
     for (const key in achievements) {
@@ -115,11 +115,12 @@ function resetProgress() {
     alert('Progress has been deleted.');
 }
 
-// --- Jumpscare Sequence ---
+// Jumpscare Sequence
 function startJumpscare() {
     stopAllAudio();
     showScreen(elements.jumpscareScreen);
     localStorage.setItem('jumpscareHasOccurred', 'true');
+    saveProgress(); // Save the fact that it has now occurred
     
     elements.runningCat.src = 'ezgif.com-animated-gif-maker-(2).gif';
     elements.squeakAudio.play();
@@ -144,15 +145,15 @@ function endJumpscare() {
     showScreen(elements.startScreen);
     playAudio(elements.menuAudio);
 
+    // --- FIX #2: Popup and sound now happen as the fade begins ---
+    elements.blackOverlay.style.animation = 'fade-out 1s ease-out forwards';
+    unlockAchievement('jumpscare');
+    elements.boomAudio.play();
+
     setTimeout(() => {
-        elements.blackOverlay.style.animation = 'fade-out 1s ease-out forwards';
-        setTimeout(() => {
-            elements.blackOverlay.style.display = 'none';
-            elements.blackOverlay.style.animation = ''; // Reset for next time if needed
-            unlockAchievement('jumpscare');
-            elements.boomAudio.play();
-        }, 1000);
-    }, 500);
+        elements.blackOverlay.style.display = 'none';
+        elements.blackOverlay.style.animation = '';
+    }, 1000);
 }
 
 
@@ -164,7 +165,7 @@ function initEventListeners() {
     elements.playButton.addEventListener('click', (e) => {
         e.preventDefault();
         const hasHappened = localStorage.getItem('jumpscareHasOccurred') === 'true';
-        const chance = Math.floor(Math.random() * 10); // 0-9, so 1 in 10 chance if we check for 0
+        const chance = Math.floor(Math.random() * 10);
         
         if (!hasHappened && chance === 0) {
             startJumpscare();
