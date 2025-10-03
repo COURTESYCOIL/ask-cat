@@ -47,20 +47,6 @@ function getCatResponse(userInput) { const lowerInput = userInput.toLowerCase();
 function typeResponse(text) { let i = 0; elements.aiResponseText.innerHTML = ''; const typingInterval = setInterval(() => { if (i < text.length) { elements.aiResponseText.innerHTML += text.charAt(i); i++; } else { clearInterval(typingInterval); elements.promptInput.disabled = false; elements.promptSubmit.disabled = false; elements.promptInput.focus(); } }, 50); }
 function checkForPetpet(userInput) { const lowerInput = userInput.toLowerCase(); const petpetTriggers = ["petpet", "pet the cat", "good kitty", "good boy", "good girl", "head pats", "who's a good kitty"]; return petpetTriggers.some(trigger => lowerInput.includes(trigger)); }
 
-// NEW: URL Management Functions
-function setNewUrl() {
-    if (window.location.pathname !== '/new-game') {
-        history.pushState({}, 'New Game', '/new-game');
-    }
-}
-
-function clearUrl() {
-    if (window.location.pathname === '/new-game') {
-        history.pushState({}, 'Ask Cat', '/');
-    }
-}
-
-// Achievement & Progress Logic
 function saveProgress() {
     const progress = {
         interactionCount: interactionCount,
@@ -81,9 +67,6 @@ function loadProgress() {
         if (progress.unlockedAchievements.interactions100) unlockAchievement('interactions100', false);
         if (progress.unlockedAchievements.petpet) unlockAchievement('petpet', false);
         if (progress.unlockedAchievements.jumpscare) unlockAchievement('jumpscare', false);
-    } else {
-        isNewPlayer = true;
-        setNewUrl();
     }
 }
 
@@ -126,8 +109,6 @@ function resetProgress() {
         ach.desc.textContent = '???';
     }
     
-    isNewPlayer = true;
-    setNewUrl(); // Set URL to /new-game after deleting
     alert('Progress has been deleted.');
 }
 
@@ -169,19 +150,15 @@ function endJumpscare() {
 // --- 4. EVENT LISTENERS ---
 function initEventListeners() {
     elements.startButton.addEventListener('click', (e) => { e.preventDefault(); showScreen(elements.tosScreen); playAudio(elements.tosAudio); });
-    elements.acceptButton.addEventListener('click', (e) => { 
-        e.preventDefault(); 
-        clearUrl(); // Player is no longer "new", clear the URL
-        showScreen(elements.startScreen); 
-        playAudio(elements.menuAudio); 
-    });
+    elements.acceptButton.addEventListener('click', (e) => { e.preventDefault(); showScreen(elements.startScreen); playAudio(elements.menuAudio); });
     
     elements.playButton.addEventListener('click', (e) => {
         e.preventDefault();
         const hasHappened = localStorage.getItem('jumpscareHasOccurred') === 'true';
+        const loadCount = parseInt(localStorage.getItem('askCatLoadCount') || '1', 10);
         const chance = Math.floor(Math.random() * 10);
         
-        if (!isNewPlayer && !hasHappened && chance === 0) {
+        if (loadCount >= 3 && !hasHappened && chance === 0) {
             startJumpscare();
         } else {
             showScreen(elements.gameScreen); 
