@@ -27,7 +27,7 @@ const allAudio = [elements.tosAudio, elements.menuAudio, elements.achievementsAu
 
 // --- 2. STATE AND DATA ---
 let interactionCount = 0;
-let isNewPlayer = true; // --- NEW: Assume player is new until progress is found ---
+let isNewPlayer = true;
 let achievements = {
     firstWords: { unlocked: false, card: document.getElementById('ach-first-words'), title: document.getElementById('ach-first-words-title'), desc: document.getElementById('ach-first-words-desc'), status: document.querySelector('#ach-first-words .achievement-status') },
     interactions100: { unlocked: false, card: document.getElementById('ach-100-interactions'), title: document.getElementById('ach-100-interactions-title'), desc: document.getElementById('ach-100-interactions-desc'), status: document.querySelector('#ach-100-interactions .achievement-status') },
@@ -47,17 +47,25 @@ function getCatResponse(userInput) { const lowerInput = userInput.toLowerCase();
 function typeResponse(text) { let i = 0; elements.aiResponseText.innerHTML = ''; const typingInterval = setInterval(() => { if (i < text.length) { elements.aiResponseText.innerHTML += text.charAt(i); i++; } else { clearInterval(typingInterval); elements.promptInput.disabled = false; elements.promptSubmit.disabled = false; elements.promptInput.focus(); } }, 50); }
 function checkForPetpet(userInput) { const lowerInput = userInput.toLowerCase(); const petpetTriggers = ["petpet", "pet the cat", "good kitty", "good boy", "good girl", "head pats", "who's a good kitty"]; return petpetTriggers.some(trigger => lowerInput.includes(trigger)); }
 
-// --- Achievement & Progress Logic ---
+// NEW: URL Management Functions
+function setNewUrl() {
+    if (window.location.pathname !== '/new-game') {
+        history.pushState({}, 'New Game', '/new-game');
+    }
+}
+
+function clearUrl() {
+    if (window.location.pathname === '/new-game') {
+        history.pushState({}, 'Ask Cat', '/');
+    }
+}
+
+// Achievement & Progress Logic
 function saveProgress() {
     const progress = {
         interactionCount: interactionCount,
         jumpscareHasOccurred: localStorage.getItem('jumpscareHasOccurred') === 'true',
-        unlockedAchievements: {
-            firstWords: achievements.firstWords.unlocked,
-            interactions100: achievements.interactions100.unlocked,
-            petpet: achievements.petpet.unlocked,
-            jumpscare: achievements.jumpscare.unlocked,
-        }
+        unlockedAchievements: { firstWords: achievements.firstWords.unlocked, interactions100: achievements.interactions100.unlocked, petpet: achievements.petpet.unlocked, jumpscare: achievements.jumpscare.unlocked }
     };
     localStorage.setItem('askCatProgress', JSON.stringify(progress));
 }
@@ -65,7 +73,7 @@ function saveProgress() {
 function loadProgress() {
     const savedProgress = localStorage.getItem('askCatProgress');
     if (savedProgress) {
-        isNewPlayer = false; // --- NEW: If progress exists, they are not a new player ---
+        isNewPlayer = false;
         const progress = JSON.parse(savedProgress);
         interactionCount = progress.interactionCount || 0;
         if (progress.jumpscareHasOccurred) { localStorage.setItem('jumpscareHasOccurred', 'true'); }
@@ -73,6 +81,9 @@ function loadProgress() {
         if (progress.unlockedAchievements.interactions100) unlockAchievement('interactions100', false);
         if (progress.unlockedAchievements.petpet) unlockAchievement('petpet', false);
         if (progress.unlockedAchievements.jumpscare) unlockAchievement('jumpscare', false);
+    } else {
+        isNewPlayer = true;
+        setNewUrl();
     }
 }
 
@@ -115,21 +126,20 @@ function resetProgress() {
         ach.desc.textContent = '???';
     }
     
-    isNewPlayer = true; // --- NEW: After reset, they are treated as a new player again ---
+    isNewPlayer = true;
+    setNewUrl(); // Set URL to /new-game after deleting
     alert('Progress has been deleted.');
 }
 
-// --- Jumpscare Sequence ---
+// Jumpscare Sequence
 function startJumpscare() {
     stopAllAudio();
     showScreen(elements.jumpscareScreen);
     localStorage.setItem('jumpscareHasOccurred', 'true');
     saveProgress();
-    
     elements.runningCat.src = 'ezgif.com-animated-gif-maker-(2).gif';
     elements.squeakAudio.play();
     elements.watchoutAudio.play();
-
     setTimeout(climaxJumpscare, 3800);
 }
 
@@ -139,7 +149,6 @@ function climaxJumpscare() {
     elements.jumpscareExplosion.style.display = 'block';
     elements.jumpscareExplosion.src = 'giphy (1).gif';
     elements.explosionAudio.play();
-
     setTimeout(endJumpscare, 1500);
 }
 
@@ -148,11 +157,9 @@ function endJumpscare() {
     elements.blackOverlay.style.display = 'block';
     showScreen(elements.startScreen);
     playAudio(elements.menuAudio);
-
     elements.blackOverlay.style.animation = 'fade-out 1s ease-out forwards';
     unlockAchievement('jumpscare');
     elements.boomAudio.play();
-
     setTimeout(() => {
         elements.blackOverlay.style.display = 'none';
         elements.blackOverlay.style.animation = '';
@@ -162,9 +169,13 @@ function endJumpscare() {
 // --- 4. EVENT LISTENERS ---
 function initEventListeners() {
     elements.startButton.addEventListener('click', (e) => { e.preventDefault(); showScreen(elements.tosScreen); playAudio(elements.tosAudio); });
-    elements.acceptButton.addEventListener('click', (e) => { e.preventDefault(); showScreen(elements.startScreen); playAudio(elements.menuAudio); });
+    elements.acceptButton.addEventListener('click', (e) => { 
+        e.preventDefault(); 
+        clearUrl(); // Player is no longer "new", clear the URL
+        showScreen(elements.startScreen); 
+        playAudio(elements.menuAudio); 
+    });
     
-    // UPDATED: Play button now checks isNewPlayer flag
     elements.playButton.addEventListener('click', (e) => {
         e.preventDefault();
         const hasHappened = localStorage.getItem('jumpscareHasOccurred') === 'true';
