@@ -35,7 +35,9 @@ let achievements = {
     jumpscare: { unlocked: false, card: document.getElementById('ach-jumpscare'), title: document.getElementById('ach-jumpscare-title'), desc: document.getElementById('ach-jumpscare-desc'), status: document.querySelector('#ach-jumpscare .achievement-status') }
 };
 
-// Cat's brain is now in cat-brain.js
+// --- FIXED: Cat's brain is now back inside the main script ---
+const catResponses = { "hello": "Mrow!? 👋", "hi": "Mrow!? 👋", "hey": "Prrr?", "morning": "*stretches* Mrrrrow... ☀️", "night": "*curls up* Zzzz... 🌙", "sup": "Napping. What's up with you? 😴", "food": "Meow! 🐟", "treats": "Prrrr! 😻", "play": "*pounces* 😼", "cute": "*purrs softly* 🥰", "love": "*rubs against you* ❤️", "cat": "Meow. 🐾", "hungry": "The bowl is HALF empty! A tragedy! 😿", "sleepy": "Time for a cat nap... 😴", "pet": "*happy purring noises* 🥰", "good kitty": "Hehe, I know! 😇", "bad kitty": "Wasn't me. It was the dog. 😇", "pspsps": "*ear twitches*... You called? 😼", "purr": "*purrrrrrrrrrrrrrrrrrr* ❤️", "how are you": "Feelin' purrfect! ✨", "what are you doing": "Cat things. You wouldn't understand. 😼", "name": "I'm just a cat! 🐈", "who are you": "Your supreme overlord. 👑", "where are you": "In my secret hiding spot. 🤫", "why": "Because I'm a cat. That's why. 🤷", "what's new": "I took a nap. Then another one. 😴", "are you real": "As real as the next meal you're getting me. 🤨", "sad": "Come here, I'll purr for you. ❤️", "happy": "*tail wags happily* Mrow! 😄", "angry": "Hiss! 😠", "scared": "*hides under the sofa* 🫣", "bored": "Entertain me, human. 🧐", "lonely": "Then you should pet me more. 🙏", "ball": "Ball! *pounces*", "yarn": "Ooh, string! 🧶", "laser": "*eyes widen* The red dot! ✨", "mouse": "Squeak! *pounces*", "toy": "Is it for pouncing on? 😼", "catnip": "Whoa... the colors... 😵‍💫", "sunbeam": "Must... lie... in... sun... ☀️", "window": "*chitters at the birds* 🐦", "door": "Let me out. No, let me in. No, out. 🤔", "outside": "I see birds out there! Let me out! 🐦", "rain": "I do not approve of wet. 🌧️", "bed": "You mean *my* bed? 🛏️", "beautiful": "I know, thank you. 💅", "fluffy": "The fluffiest! ☁️", "smart": "Of course I am. I'm a cat. 🧠", "silly": "I know you are, but what am I? 😜", "lazy": "It's called conserving energy. 🔋", "come here": "Make me. 😼", "speak": "I am! You just don't listen. 🗣️", "jump": "*boing* ✨", "run": "*zoomies activated* 💨", "lol": "Hehe! 😹", "wow": "I know, I'm amazing. ✨", "sorry": "You should be. Now where are the treats? 🤨", "friend": "You are my favorite human. For now. 🥰", "computer": "A warm place to sit. 💻", "phone": "Something to knock off the table. 📱", "book": "Also a warm place to sit. 📚", "music": "Does it have purring in it? 🎶", "dance": "*wiggles butt* 💃", "sing": "Meow meow meooooow! 🎤", "i'm home": "Finally! My food bowl attendant has returned. 🧐", };
+const defaultCatResponses = ["...?", "*stares blankly* 👀", "*tilts head*", "prrrr... ❤️", "mrow? 🥺"];
 
 // --- 3. UTILITY FUNCTIONS ---
 function showScreen(screenToShow) { allScreens.forEach(screen => screen.style.display = 'none'); screenToShow.style.display = 'flex'; lazyLoadImages(screenToShow); }
@@ -46,6 +48,7 @@ function getCatResponse(userInput) { const lowerInput = userInput.toLowerCase();
 function typeResponse(text) { let i = 0; elements.aiResponseText.innerHTML = ''; const typingInterval = setInterval(() => { if (i < text.length) { elements.aiResponseText.innerHTML += text.charAt(i); i++; } else { clearInterval(typingInterval); elements.promptInput.disabled = false; elements.promptSubmit.disabled = false; elements.promptInput.focus(); } }, 50); }
 function checkForPetpet(userInput) { const lowerInput = userInput.toLowerCase(); const petpetTriggers = ["petpet", "pet the cat", "good kitty", "good boy", "good girl", "head pats", "who's a good kitty"]; return petpetTriggers.some(trigger => lowerInput.includes(trigger)); }
 
+// --- Achievement & Progress Logic ---
 function saveProgress() {
     const progress = {
         interactionCount: interactionCount,
@@ -66,9 +69,6 @@ function loadProgress() {
         if (progress.unlockedAchievements.interactions100) unlockAchievement('interactions100', false);
         if (progress.unlockedAchievements.petpet) unlockAchievement('petpet', false);
         if (progress.unlockedAchievements.jumpscare) unlockAchievement('jumpscare', false);
-    } else {
-        isNewPlayer = true;
-        setNewUrl();
     }
 }
 
@@ -111,8 +111,6 @@ function resetProgress() {
         ach.desc.textContent = '???';
     }
     
-    isNewPlayer = true;
-    setNewUrl();
     alert('Progress has been deleted.');
 }
 
@@ -151,24 +149,25 @@ function endJumpscare() {
     }, 1000);
 }
 
-function setNewUrl() { if (window.location.pathname !== '/new-game') { history.pushState({}, 'New Game', '/new-game'); } }
-function clearUrl() { if (window.location.pathname === '/new-game') { history.pushState({}, 'Ask Cat', '/'); } }
-
 // --- 4. EVENT LISTENERS ---
 function initEventListeners() {
     elements.startButton.addEventListener('click', (e) => { e.preventDefault(); showScreen(elements.tosScreen); playAudio(elements.tosAudio); });
-    elements.acceptButton.addEventListener('click', (e) => { e.preventDefault(); clearUrl(); showScreen(elements.startScreen); playAudio(elements.menuAudio); });
+    elements.acceptButton.addEventListener('click', (e) => { e.preventDefault(); showScreen(elements.startScreen); playAudio(elements.menuAudio); });
+    
     elements.playButton.addEventListener('click', (e) => {
         e.preventDefault();
         const hasHappened = localStorage.getItem('jumpscareHasOccurred') === 'true';
+        const loadCount = parseInt(localStorage.getItem('askCatLoadCount') || '1', 10);
         const chance = Math.floor(Math.random() * 10);
-        if (!isNewPlayer && !hasHappened && chance === 0) {
+        
+        if (loadCount >= 3 && !hasHappened && chance === 0) {
             startJumpscare();
         } else {
             showScreen(elements.gameScreen); 
             stopAllAudio();
         }
     });
+
     elements.creditsButton.addEventListener('click', (e) => { e.preventDefault(); showScreen(elements.creditsScreen); playAudio(elements.creditsAudio); });
     elements.creditsScreen.addEventListener('click', () => { showScreen(elements.startScreen); playAudio(elements.menuAudio); });
     elements.communityButton.addEventListener('click', (e) => { e.preventDefault(); showScreen(elements.communityScreen); stopAllAudio(); });
@@ -190,6 +189,7 @@ function initEventListeners() {
     elements.gameBackButton.addEventListener('click', (e) => { e.preventDefault(); showScreen(elements.startScreen); playAudio(elements.menuAudio); elements.aiBubble.style.display = 'none'; elements.gifBubble.style.display = 'none'; elements.aiResponseText.innerHTML = 'Ask me something...'; elements.promptInput.value = ''; });
     elements.announcementGif.addEventListener('click', () => { elements.announcementModal.style.display = 'flex'; });
     elements.modalCloseButton.addEventListener('click', () => { elements.announcementModal.style.display = 'none'; });
+
     elements.deleteProgressButton.addEventListener('click', (e) => {
         e.preventDefault();
         if (confirm('Are you sure you want to delete all your progress? This cannot be undone.')) {
