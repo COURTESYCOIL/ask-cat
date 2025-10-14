@@ -10,8 +10,6 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- ALL HTML IS THE SAME AS THE PREVIOUS VERSION -->
-
     <div id="loading-screen" class="screen">
         <h1 class="loading-title">Ask Cat</h1>
         <a href="#" id="start-button" class="menu-button">Start</a>
@@ -82,16 +80,6 @@
                     </div>
                 </div>
             </div>
-            <div class="category-container">
-                <div class="category-header"> <h3 class="category-title">Uncommon</h3> <span class="category-toggle">[+]</span> </div>
-                <div class="category-content collapsed">
-                    <div id="ach-jumpscare" class="achievement-card locked">
-                        <div class="achievement-icon"> <span class="icon-text">???</span> <img class="icon-image" data-src="Cat-Jumpscare.png" alt="Icon"> </div>
-                        <div class="achievement-details"> <h3 id="ach-jumpscare-title">???</h3> <p id="ach-jumpscare-desc">???</p> </div>
-                        <span class="achievement-status">Locked</span>
-                    </div>
-                </div>
-            </div>
         </div>
         <div class="scrollbar"><div class="scrollbar-thumb"></div></div>
     </div>
@@ -125,13 +113,22 @@
         </div>
     </div>
 
+    <div id="jumpscare-screen" class="screen">
+        <img id="running-cat" src="#" alt="">
+        <img id="jumpscare-explosion" src="#" alt="">
+    </div>
+    <div id="black-overlay"></div>
+
     <audio id="tos-audio" loop><source src="https://dn721605.ca.archive.org/0/items/undertaleost_202004/Undertale%20-%20Lossless%20Soundtrack%20%28toby%20fox%29/toby%20fox%20-%20UNDERTALE%20Soundtrack%20-%2002%20Start%20Menu.flac" type="audio/flac"></audio>
     <audio id="menu-audio" loop> <source src="https://dn721605.ca.archive.org/0/items/undertaleost_202004/Undertale%20-%20Lossless%20Soundtrack%20%28toby%20fox%29/toby%20fox%20-%20UNDERTALE%20Soundtrack%20-%2093%20Menu%20%28Full%29.flac" type="audio/flac"> </audio>
     <audio id="achievements-audio" loop><source src="https://dn721605.ca.archive.org/0/items/undertaleost_202004/Undertale%20-%20Lossless%20Soundtrack%20%28toby%20fox%29/toby%20fox%20-%20UNDERTALE%20Soundtrack%20-%2020%20Mysterious%20Place.flac" type="audio/flac"></audio>
     <audio id="credits-audio" loop><source src="https://dn721605.ca.archive.org/0/items/undertaleost_202004/Undertale%20-%20Lossless%20Soundtrack%20%28toby%20fox%29/toby%20fox%20-%20UNDERTALE%20Soundtrack%20-%2005%20Ruins.flac" type="audio/flac"></audio>
-
-    <!-- UPDATED: Added the new cat-brain.js script -->
-    <script src="cat-brain.js" defer></script>
+    <audio id="squeak-audio"><source src="squeaky-running-feet.mp3" type="audio/mpeg"></audio>
+    <audio id="watchout-audio"><source src="watchout.mp3" type="audio/mpeg"></audio>
+    <audio id="explosion-audio"><source src="explosion-meme_dTCfAHs (1).mp3" type="audio/mpeg"></audio>
+    <audio id="boom-audio"><source src="vine-boom-sound-meme.mp3" type="audio/mpeg"></audio>
+    
+    <!-- FIXED: Removed the extra script tag -->
     <script src="script.js" defer></script>
 </body>
 </html>
