@@ -91,7 +91,7 @@ body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden;
 #community-screen { display: none; background-color: var(--black); }
 #community-back-button { position: absolute; top: 20px; left: 20px; z-index: 20; color: var(--white); border: 2px solid var(--white); background: transparent; padding: 10px 20px; font-size: 1rem; text-decoration: none; cursor: pointer; }
 #community-back-button:hover { background: var(--white); color: var(--black); }
-#start-screen .menu-button img { height: 1em; margin-right: 10px; vertical-align: middle; }
+#start-screen .menu-button img { height: 1.5em; margin-right: 10px; vertical-align: middle; }
 #jumpscare-screen { display: none; position: fixed; top: 0; left: 0; z-index: 9998; background-color: #f0f0f0; }
 #running-cat { position: absolute; width: 50px; height: auto; animation: scale-up 4s linear forwards; }
 @keyframes scale-up { from { transform: scale(1); } to { transform: scale(20); } }
