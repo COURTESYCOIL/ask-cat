@@ -23,7 +23,7 @@ async function obfuscateProject() {
         const originalJs = fs.readFileSync('script.js', 'utf8');
 
         // 2. Find all unique class names in CSS
-        const classRegex = /\.([a-zA-Z0-9_-]+)/g;
+        const classRegex = /\\.([a-zA-Z0-9_-]+)/g;
         const foundClasses = new Set();
         let match;
         while ((match = classRegex.exec(originalCss)) !== null) {
@@ -49,41 +49,45 @@ async function obfuscateProject() {
 
         for (const originalName in classMap) {
             const obfuscatedName = classMap[originalName];
-            // Use word boundary `\b` to avoid replacing parts of other words
-            updatedCss = updatedCss.replace(new RegExp(`\\.${originalName}\\b`, 'g'), `.${obfuscatedName}`);
-            updatedHtml = updatedHtml.replace(new RegExp(`\\b${originalName}\\b`, 'g'), obfuscatedName);
-            updatedJs = updatedJs.replace(new RegExp(`\\b${originalName}\\b`, 'g'), obfuscatedName);
+            // Use word boundary `\\b` to avoid replacing parts of other words
+            updatedCss = updatedCss.replace(new RegExp(`\\\\.${originalName}\\\\b`, 'g'), `.${obfuscatedName}`);
+            updatedHtml = updatedHtml.replace(new RegExp(`class="${originalName}"`, 'g'), `class="${obfuscatedName}"`);
+            updatedHtml = updatedHtml.replace(new RegExp(`class="([^"]*?)${originalName}([^"]*?)"`, 'g'), (match, p1, p2) => {
+                const classes = `${p1}${originalName}${p2}`.split(' ').map(c => classMap[c] || c);
+                return `class="${classes.join(' ')}"`;
+            });
+            // For JS, handle both direct class names and selectors
+            updatedJs = updatedJs.replace(new RegExp(`'\\\\.${originalName}'`, 'g'), `'.${obfuscatedName}'`);
+            updatedJs = updatedJs.replace(new RegExp(`"\\\\.${originalName}"`, 'g'), `".${obfuscatedName}"`);
+            updatedJs = updatedJs.replace(new RegExp(`\`\\\\.${originalName}\``, 'g'), `\`.${obfuscatedName}\``);
         }
-        
-        // Also update file references in HTML
-        updatedHtml = updatedHtml.replace('style.css', 'style.obfuscated.css');
-        updatedHtml = updatedHtml.replace('script.obfuscated.js', 'script.obfuscated.js');
 
-
-        // 5. Save obfuscated CSS
-        fs.writeFileSync('style.obfuscated.css', updatedCss);
-
-        // 6. Minify HTML
+        // 5. Minify HTML
         const minifiedHtml = await minify(updatedHtml, {
             collapseWhitespace: true,
             removeComments: true,
             minifyCSS: true,
             minifyJS: true,
         });
-        fs.writeFileSync('index.obfuscated.html', minifiedHtml);
 
-        // 7. Obfuscate JavaScript
+        // 6. Obfuscate JavaScript
         const obfuscationResult = JavaScriptObfuscator.obfuscate(updatedJs, {
             compact: true,
             controlFlowFlattening: true,
+            controlFlowFlatteningThreshold: 1,
+            numbersToExpressions: true,
             simplify: true,
             stringArrayShuffle: true,
             splitStrings: true,
+            stringArrayThreshold: 1
         });
+
+        // 7. Write updated files
+        fs.writeFileSync('style.obfuscated.css', updatedCss);
+        fs.writeFileSync('index.obfuscated.html', minifiedHtml);
         fs.writeFileSync('script.obfuscated.js', obfuscationResult.getObfuscatedCode());
 
-        console.log('HTML, CSS, and Script obfuscated successfully!');
-        console.log('Please use index.obfuscated.html to see the result.');
+        console.log('Project obfuscated successfully!');
 
     } catch (error) {
         console.error('An error occurred during obfuscation:', error);
