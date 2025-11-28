@@ -120,7 +120,7 @@ function startJumpscare() {
     showScreen(elements.jumpscareScreen);
     localStorage.setItem('jumpscareHasOccurred', 'true');
     saveProgress();
-    elements.runningCat.src = 'Assets/Sprites/running_cat.gif';
+    elements.runningCat.src = 'Assets/Sprites/cat_run.gif';
     elements.squeakAudio.play();
     elements.watchoutAudio.play();
     setTimeout(climaxJumpscare, 3800);
@@ -130,7 +130,7 @@ function climaxJumpscare() {
     elements.squeakAudio.pause();
     elements.watchoutAudio.pause();
     elements.jumpscareExplosion.style.display = 'block';
-    elements.jumpscareExplosion.src = 'Assets/Sprites/jumpscare_explosion.gif';
+    elements.jumpscareExplosion.src = 'Assets/Sprites/cat_jumpscare_alt.gif';
     elements.explosionAudio.play();
     setTimeout(endJumpscare, 1500);
 }
@@ -215,7 +215,7 @@ function initEventListeners() {
         if (checkForPetpet(userPrompt) && !achievements.petpet.unlocked) {
             unlockAchievement('petpet');
             const originalSrc = elements.catImage.src;
-            elements.catImage.src = 'Assets/Sprites/cat_petpet.gif';
+            elements.catImage.src = 'Assets/Sprites/cat_dance_alt.gif';
             setTimeout(() => { elements.catImage.src = originalSrc; }, 10000);
         }
 
