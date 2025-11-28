@@ -41,8 +41,27 @@ const defaultCatResponses = ["...?", "*stares blankly* 👀", "*tilts head*", "p
 
 // --- 3. UTILITY FUNCTIONS ---
 function showScreen(screenToShow) { allScreens.forEach(screen => screen.style.display = 'none'); screenToShow.style.display = 'flex'; lazyLoadImages(screenToShow); }
-function stopAllAudio() { allAudio.forEach(audio => { audio.pause(); audio.currentTime = 0; }); }
-function playAudio(audioToPlay) { stopAllAudio(); if (audioToPlay) { audioToPlay.play().catch(console.error); } }
+function stopAllAudio(except = null) {
+    allAudio.forEach(audio => {
+        if (audio !== except) {
+            audio.pause();
+            audio.currentTime = 0;
+        }
+    });
+}
+function playAudio(audioToPlay) {
+    stopAllAudio(audioToPlay);
+    if (audioToPlay) {
+        const playPromise = audioToPlay.play();
+        if (playPromise !== undefined) {
+            playPromise.catch(error => {
+                if (error.name !== 'AbortError') {
+                    console.error('Audio playback error:', error);
+                }
+            });
+        }
+    }
+}
 function lazyLoadImages(container) { const imagesToLoad = container.querySelectorAll('img[data-src]'); imagesToLoad.forEach(img => { if (!img.src) { img.src = img.getAttribute('data-src'); } }); }
 function getCatResponse(userInput) { const lowerInput = userInput.toLowerCase(); for (const keyword in catResponses) { if (lowerInput.includes(keyword)) { return catResponses[keyword]; } } const randomIndex = Math.floor(Math.random() * defaultCatResponses.length); return defaultCatResponses[randomIndex]; }
 function typeResponse(text) { let i = 0; elements.aiResponseText.innerHTML = ''; const typingInterval = setInterval(() => { if (i < text.length) { elements.aiResponseText.innerHTML += text.charAt(i); i++; } else { clearInterval(typingInterval); elements.promptInput.disabled = false; elements.promptSubmit.disabled = false; elements.promptInput.focus(); } }, 50); }
