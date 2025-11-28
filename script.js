@@ -267,4 +267,4 @@ function initEventListeners() {
 // --- 5. START THE APP ---
 loadProgress();
 initEventListeners();
-toggleChristmasLights();
+toggleChristmasEvent();
