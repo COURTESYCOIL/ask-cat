@@ -77,9 +77,9 @@ function isHolidaySeason() {
 }
 
 // Toggle Christmas Lights
-function toggleChristmasLights() {
+function toggleChristmasEvent() {
     const lightrope = document.querySelector('.lightrope');
-    const christmasLabel = document.querySelector('.christmas-update-label');
+    const christmasLabel = document.querySelector('.christmas-event-label');
     if (isHolidaySeason() && lightrope && christmasLabel) {
         lightrope.style.display = 'block';
         christmasLabel.style.display = 'block';
