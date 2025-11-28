@@ -1,228 +1,156 @@
-// --- 1. GET ALL ELEMENTS ---
-const elements = {
-    loadingScreen: document.getElementById('loading-screen'), startButton: document.getElementById('start-button'),
-    tosScreen: document.getElementById('tos-screen'), acceptButton: document.getElementById('accept-button'),
-    startScreen: document.getElementById('start-screen'), playButton: document.getElementById('play-button'),
-    gameScreen: document.getElementById('game-screen'), catImage: document.getElementById('cat-image'),
-    achievementsButton: document.getElementById('achievements-button'), aiBubble: document.getElementById('ai-bubble'),
-    aiResponseText: document.getElementById('ai-response-text'), promptForm: document.getElementById('prompt-form'),
-    promptInput: document.getElementById('prompt-input'), promptSubmit: document.getElementById('prompt-submit'),
-    gameBackButton: document.getElementById('game-back-button'), achievementsScreen: document.getElementById('achievements-screen'),
-    achievementsBackButton: document.getElementById('achievements-back-button'), achievementPopup: document.getElementById('achievement-popup'),
-    gifBubble: document.getElementById('gif-bubble'), creditsButton: document.getElementById('credits-button'),
-    creditsScreen: document.getElementById('credits-screen'), announcementGif: document.getElementById('announcement-gif'),
-    announcementModal: document.getElementById('announcement-modal'), modalCloseButton: document.querySelector('.modal-close'),
-    communityButton: document.getElementById('community-button'), communityScreen: document.getElementById('community-screen'),
-    communityBackButton: document.getElementById('community-back-button'), deleteProgressButton: document.getElementById('delete-progress-button'),
-    tosAudio: document.getElementById('tos-audio'), menuAudio: document.getElementById('menu-audio'),
-    achievementsAudio: document.getElementById('achievements-audio'), creditsAudio: document.getElementById('credits-audio'),
-    jumpscareScreen: document.getElementById('jumpscare-screen'), runningCat: document.getElementById('running-cat'),
-    jumpscareExplosion: document.getElementById('jumpscare-explosion'), blackOverlay: document.getElementById('black-overlay'),
-    squeakAudio: document.getElementById('squeak-audio'), watchoutAudio: document.getElementById('watchout-audio'),
-    explosionAudio: document.getElementById('explosion-audio'), boomAudio: document.getElementById('boom-audio'),
-};
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ask Cat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Pathway+Gothic+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="loading-screen" class="screen">
+        <h1 class="loading-title">Ask Cat</h1>
+        <a href="#" id="start-button" class="menu-button">Start</a>
+    </div>
 
-const allScreens = [elements.loadingScreen, elements.tosScreen, elements.startScreen, elements.gameScreen, elements.achievementsScreen, elements.creditsScreen, elements.communityScreen, elements.jumpscareScreen];
-const allAudio = [elements.tosAudio, elements.menuAudio, elements.achievementsAudio, elements.creditsAudio, elements.squeakAudio, elements.watchoutAudio, elements.explosionAudio, elements.boomAudio];
+    <div id="tos-screen" class="screen">
+        <h1 class="tos-title">Ask Cat TOS</h1> <p class="tos-text">Idk what to type here :P</p> <a href="#" id="accept-button" class="menu-button">Accept</a>
+    </div>
 
-// --- 2. STATE AND DATA ---
-let interactionCount = 0;
-let isNewPlayer = true;
-let achievements = {
-    firstWords: { unlocked: false, card: document.getElementById('ach-first-words'), title: document.getElementById('ach-first-words-title'), desc: document.getElementById('ach-first-words-desc'), status: document.querySelector('#ach-first-words .achievement-status') },
-    interactions100: { unlocked: false, card: document.getElementById('ach-100-interactions'), title: document.getElementById('ach-100-interactions-title'), desc: document.getElementById('ach-100-interactions-desc'), status: document.querySelector('#ach-100-interactions .achievement-status') },
-    petpet: { unlocked: false, card: document.getElementById('ach-petpet'), title: document.getElementById('ach-petpet-title'), desc: document.getElementById('ach-petpet-desc'), status: document.querySelector('#ach-petpet .achievement-status') },
-    jumpscare: { unlocked: false, card: document.getElementById('ach-jumpscare'), title: document.getElementById('ach-jumpscare-title'), desc: document.getElementById('ach-jumpscare-desc'), status: document.querySelector('#ach-jumpscare .achievement-status') }
-};
-
-// --- FIXED: Cat's brain is now back inside the main script ---
-const catResponses = { "hello": "Mrow!? 👋", "hi": "Mrow!? 👋", "hey": "Prrr?", "morning": "*stretches* Mrrrrow... ☀️", "night": "*curls up* Zzzz... 🌙", "sup": "Napping. What's up with you? 😴", "food": "Meow! 🐟", "treats": "Prrrr! 😻", "play": "*pounces* 😼", "cute": "*purrs softly* 🥰", "love": "*rubs against you* ❤️", "cat": "Meow. 🐾", "hungry": "The bowl is HALF empty! A tragedy! 😿", "sleepy": "Time for a cat nap... 😴", "pet": "*happy purring noises* 🥰", "good kitty": "Hehe, I know! 😇", "bad kitty": "Wasn't me. It was the dog. 😇", "pspsps": "*ear twitches*... You called? 😼", "purr": "*purrrrrrrrrrrrrrrrrrr* ❤️", "how are you": "Feelin' purrfect! ✨", "what are you doing": "Cat things. You wouldn't understand. 😼", "name": "I'm just a cat! 🐈", "who are you": "Your supreme overlord. 👑", "where are you": "In my secret hiding spot. 🤫", "why": "Because I'm a cat. That's why. 🤷", "what's new": "I took a nap. Then another one. 😴", "are you real": "As real as the next meal you're getting me. 🤨", "sad": "Come here, I'll purr for you. ❤️", "happy": "*tail wags happily* Mrow! 😄", "angry": "Hiss! 😠", "scared": "*hides under the sofa* 🫣", "bored": "Entertain me, human. 🧐", "lonely": "Then you should pet me more. 🙏", "ball": "Ball! *pounces*", "yarn": "Ooh, string! 🧶", "laser": "*eyes widen* The red dot! ✨", "mouse": "Squeak! *pounces*", "toy": "Is it for pouncing on? 😼", "catnip": "Whoa... the colors... 😵‍💫", "sunbeam": "Must... lie... in... sun... ☀️", "window": "*chitters at the birds* 🐦", "door": "Let me out. No, let me in. No, out. 🤔", "outside": "I see birds out there! Let me out! 🐦", "rain": "I do not approve of wet. 🌧️", "bed": "You mean *my* bed? 🛏️", "beautiful": "I know, thank you. 💅", "fluffy": "The fluffiest! ☁️", "smart": "Of course I am. I'm a cat. 🧠", "silly": "I know you are, but what am I? 😜", "lazy": "It's called conserving energy. 🔋", "come here": "Make me. 😼", "speak": "I am! You just don't listen. 🗣️", "jump": "*boing* ✨", "run": "*zoomies activated* 💨", "lol": "Hehe! 😹", "wow": "I know, I'm amazing. ✨", "sorry": "You should be. Now where are the treats? 🤨", "friend": "You are my favorite human. For now. 🥰", "computer": "A warm place to sit. 💻", "phone": "Something to knock off the table. 📱", "book": "Also a warm place to sit. 📚", "music": "Does it have purring in it? 🎶", "dance": "*wiggles butt* 💃", "sing": "Meow meow meooooow! 🎤", "i'm home": "Finally! My food bowl attendant has returned. 🧐", };
-const defaultCatResponses = ["...?", "*stares blankly* 👀", "*tilts head*", "prrrr... ❤️", "mrow? 🥺"];
-
-// --- 3. UTILITY FUNCTIONS ---
-function showScreen(screenToShow) { allScreens.forEach(screen => screen.style.display = 'none'); screenToShow.style.display = 'flex'; lazyLoadImages(screenToShow); }
-function stopAllAudio() { allAudio.forEach(audio => { audio.pause(); audio.currentTime = 0; }); }
-function playAudio(audioToPlay) { stopAllAudio(); if (audioToPlay) { audioToPlay.play().catch(console.error); } }
-function lazyLoadImages(container) { const imagesToLoad = container.querySelectorAll('img[data-src]'); imagesToLoad.forEach(img => { if (!img.src) { img.src = img.getAttribute('data-src'); } }); }
-function getCatResponse(userInput) { const lowerInput = userInput.toLowerCase(); for (const keyword in catResponses) { if (lowerInput.includes(keyword)) { return catResponses[keyword]; } } const randomIndex = Math.floor(Math.random() * defaultCatResponses.length); return defaultCatResponses[randomIndex]; }
-function typeResponse(text) { let i = 0; elements.aiResponseText.innerHTML = ''; const typingInterval = setInterval(() => { if (i < text.length) { elements.aiResponseText.innerHTML += text.charAt(i); i++; } else { clearInterval(typingInterval); elements.promptInput.disabled = false; elements.promptSubmit.disabled = false; elements.promptInput.focus(); } }, 50); }
-function checkForPetpet(userInput) { const lowerInput = userInput.toLowerCase(); const petpetTriggers = ["petpet", "pet the cat", "good kitty", "good boy", "good girl", "head pats", "who's a good kitty"]; return petpetTriggers.some(trigger => lowerInput.includes(trigger)); }
-
-// --- Achievement & Progress Logic ---
-function saveProgress() {
-    const progress = {
-        interactionCount: interactionCount,
-        jumpscareHasOccurred: localStorage.getItem('jumpscareHasOccurred') === 'true',
-        unlockedAchievements: { firstWords: achievements.firstWords.unlocked, interactions100: achievements.interactions100.unlocked, petpet: achievements.petpet.unlocked, jumpscare: achievements.jumpscare.unlocked }
-    };
-    localStorage.setItem('askCatProgress', JSON.stringify(progress));
-}
-
-function loadProgress() {
-    const savedProgress = localStorage.getItem('askCatProgress');
-    if (savedProgress) {
-        isNewPlayer = false;
-        const progress = JSON.parse(savedProgress);
-        interactionCount = progress.interactionCount || 0;
-        if (progress.jumpscareHasOccurred) { localStorage.setItem('jumpscareHasOccurred', 'true'); }
-        if (progress.unlockedAchievements.firstWords) unlockAchievement('firstWords', false);
-        if (progress.unlockedAchievements.interactions100) unlockAchievement('interactions100', false);
-        if (progress.unlockedAchievements.petpet) unlockAchievement('petpet', false);
-        if (progress.unlockedAchievements.jumpscare) unlockAchievement('jumpscare', false);
-    }
-}
-
-function unlockAchievement(key, showPopup = true) {
-    if (!achievements[key] || achievements[key].unlocked) return;
-    achievements[key].unlocked = true;
-    const ach = achievements[key];
+    <div id="start-screen" class="screen">
+        <header class="header"> <h1 class="sketch-title">Ask Cat</h1> <span class="version-text">v0.1</span> </header>
+        <nav class="menu">
+            <div class="menu-row">
+                <a href="#" id="play-button" class="menu-button">Play</a>
+                <a href="#" id="achievements-button" class="menu-button">Achievements</a>
+            </div>
+            <div class="menu-row">
+                <a href="#" id="credits-button" class="menu-button">Credits</a>
+                <a href="#" id="community-button" class="menu-button">
+                    <img src="Assets/Sprites/discord_logo.webp" alt="Discord">
+                    Community
+                </a>
+            </div>
+        </nav>
+        <img id="menu-cat-gif" data-src="Assets/Sprites/cat_crop.gif" alt="A cute cat">
+        <img id="announcement-gif" data-src="Assets/Sprites/cat_dance.gif" alt="Announcements">
+    </div>
     
-    ach.card.classList.remove('locked');
-    ach.card.classList.add('unlocked');
-    ach.status.textContent = 'Unlocked';
+    <div id="game-screen" class="screen">
+        <a href="#" id="game-back-button">BACK</a>
+        <div class="cat-container">
+            <img id="cat-image" class="cat-gif" data-src="Assets/Sprites/cat_animated.gif" alt="A friendly cat">
+            <div id="ai-bubble"> <div id="ai-response-text">Ask me something...</div> </div>
+            <img id="gif-bubble" data-src="Assets/Sprites/cat_cut.gif" alt="cat says hello">
+        </div>
+        <div id="user-input-container">
+            <form id="prompt-form">
+                <input id="prompt-input" type="text" autocomplete="off" placeholder="Ask Cat a question...">
+                <button id="prompt-submit" type="submit">ASK</button>
+            </form>
+        </div>
+        <div id="achievement-popup"></div>
+    </div>
 
-    const titles = { firstWords: 'First Words', interactions100: '100 Interactions!', petpet: 'Petpet!', jumpscare: 'Cat Jumpscare' };
-    const descs = { firstWords: 'Begin your journey by asking the cat your first question.', interactions100: 'Reached 100 interactions with the cat.', petpet: "Who's a good kitty?", jumpscare: "You survived the surprise!" };
-
-    ach.title.textContent = titles[key];
-    ach.desc.textContent = descs[key];
-
-    if (showPopup) {
-        elements.achievementPopup.textContent = `Achievement Unlocked: ${titles[key]}`;
-        elements.achievementPopup.classList.add('show');
-        setTimeout(() => { elements.achievementPopup.classList.remove('show'); }, 4000);
-    }
-
-    saveProgress();
-}
-
-function resetProgress() {
-    localStorage.removeItem('askCatProgress');
-    localStorage.removeItem('jumpscareHasOccurred');
-    interactionCount = 0;
+    <div id="achievements-screen" class="screen">
+        <div class="stars"></div><div class="stars2"></div><div class="stars3"></div>
+        <a href="#" id="delete-progress-button">Delete Progress</a>
+        <a href="#" id="achievements-back-button">Back</a>
+        <div class="achievements-content">
+            <h2 class="achievements-title">ACHIEVEMENTS</h2>
+            <div class="category-container">
+                <div class="category-header"> <h3 class="category-title">Common</h3> <span class="category-toggle">[-]</span> </div>
+                <div class="category-content">
+                    <div id="ach-first-words" class="achievement-card locked">
+                        <div class="achievement-icon"> <span class="icon-text">???</span> <img class="icon-image" data-src="Assets/Sprites/cat_removebg_preview.png" alt="Icon"> </div>
+                        <div class="achievement-details"> <h3 id="ach-first-words-title">???</h3> <p id="ach-first-words-desc">???</p> </div>
+                        <span class="achievement-status">Locked</span>
+                    </div>
+                    <div id="ach-100-interactions" class="achievement-card locked">
+                        <div class="achievement-icon"> <span class="icon-text">???</span> <img class="icon-image" data-src="Assets/Sprites/cat_image_crop.png" alt="Icon"> </div>
+                        <div class="achievement-details"> <h3 id="ach-100-interactions-title">???</h3> <p id="ach-100-interactions-desc">???</p> </div>
+                        <span class="achievement-status">Locked</span>
+                    </div>
+                    <div id="ach-petpet" class="achievement-card locked">
+                        <div class="achievement-icon"> <span class="icon-text">???</span> <img class="icon-image" data-src="Assets/Sprites/cat_petpet.png" alt="Icon"> </div>
+                        <div class="achievement-details"> <h3 id="ach-petpet-title">???</h3> <p id="ach-petpet-desc">???</p> </div>
+                        <span class="achievement-status">Locked</span>
+                    </div>
+                </div>
+            </div>
+            <div class="category-container">
+                <div class="category-header"> <h3 class="category-title">Uncommon</h3> <span class="category-toggle">[+]</span> </div>
+                <div class="category-content collapsed">
+                    <!-- FIXED: The missing achievement card is now restored -->
+                    <div id="ach-jumpscare" class="achievement-card locked">
+                        <div class="achievement-icon"> <span class="icon-text">???</span> <img class="icon-image" data-src="Assets/Sprites/cat_jumpscare.png" alt="Icon"> </div>
+                        <div class="achievement-details"> <h3 id="ach-jumpscare-title">???</h3> <p id="ach-jumpscare-desc">???</p> </div>
+                        <span class="achievement-status">Locked</span>
+                    </div>
+                </div>
+            </div>
+            <div class="category-container">
+                <div class="category-header"> <h3 class="category-title">Rare</h3> <span class="category-toggle">[+]</span> </div>
+                <div class="category-content collapsed"> <p class="placeholder">More achievements coming soon...</p> </div>
+            </div>
+            <div class="category-container">
+                <div class="category-header"> <h3 class="category-title">Epic</h3> <span class="category-toggle">[+]</span> </div>
+                <div class="category-content collapsed"> <p class="placeholder">More achievements coming soon...</p> </div>
+            </div>
+            <div class="category-container">
+                <div class="category-header"> <h3 class="category-title">Legendary</h3> <span class="category-toggle">[+]</span> </div>
+                <div class="category-content collapsed"> <p class="placeholder">More achievements coming soon...</p> </div>
+            </div>
+        </div>
+        <div class="scrollbar"><div class="scrollbar-thumb"></div></div>
+    </div>
     
-    for (const key in achievements) {
-        const ach = achievements[key];
-        ach.unlocked = false;
-        ach.card.classList.add('locked');
-        ach.card.classList.remove('unlocked');
-        ach.status.textContent = 'Locked';
-        ach.title.textContent = '???';
-        ach.desc.textContent = '???';
-    }
+    <div id="credits-screen" class="screen">
+        <div class="fade"></div>
+        <section class="star-wars">
+            <div class="crawl">
+                <div class="title"> <h1>Ask Cat</h1> <h3>Pre-alpha (v0.1)</h3> </div>
+                <p>a simple web game inspired from a gif posted by Imangalilili_goofy.</p> <br><br>
+                <p>Development Team</p> <p>Lead Developer - painsel</p> <p>Lead Animator - that7mad</p> <p>Server Manager & Source of Inspiration - Imangalilili_goofy</p> <br><br>
+                <p>Early Access Supporters - Serious Boy, tom, Jeriye, Honda, MAXXMUGA, Naughtlapis, and Squid</p> <br><br>
+                <h1>**End Of Credits**</h1>
+            </div>
+        </section>
+    </div>
+
+    <div id="community-screen" class="screen">
+        <a href="#" id="community-back-button">Back</a>
+        <iframe src="https://discord.com/widget?id=1421121490463490071&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+    </div>
+
+    <div id="announcement-modal">
+        <div class="modal-content">
+            <h2>v0.2 UPDATE! Part 1/20</h2>
+            <ul>
+                <li>Added 2 Achievements</li>
+                <li>Added in-game Announcements</li>
+            </ul>
+            <button class="modal-close">Close</button>
+        </div>
+    </div>
+
+    <div id="jumpscare-screen" class="screen">
+        <img id="running-cat" src="#" alt="">
+        <img id="jumpscare-explosion" src="#" alt="">
+    </div>
+    <div id="black-overlay"></div>
+
+    <audio id="tos-audio" loop><source src="https://dn721605.ca.archive.org/0/items/undertaleost_202004/Undertale%20-%20Lossless%20Soundtrack%20%28toby%20fox%29/toby%20fox%20-%20UNDERTALE%20Soundtrack%20-%2002%20Start%20Menu.flac" type="audio/flac"></audio>
+    <audio id="menu-audio" loop> <source src="https://dn721605.ca.archive.org/0/items/undertaleost_202004/Undertale%20-%20Lossless%20Soundtrack%20%28toby%20fox%29/toby%20fox%20-%20UNDERTALE%20Soundtrack%20-%2093%20Menu%20%28Full%29.flac" type="audio/flac"> </audio>
+    <audio id="achievements-audio" loop><source src="https://dn721605.ca.archive.org/0/items/undertaleost_202004/Undertale%20-%20Lossless%20Soundtrack%20%28toby%20fox%29/toby%20fox%20-%20UNDERTALE%20Soundtrack%20-%2020%20Mysterious%20Place.flac" type="audio/flac"></audio>
+    <audio id="credits-audio" loop><source src="https://dn721605.ca.archive.org/0/items/undertaleost_202004/Undertale%20-%20Lossless%20Soundtrack%20%28toby%20fox%29/toby%20fox%20-%20UNDERTALE%20Soundtrack%20-%2005%20Ruins.flac" type="audio/flac"></audio>
+    <audio id="squeak-audio"><source src="Assets/Audio/squeaky_run.mp3" type="audio/mpeg"></audio>
+    <audio id="watchout-audio"><source src="Assets/Audio/watchout.mp3" type="audio/mpeg"></audio>
+    <audio id="explosion-audio"><source src="Assets/Audio/explosion_meme.mp3" type="audio/mpeg"></audio>
+    <audio id="boom-audio"><source src="Assets/Audio/vine_boom.mp3" type="audio/mpeg"></audio>
     
-    alert('Progress has been deleted.');
-}
-
-// Jumpscare Sequence
-function startJumpscare() {
-    stopAllAudio();
-    showScreen(elements.jumpscareScreen);
-    localStorage.setItem('jumpscareHasOccurred', 'true');
-    saveProgress();
-    elements.runningCat.src = 'Assets/Sprites/cat_run.gif';
-    elements.squeakAudio.play();
-    elements.watchoutAudio.play();
-    setTimeout(climaxJumpscare, 3800);
-}
-
-function climaxJumpscare() {
-    elements.squeakAudio.pause();
-    elements.watchoutAudio.pause();
-    elements.jumpscareExplosion.style.display = 'block';
-    elements.jumpscareExplosion.src = 'Assets/Sprites/cat_jumpscare_alt.gif';
-    elements.explosionAudio.play();
-    setTimeout(endJumpscare, 1500);
-}
-
-function endJumpscare() {
-    elements.jumpscareExplosion.style.display = 'none';
-    elements.blackOverlay.style.display = 'block';
-    showScreen(elements.startScreen);
-    playAudio(elements.menuAudio);
-    elements.blackOverlay.style.animation = 'fade-out 1s ease-out forwards';
-    unlockAchievement('jumpscare');
-    elements.boomAudio.play();
-    setTimeout(() => {
-        elements.blackOverlay.style.display = 'none';
-        elements.blackOverlay.style.animation = '';
-    }, 1000);
-}
-
-// --- 4. EVENT LISTENERS ---
-function initEventListeners() {
-    elements.startButton.addEventListener('click', (e) => { e.preventDefault(); showScreen(elements.tosScreen); playAudio(elements.tosAudio); });
-    elements.acceptButton.addEventListener('click', (e) => { e.preventDefault(); showScreen(elements.startScreen); playAudio(elements.menuAudio); });
-    
-    elements.playButton.addEventListener('click', (e) => {
-        e.preventDefault();
-        const hasHappened = localStorage.getItem('jumpscareHasOccurred') === 'true';
-        const loadCount = parseInt(localStorage.getItem('askCatLoadCount') || '1', 10);
-        const chance = Math.floor(Math.random() * 10);
-        
-        if (loadCount >= 3 && !hasHappened && chance === 0) {
-            startJumpscare();
-        } else {
-            showScreen(elements.gameScreen); 
-            stopAllAudio();
-        }
-    });
-
-    elements.creditsButton.addEventListener('click', (e) => { e.preventDefault(); showScreen(elements.creditsScreen); playAudio(elements.creditsAudio); });
-    elements.creditsScreen.addEventListener('click', () => { showScreen(elements.startScreen); playAudio(elements.menuAudio); });
-    elements.communityButton.addEventListener('click', (e) => { e.preventDefault(); showScreen(elements.communityScreen); stopAllAudio(); });
-    elements.communityBackButton.addEventListener('click', (e) => { e.preventDefault(); showScreen(elements.startScreen); playAudio(elements.menuAudio); });
-    
-    const achievementToggles = document.querySelectorAll('.category-header');
-    achievementToggles.forEach(header => {
-        header.addEventListener('click', () => {
-            const content = header.nextElementSibling;
-            const toggleButton = header.querySelector('.category-toggle');
-            content.classList.toggle('collapsed');
-            toggleButton.textContent = content.classList.contains('collapsed') ? '[+]' : '[-]';
-        });
-    });
-
-    elements.achievementsButton.addEventListener('click', (e) => { e.preventDefault(); showScreen(elements.achievementsScreen); playAudio(elements.achievementsAudio); });
-    elements.achievementsBackButton.addEventListener('click', (e) => { e.preventDefault(); showScreen(elements.startScreen); playAudio(elements.menuAudio); });
-    elements.catImage.addEventListener('click', () => { const isHidden = elements.gifBubble.style.display === 'none' || elements.gifBubble.style.display === ''; elements.gifBubble.style.display = isHidden ? 'block' : 'none'; elements.aiBubble.style.display = 'none'; });
-    elements.gameBackButton.addEventListener('click', (e) => { e.preventDefault(); showScreen(elements.startScreen); playAudio(elements.menuAudio); elements.aiBubble.style.display = 'none'; elements.gifBubble.style.display = 'none'; elements.aiResponseText.innerHTML = 'Ask me something...'; elements.promptInput.value = ''; });
-    elements.announcementGif.addEventListener('click', () => { elements.announcementModal.style.display = 'flex'; });
-    elements.modalCloseButton.addEventListener('click', () => { elements.announcementModal.style.display = 'none'; });
-
-    elements.deleteProgressButton.addEventListener('click', (e) => {
-        e.preventDefault();
-        if (confirm('Are you sure you want to delete all your progress? This cannot be undone.')) {
-            resetProgress();
-        }
-    });
-
-    elements.promptForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const userPrompt = elements.promptInput.value.trim();
-        if (!userPrompt) return;
-        elements.gifBubble.style.display = 'none'; elements.aiBubble.style.display = 'block';
-        elements.promptInput.disabled = true; elements.promptSubmit.disabled = true;
-        
-        const catResponse = getCatResponse(userPrompt);
-        typeResponse(catResponse);
-        
-        interactionCount++;
-        saveProgress();
-
-        if (!achievements.firstWords.unlocked) { unlockAchievement('firstWords'); }
-        if (interactionCount >= 100 && !achievements.interactions100.unlocked) { unlockAchievement('interactions100'); }
-        if (checkForPetpet(userPrompt) && !achievements.petpet.unlocked) {
-            unlockAchievement('petpet');
-            const originalSrc = elements.catImage.src;
-            elements.catImage.src = 'Assets/Sprites/cat_dance_alt.gif';
-            setTimeout(() => { elements.catImage.src = originalSrc; }, 10000);
-        }
-
-        elements.promptInput.value = '';
-    });
-}
-
-// --- 5. START THE APP ---
-loadProgress();
-initEventListeners();
+    <script src="script.js" defer></script>
+</body>
+</html>
