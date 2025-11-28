@@ -67,6 +67,28 @@ function getCatResponse(userInput) { const lowerInput = userInput.toLowerCase();
 function typeResponse(text) { let i = 0; elements.aiResponseText.innerHTML = ''; const typingInterval = setInterval(() => { if (i < text.length) { elements.aiResponseText.innerHTML += text.charAt(i); i++; } else { clearInterval(typingInterval); elements.promptInput.disabled = false; elements.promptSubmit.disabled = false; elements.promptInput.focus(); } }, 50); }
 function checkForPetpet(userInput) { const lowerInput = userInput.toLowerCase(); const petpetTriggers = ["petpet", "pet the cat", "good kitty", "good boy", "good girl", "head pats", "who's a good kitty"]; return petpetTriggers.some(trigger => lowerInput.includes(trigger)); }
 
+// Christmas Update - Holiday Season Check
+function isHolidaySeason() {
+    const today = new Date();
+    const month = today.getMonth() + 1; // 1-12
+    const day = today.getDate();
+    // November 28 - December 31 OR January 1-2
+    return (month === 11 && day >= 28) || (month === 12) || (month === 1 && day <= 2);
+}
+
+// Toggle Christmas Lights
+function toggleChristmasLights() {
+    const lightrope = document.querySelector('.lightrope');
+    const christmasLabel = document.querySelector('.christmas-update-label');
+    if (isHolidaySeason() && lightrope && christmasLabel) {
+        lightrope.style.display = 'block';
+        christmasLabel.style.display = 'block';
+    } else if (lightrope && christmasLabel) {
+        lightrope.style.display = 'none';
+        christmasLabel.style.display = 'none';
+    }
+}
+
 // --- Achievement & Progress Logic ---
 function saveProgress() {
     const progress = {
@@ -245,3 +267,4 @@ function initEventListeners() {
 // --- 5. START THE APP ---
 loadProgress();
 initEventListeners();
+toggleChristmasLights();
