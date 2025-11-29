@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const { createClient } = require('@supabase/supabase-js');
@@ -8,8 +9,8 @@ const port = process.env.PORT || 3000;
 
 // Initialize Supabase
 // IMPORTANT: Make sure DATABASE_SUPABASE_URL and DATABASE_SUPABASE_SERVICE_ROLE_KEY are set in your Vercel environment variables
-const supabaseUrl = process.env.DATABASE_SUPABASE_URL;
-const supabaseKey = process.env.DATABASE_SUPABASE_SERVICE_ROLE_KEY;
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 app.use(cors());

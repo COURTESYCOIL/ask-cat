@@ -66,12 +66,16 @@
             <li></li>
             <li></li>
         </ul>
-        <header class="header"> <h1 class="sketch-title">Ask Cat</h1> <span class="version-text">v0.1</span> </header>
+        <header class="header"> <h1 class="sketch-title">Ask Cat</h1> <span class="version-text">v0.1</span>
+            <div class="header-buttons">
+                <a href="/login.html" id="login-button" class="menu-button">Login</a>
+                <a href="#" id="logout-button" class="menu-button" style="display: none;">Logout</a>
+            </div>
+        </header>
         <nav class="menu">
             <div class="menu-row">
                 <a href="#" id="play-button" class="menu-button">Play</a>
                 <a href="#" id="achievements-button" class="menu-button">Achievements</a>
-                <a href="/login.html" id="login-button" class="menu-button">Login</a>
             </div>
             <div class="menu-row">
                 <a href="#" id="credits-button" class="menu-button">Credits</a>
@@ -198,6 +202,7 @@
     <audio id="explosion-audio"><source src="Assets/Audio/explosion_meme.mp3" type="audio/mpeg"></audio>
     <audio id="boom-audio"><source src="Assets/Audio/vine_boom.mp3" type="audio/mpeg"></audio>
     
-    <script src="script.js" defer></script>
+    <script src="script.obfuscated.js" defer></script>
+    <script src="auth.js" defer></script>
 </body>
 </html>
