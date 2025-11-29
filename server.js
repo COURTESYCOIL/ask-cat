@@ -6,7 +6,7 @@ const { createClient } = require('@supabase/supabase-js');
 const axios = require('axios');
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 // Initialize Supabase
 // IMPORTANT: Make sure DATABASE_SUPABASE_URL and DATABASE_SUPABASE_SERVICE_ROLE_KEY are set in your Vercel environment variables
@@ -15,7 +15,6 @@ const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 app.use(cors());
-console.log(`Serving static files from: ${path.join(__dirname, '.')}`);
 app.use(express.static(path.join(__dirname, '.')));
 const session = require('express-session');
 
