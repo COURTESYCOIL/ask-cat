@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const { createClient } = require('@supabase/supabase-js');
+const axios = require('axios');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -122,7 +123,7 @@ app.get('/auth/callback', async (req, res) => {
 
         // Here you would typically save the user to your database if they don't exist
         // For now, we'll just send a success message
-        res.send(`<h1>Welcome, ${username}!</h1><p>Your Discord ID is ${id}. You are now logged in.</p>`);
+        res.send(`<h1>Authentication Successful!</h1><p>Welcome, ${username}. You can now return to Discord and use the /progress command.</p>`);
 
     } catch (error) {
         console.error('OAuth Callback Error:', error.response ? error.response.data : error.message);
