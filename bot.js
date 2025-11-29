@@ -15,7 +15,7 @@ client.on('interactionCreate', async interaction => {
     if (commandName === 'progress') {
         const userId = interaction.user.id;
         try {
-            const response = await fetch(`http://localhost:3000/api/progress/${userId}`);
+            const response = await fetch(`${process.env.API_URL}/api/progress/${userId}`);
             if (response.ok) {
                 const progress = await response.json();
                 const achievements = Object.keys(progress.unlockedAchievements).filter(key => progress.unlockedAchievements[key]).join(', ') || 'None';
