@@ -10,7 +10,7 @@
     "unlockedAchievements": {
       "firstWords": true,
       "interactions100": false,
-      "petpet": true,
+      "petpet": false,
       "jumpscare": false
     }
   }

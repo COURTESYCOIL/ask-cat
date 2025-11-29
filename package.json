@@ -6,7 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "node obfuscate.js",
-    "start:server": "node server.js"
+    "start:server": "node server.js",
+    "start:bot": "node bot.js",
+    "deploy:commands": "node deploy-commands.js"
   },
   "repository": {
     "type": "git",
@@ -28,6 +30,8 @@
   },
   "dependencies": {
     "cors": "^2.8.5",
+    "discord.js": "^14.25.1",
+    "dotenv": "^17.2.3",
     "express": "^5.1.0"
   }
 }
