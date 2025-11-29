@@ -27,6 +27,13 @@ client.on('interactionCreate', async interaction => {
             console.error('Failed to fetch progress:', error);
             await interaction.reply('Sorry, something went wrong while fetching your progress.');
         }
+    } else if (commandName === 'login') {
+        // Construct the login URL using the base API URL
+        const loginUrl = `${process.env.API_URL}/login.html`;
+        await interaction.reply({ 
+            content: `Click here to log in and view your progress on the web: ${loginUrl}`,
+            ephemeral: true // Only the user who ran the command can see this message
+        });
     }
 });
 

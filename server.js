@@ -82,6 +82,57 @@ app.delete('/api/progress/:userId', async (req, res) => {
     res.status(200).send('Progress deleted.');
 });
 
+// --- Discord OAuth2 Routes ---
+
+// 1. Redirect to Discord Login
+app.get('/auth/discord', (req, res) => {
+    const discordAuthUrl = `https://discord.com/api/oauth2/authorize?client_id=${process.env.CLIENT_ID}&redirect_uri=${encodeURIComponent(process.env.DISCORD_REDIRECT_URI)}&response_type=code&scope=identify`;
+    res.redirect(discordAuthUrl);
+});
+
+// 2. Callback Endpoint
+app.get('/auth/callback', async (req, res) => {
+    const { code } = req.query;
+
+    if (!code) {
+        return res.status(400).send('No code provided.');
+    }
+
+    try {
+        // Exchange the code for an access token
+        const tokenResponse = await axios.post('https://discord.com/api/oauth2/token', new URLSearchParams({
+            client_id: process.env.CLIENT_ID,
+            client_secret: process.env.CLIENT_SECRET, // You need to add CLIENT_SECRET to your Vercel env vars
+            grant_type: 'authorization_code',
+            code: code,
+            redirect_uri: process.env.DISCORD_REDIRECT_URI,
+        }), {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+        });
+
+        const { access_token } = tokenResponse.data;
+
+        // Use the access token to get user info
+        const userResponse = await axios.get('https://discord.com/api/users/@me', {
+            headers: {
+                Authorization: `Bearer ${access_token}`,
+            },
+        });
+
+        const { id, username } = userResponse.data;
+
+        // Here you would typically save the user to your database if they don't exist
+        // For now, we'll just send a success message
+        res.send(`<h1>Welcome, ${username}!</h1><p>Your Discord ID is ${id}. You are now logged in.</p>`);
+
+    } catch (error) {
+        console.error('OAuth Callback Error:', error.response ? error.response.data : error.message);
+        res.status(500).send('An error occurred during authentication.');
+    }
+});
+
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 });
