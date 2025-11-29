@@ -13,7 +13,14 @@ const supabaseKey = process.env.DATABASE_SUPABASE_SERVICE_ROLE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 app.use(cors());
-app.use(express.json());
+const session = require('express-session');
+
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: 'auto' } // Automatically sets secure to true if using HTTPS
+}));
 
 // GET endpoint to retrieve user data
 app.get('/api/progress/:userId', async (req, res) => {
@@ -123,7 +130,8 @@ app.get('/auth/callback', async (req, res) => {
 
         // Here you would typically save the user to your database if they don't exist
         // For now, we'll just send a success message
-        res.send(`<h1>Authentication Successful!</h1><p>Welcome, ${username}. You can now return to Discord and use the /progress command.</p>`);
+        req.session.user = { id, username };
+        res.redirect('/');
 
     } catch (error) {
         console.error('OAuth Callback Error:', error.response ? error.response.data : error.message);
