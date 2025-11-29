@@ -4,5 +4,14 @@
     "unlockedAchievements": {
       "firstWords": true
     }
+  },
+  "1371819071804538930": {
+    "interactionCount": 2,
+    "unlockedAchievements": {
+      "firstWords": true,
+      "interactions100": false,
+      "petpet": true,
+      "jumpscare": false
+    }
   }
 }
