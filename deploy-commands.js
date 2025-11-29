@@ -9,8 +9,7 @@ const commands = [
     {
         name: 'login',
         description: 'Get a link to log in with Discord and view your progress online.',
-    },
-    },
+    }
 ];
 
 const rest = new REST({ version: '10' }).setToken(process.env.DISCORD_TOKEN);
