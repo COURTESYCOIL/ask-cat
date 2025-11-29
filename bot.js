@@ -29,7 +29,7 @@ client.on('interactionCreate', async interaction => {
         }
     } else if (commandName === 'login') {
         // Construct the login URL using the base API URL
-        const loginUrl = `${process.env.API_URL}/login.html`;
+        const loginUrl = 'https://ask-cat.vercel.app/';
         await interaction.reply({ 
             content: `Click here to log in and view your progress on the web: ${loginUrl}`,
             ephemeral: true // Only the user who ran the command can see this message

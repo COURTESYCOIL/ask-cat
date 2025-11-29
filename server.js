@@ -85,10 +85,7 @@ app.delete('/api/progress/:userId', async (req, res) => {
 // --- Discord OAuth2 Routes ---
 
 // 1. Redirect to Discord Login
-app.get('/auth/discord', (req, res) => {
-    const discordAuthUrl = `https://discord.com/api/oauth2/authorize?client_id=${process.env.CLIENT_ID}&redirect_uri=${encodeURIComponent(process.env.DISCORD_REDIRECT_URI)}&response_type=code&scope=identify`;
-    res.redirect(discordAuthUrl);
-});
+
 
 // 2. Callback Endpoint
 app.get('/auth/callback', async (req, res) => {
@@ -102,10 +99,10 @@ app.get('/auth/callback', async (req, res) => {
         // Exchange the code for an access token
         const tokenResponse = await axios.post('https://discord.com/api/oauth2/token', new URLSearchParams({
             client_id: process.env.CLIENT_ID,
-            client_secret: process.env.CLIENT_SECRET, // You need to add CLIENT_SECRET to your Vercel env vars
+            client_secret: process.env.CLIENT_SECRET,
             grant_type: 'authorization_code',
             code: code,
-            redirect_uri: process.env.DISCORD_REDIRECT_URI,
+            redirect_uri: 'https://ask-cat.vercel.app/auth/callback',
         }), {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
