@@ -6,7 +6,7 @@ const { createClient } = require('@supabase/supabase-js');
 const axios = require('axios');
 
 const app = express();
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3000;
 
 // Initialize Supabase
 // IMPORTANT: Make sure DATABASE_SUPABASE_URL and DATABASE_SUPABASE_SERVICE_ROLE_KEY are set in your Vercel environment variables
@@ -15,7 +15,14 @@ const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 app.use(cors());
-app.use(express.static(path.join(__dirname, '.')));
+app.use(express.json());
+
+// Add a middleware to log all incoming requests
+app.use((req, res, next) => {
+    console.log(`${req.method} ${req.url}`);
+    next();
+});
+
 const session = require('express-session');
 
 app.use(session({
@@ -141,6 +148,17 @@ app.get('/auth/callback', async (req, res) => {
         res.status(500).send('An error occurred during authentication.');
     }
 });
+
+app.get('/api/me', (req, res) => {
+    if (req.session.user) {
+        res.json(req.session.user);
+    } else {
+        res.status(401).json({ error: 'Not logged in' });
+    }
+});
+
+// Serve static files AFTER API routes
+app.use(express.static(path.join(__dirname, '.')));
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
