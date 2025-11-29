@@ -14,6 +14,7 @@ const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 app.use(cors());
+app.use(express.static('.'));
 const session = require('express-session');
 
 app.use(session({
