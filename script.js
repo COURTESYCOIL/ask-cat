@@ -89,27 +89,52 @@ function toggleChristmasEvent() {
     }
 }
 
+let userId = null;
+
 // --- Achievement & Progress Logic ---
-function saveProgress() {
+async function saveProgress() {
+    if (!userId) return;
     const progress = {
         interactionCount: interactionCount,
-        jumpscareHasOccurred: localStorage.getItem('jumpscareHasOccurred') === 'true',
-        unlockedAchievements: { firstWords: achievements.firstWords.unlocked, interactions100: achievements.interactions100.unlocked, petpet: achievements.petpet.unlocked, jumpscare: achievements.jumpscare.unlocked }
+        unlockedAchievements: {
+            firstWords: achievements.firstWords.unlocked,
+            interactions100: achievements.interactions100.unlocked,
+            petpet: achievements.petpet.unlocked,
+            jumpscare: achievements.jumpscare.unlocked
+        }
     };
-    localStorage.setItem('askCatProgress', JSON.stringify(progress));
+    try {
+        await fetch(`http://localhost:3000/api/progress/${userId}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(progress)
+        });
+    } catch (error) {
+        console.error('Failed to save progress:', error);
+    }
 }
 
-function loadProgress() {
-    const savedProgress = localStorage.getItem('askCatProgress');
-    if (savedProgress) {
-        isNewPlayer = false;
-        const progress = JSON.parse(savedProgress);
-        interactionCount = progress.interactionCount || 0;
-        if (progress.jumpscareHasOccurred) { localStorage.setItem('jumpscareHasOccurred', 'true'); }
-        if (progress.unlockedAchievements.firstWords) unlockAchievement('firstWords', false);
-        if (progress.unlockedAchievements.interactions100) unlockAchievement('interactions100', false);
-        if (progress.unlockedAchievements.petpet) unlockAchievement('petpet', false);
-        if (progress.unlockedAchievements.jumpscare) unlockAchievement('jumpscare', false);
+async function loadProgress() {
+    userId = prompt('Please enter your user ID');
+    if (!userId) {
+        alert('A user ID is required to save progress.');
+        return;
+    }
+
+    try {
+        const response = await fetch(`http://localhost:3000/api/progress/${userId}`);
+        if (response.ok) {
+            const progress = await response.json();
+            interactionCount = progress.interactionCount || 0;
+            if (progress.unlockedAchievements) {
+                if (progress.unlockedAchievements.firstWords) unlockAchievement('firstWords', false);
+                if (progress.unlockedAchievements.interactions100) unlockAchievement('interactions100', false);
+                if (progress.unlockedAchievements.petpet) unlockAchievement('petpet', false);
+                if (progress.unlockedAchievements.jumpscare) unlockAchievement('jumpscare', false);
+            }
+        }
+    } catch (error) {
+        console.error('Failed to load progress:', error);
     }
 }
 
@@ -137,22 +162,36 @@ function unlockAchievement(key, showPopup = true) {
     saveProgress();
 }
 
-function resetProgress() {
-    localStorage.removeItem('askCatProgress');
-    localStorage.removeItem('jumpscareHasOccurred');
-    interactionCount = 0;
-    
-    for (const key in achievements) {
-        const ach = achievements[key];
-        ach.unlocked = false;
-        ach.card.classList.add('locked');
-        ach.card.classList.remove('unlocked');
-        ach.status.textContent = 'Locked';
-        ach.title.textContent = '???';
-        ach.desc.textContent = '???';
+async function resetProgress() {
+    if (!userId) {
+        alert('No user ID found. Cannot delete progress.');
+        return;
     }
-    
-    alert('Progress has been deleted.');
+
+    try {
+        const response = await fetch(`http://localhost:3000/api/progress/${userId}`, {
+            method: 'DELETE'
+        });
+
+        if (response.ok) {
+            interactionCount = 0;
+            for (const key in achievements) {
+                const ach = achievements[key];
+                ach.unlocked = false;
+                ach.card.classList.add('locked');
+                ach.card.classList.remove('unlocked');
+                ach.status.textContent = 'Locked';
+                ach.title.textContent = '???';
+                ach.desc.textContent = '???';
+            }
+            alert('Progress has been deleted.');
+        } else {
+            alert('Failed to delete progress on the server.');
+        }
+    } catch (error) {
+        console.error('Error deleting progress:', error);
+        alert('An error occurred while deleting progress.');
+    }
 }
 
 // Jumpscare Sequence
