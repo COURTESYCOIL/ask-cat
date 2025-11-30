@@ -1,39 +1,59 @@
 
-const axios = require('axios');
 const jwt = require('jsonwebtoken');
 const cookie = require('cookie');
 
 module.exports = async (req, res) => {
     const { code } = req.query;
+    const { CLIENT_ID, CLIENT_SECRET, JWT_SECRET } = process.env;
+
+    if (!CLIENT_ID || !CLIENT_SECRET || !JWT_SECRET) {
+        return res.status(500).send('Missing critical environment variables.');
+    }
 
     if (!code) {
         return res.status(400).send('No code provided.');
     }
 
     try {
-        const tokenResponse = await axios.post('https://discord.com/api/oauth2/token', new URLSearchParams({
-            client_id: process.env.CLIENT_ID,
-            client_secret: process.env.CLIENT_SECRET,
-            grant_type: 'authorization_code',
-            code: code,
-            redirect_uri: 'https://ask-cat.vercel.app/api/auth/callback',
-        }), {
+        const tokenResponse = await fetch('https://discord.com/api/oauth2/token', {
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
+            body: new URLSearchParams({
+                client_id: CLIENT_ID,
+                client_secret: CLIENT_SECRET,
+                grant_type: 'authorization_code',
+                code: code,
+                redirect_uri: 'https://ask-cat.vercel.app/api/auth/callback',
+            }),
         });
 
-        const { access_token } = tokenResponse.data;
+        const tokenData = await tokenResponse.json();
 
-        const userResponse = await axios.get('https://discord.com/api/users/@me', {
+        if (!tokenResponse.ok) {
+            console.error('Failed to fetch token:', tokenData);
+            return res.status(500).send('Failed to fetch authorization token from Discord.');
+        }
+
+        const { access_token } = tokenData;
+
+        const userResponse = await fetch('https://discord.com/api/users/@me', {
             headers: {
                 Authorization: `Bearer ${access_token}`,
             },
         });
+        
+        const userData = await userResponse.json();
 
-        const { id, username } = userResponse.data;
+        if (!userResponse.ok) {
+            console.error('Failed to fetch user:', userData);
+            return res.status(500).send('Failed to fetch user data from Discord.');
+        }
 
-        const token = jwt.sign({ id, username }, process.env.JWT_SECRET, { expiresIn: '7d' });
+        const { id, username } = userData;
+
+        const token = jwt.sign({ id, username }, JWT_SECRET, { expiresIn: '7d' });
 
         res.setHeader('Set-Cookie', cookie.serialize('auth-token', token, {
             httpOnly: true,
@@ -46,7 +66,7 @@ module.exports = async (req, res) => {
         res.redirect('/');
 
     } catch (error) {
-        console.error('OAuth Callback Error:', error.response ? error.response.data : error.message);
+        console.error('OAuth Callback Error:', error);
         res.status(500).send('An error occurred during authentication.');
     }
 };
