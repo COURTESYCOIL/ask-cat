@@ -9,7 +9,8 @@
     "build": "node obfuscate.js",
     "start:server": "node server.js",
     "start:bot": "node bot.js",
-    "deploy:commands": "node deploy-commands.js"
+    "deploy:commands": "node deploy-commands.js",
+    "build:css": "postcss ./public/tailwind.css -o ./public/output.css"
   },
   "repository": {
     "type": "git",
@@ -24,10 +25,14 @@
   },
   "homepage": "https://github.com/COURTESYCOIL/ask-cat#readme",
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.17",
+    "autoprefixer": "^10.4.22",
     "html-minifier-terser": "^7.2.0",
     "javascript-obfuscator": "^4.1.1",
     "postcss": "^8.5.6",
-    "postcss-obfuscator": "^1.6.1"
+    "postcss-cli": "^11.0.1",
+    "postcss-obfuscator": "^1.6.1",
+    "tailwindcss": "^4.1.17"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.86.0",
