@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ask Cat API Documentation</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Ask Cat API Documentation</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="#progress">/api/progress</a></li>
+            <li><a href="#me">/api/me</a></li>
+            <li><a href="#auth-callback">/api/auth/callback</a></li>
+            <li><a href="#interactions">/api/interactions</a></li>
+        </ul>
+    </nav>
+    <main>
+        <section id="progress">
+            <h2>/api/progress</h2>
+            <h3>GET</h3>
+            <p>Retrieves the interaction count and unlocked achievements for a user.</p>
+            <h4>Parameters:</h4>
+            <ul>
+                <li><code>userId</code> (query, required): The ID of the user.</li>
+                <li><code>x-bot-api-key</code> (header, optional): API key for bot authentication.</li>
+                <li><code>auth-token</code> (cookie, optional): JWT token for website authentication.</li>
+            </ul>
+            <h3>POST</h3>
+            <p>Updates the interaction count and unlocked achievements for a user.</p>
+            <h4>Parameters:</h4>
+            <ul>
+                <li><code>userId</code> (query, required): The ID of the user.</li>
+                <li><code>x-bot-api-key</code> (header, optional): API key for bot authentication.</li>
+                <li><code>auth-token</code> (cookie, optional): JWT token for website authentication.</li>
+            </ul>
+            <h4>Request Body:</h4>
+            <pre><code>{
+    "interactionCount": 10,
+    "unlockedAchievements": {
+        "first_login": true
+    }
+}</code></pre>
+        </section>
+
+        <section id="me">
+            <h2>/api/me</h2>
+            <h3>GET</h3>
+            <p>Retrieves information about the currently authenticated user.</p>
+            <h4>Parameters:</h4>
+            <ul>
+                <li><code>auth-token</code> (cookie, required): JWT token for website authentication.</li>
+            </ul>
+        </section>
+
+        <section id="auth-callback">
+            <h2>/api/auth/callback</h2>
+            <h3>GET</h3>
+            <p>Handles the Discord OAuth2 callback.</p>
+            <h4>Parameters:</h4>
+            <ul>
+                <li><code>code</code> (query, required): The authorization code from Discord.</li>
+            </ul>
+        </section>
+
+        <section id="interactions">
+            <h2>/api/interactions</h2>
+            <h3>POST</h3>
+            <p>Receives and processes interactions from Discord.</p>
+            <h4>Parameters:</h4>
+            <ul>
+                <li><code>x-signature-ed25519</code> (header, required): The signature of the request.</li>
+                <li><code>x-signature-timestamp</code> (header, required): The timestamp of the request.</li>
+            </ul>
+            <h4>Request Body:</h4>
+            <pre><code>{
+    "id": "123456789012345678",
+    "application_id": "987654321098765432",
+    "type": 1,
+    "token": "a_discord_interaction_token",
+    "version": 1
+}</code></pre>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 Ask Cat. All rights reserved.</p>
+    </footer>
+</body>
+</html>
