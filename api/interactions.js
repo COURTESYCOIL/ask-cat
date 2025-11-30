@@ -29,7 +29,7 @@ module.exports = async (req, res) => {
         return res.status(401).send({ error: 'Bad request signature' });
     }
 
-    const interaction = req.body;
+    const interaction = JSON.parse(body);
 
     if (interaction.type === 1) { // PING
         return res.status(200).send({ type: 1 }); // PONG
