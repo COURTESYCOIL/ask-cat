@@ -25,7 +25,7 @@ module.exports = async (req, res) => {
                 client_secret: CLIENT_SECRET,
                 grant_type: 'authorization_code',
                 code: code,
-                redirect_uri: 'https://ask-cat.vercel.app/api/auth/callback',
+                redirect_uri: 'https://ask-cat.vercel.app/auth/callback',
             }),
         });
 
