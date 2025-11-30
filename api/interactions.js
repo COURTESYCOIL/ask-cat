@@ -7,8 +7,12 @@ const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 module.exports = async (req, res) => {
-    // Your public key can be found on your application in the Developer Portal
     const PUBLIC_KEY = process.env.PUBLIC_KEY;
+
+    if (!PUBLIC_KEY) {
+        console.error('Missing PUBLIC_KEY environment variable.');
+        return res.status(500).send({ error: 'Internal Server Error: Missing PUBLIC_KEY' });
+    }
 
     const signature = req.headers['x-signature-ed25519'];
     const timestamp = req.headers['x-signature-timestamp'];
