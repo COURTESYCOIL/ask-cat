@@ -7,7 +7,7 @@ const app = express();
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
 // Catch-all to serve index.html for any route not matched by static files
-app.get('*', (req, res) => {
+app.use((req, res) => {
     res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 });
 
