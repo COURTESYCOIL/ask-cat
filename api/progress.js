@@ -8,23 +8,33 @@ const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 module.exports = async (req, res) => {
-    if (!req.headers.cookie) {
-        return res.status(401).json({ error: 'Not authenticated' });
-    }
-
-    const cookies = cookie.parse(req.headers.cookie);
-    const token = cookies['auth-token'];
-
-    if (!token) {
-        return res.status(401).json({ error: 'Not authenticated' });
-    }
-
     let userId;
-    try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        userId = decoded.id;
-    } catch (error) {
-        return res.status(401).json({ error: 'Invalid token' });
+
+    // Bot authentication using x-bot-secret header
+    if (req.headers['x-bot-secret'] && req.query.userId) {
+        if (req.headers['x-bot-secret'] !== process.env.BOT_API_SECRET) {
+            return res.status(403).json({ error: 'Forbidden: Invalid bot secret' });
+        }
+        userId = req.query.userId;
+    } else {
+        // Website authentication using auth-token cookie
+        if (!req.headers.cookie) {
+            return res.status(401).json({ error: 'Not authenticated' });
+        }
+
+        const cookies = cookie.parse(req.headers.cookie);
+        const token = cookies['auth-token'];
+
+        if (!token) {
+            return res.status(401).json({ error: 'Not authenticated' });
+        }
+
+        try {
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            userId = decoded.id;
+        } catch (error) {
+            return res.status(401).json({ error: 'Invalid token' });
+        }
     }
 
     if (req.method === 'GET') {

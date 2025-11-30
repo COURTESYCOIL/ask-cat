@@ -16,7 +16,7 @@ client.on('interactionCreate', async interaction => {
         await interaction.deferReply({ ephemeral: true }); // Defer the reply as we'll be making an API call
 
         try {
-            const response = await fetch(`${process.env.API_URL}/api/bot-progress?userId=${user.id}`, {
+            const response = await fetch(`${process.env.API_URL}/api/progress?userId=${user.id}`, {
                 headers: {
                     'x-bot-secret': process.env.BOT_API_SECRET,
                 },
