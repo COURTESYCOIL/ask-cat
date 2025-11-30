@@ -19,6 +19,29 @@
         </ul>
     </nav>
     <main class="container mx-auto p-6 max-w-4xl bg-white shadow-lg rounded-lg mt-8">
+        <section id="getting-started" class="mb-8 p-6 border border-gray-300 rounded-md bg-gray-50">
+            <h2 class="text-2xl font-semibold text-blue-700 mb-4">Getting Started: Make Your Own Ask Cat Bot</h2>
+            <p class="mb-4">Want to create your own Ask Cat bot and run it in your terminal? Follow these simple steps:</p>
+
+            <h3 class="text-xl font-medium text-blue-600 mb-2">1. Clone the Repository</h3>
+            <p class="mb-4">First, clone the Ask Cat repository to your local machine:</p>
+            <pre class="bg-gray-800 text-white p-4 rounded-md overflow-x-auto"><code>git clone https://github.com/your-username/ask-cat.git
+cd ask-cat</code></pre>
+
+            <h3 class="text-xl font-medium text-blue-600 mb-2">2. Install Dependencies</h3>
+            <p class="mb-4">Install the necessary Node.js dependencies:</p>
+            <pre class="bg-gray-800 text-white p-4 rounded-md overflow-x-auto"><code>npm install</code></pre>
+
+            <h3 class="text-xl font-medium text-blue-600 mb-2">3. Configure Environment Variables</h3>
+            <p class="mb-4">Create a <code>.env</code> file in the root of your project and add your Discord bot token and other necessary configurations. Refer to the <code>.env.example</code> file for required variables.</p>
+            <pre class="bg-gray-800 text-white p-4 rounded-md overflow-x-auto"><code>DISCORD_BOT_TOKEN=YOUR_BOT_TOKEN
+# Other environment variables as needed</code></pre>
+
+            <h3 class="text-xl font-medium text-blue-600 mb-2">4. Run Your Bot</h3>
+            <p class="mb-4">You can now run your Ask Cat bot directly from your terminal:</p>
+            <pre class="bg-gray-800 text-white p-4 rounded-md overflow-x-auto"><code>npm start</code></pre>
+            <p class="mb-4">Your bot should now be online and ready to interact!</p>
+        </section>
         <section id="progress" class="mb-8 p-6 border border-gray-300 rounded-md bg-gray-50">
             <h2 class="text-2xl font-semibold text-blue-700 mb-4">/api/progress</h2>
             <h3 class="text-xl font-medium text-blue-600 mb-2">GET</h3>
