@@ -3,6 +3,10 @@
     {
       "source": "/auth/callback",
       "destination": "/api/auth/callback"
+    },
+    {
+      "source": "/api/bot-progress",
+      "destination": "/api/bot-progress"
     }
   ]
 }
