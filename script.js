@@ -90,26 +90,38 @@ function toggleChristmasEvent() {
 }
 
 // --- Achievement & Progress Logic ---
-function saveProgress() {
+async function saveProgress() {
     const progress = {
         interactionCount: interactionCount,
         jumpscareHasOccurred: localStorage.getItem('jumpscareHasOccurred') === 'true',
         unlockedAchievements: { firstWords: achievements.firstWords.unlocked, interactions100: achievements.interactions100.unlocked, petpet: achievements.petpet.unlocked, jumpscare: achievements.jumpscare.unlocked }
     };
-    localStorage.setItem('askCatProgress', JSON.stringify(progress));
+    try {
+        await fetch('/api/progress', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(progress)
+        });
+    } catch (error) {
+        console.error('Failed to save progress:', error);
+    }
 }
 
-function loadProgress() {
-    const savedProgress = localStorage.getItem('askCatProgress');
-    if (savedProgress) {
-        isNewPlayer = false;
-        const progress = JSON.parse(savedProgress);
-        interactionCount = progress.interactionCount || 0;
-        if (progress.jumpscareHasOccurred) { localStorage.setItem('jumpscareHasOccurred', 'true'); }
-        if (progress.unlockedAchievements.firstWords) unlockAchievement('firstWords', false);
-        if (progress.unlockedAchievements.interactions100) unlockAchievement('interactions100', false);
-        if (progress.unlockedAchievements.petpet) unlockAchievement('petpet', false);
-        if (progress.unlockedAchievements.jumpscare) unlockAchievement('jumpscare', false);
+async function loadProgress() {
+    try {
+        const response = await fetch('/api/progress');
+        if (response.ok) {
+            isNewPlayer = false;
+            const progress = await response.json();
+            interactionCount = progress.interactionCount || 0;
+            if (progress.jumpscareHasOccurred) { localStorage.setItem('jumpscareHasOccurred', 'true'); }
+            if (progress.unlockedAchievements.firstWords) unlockAchievement('firstWords', false);
+            if (progress.unlockedAchievements.interactions100) unlockAchievement('interactions100', false);
+            if (progress.unlockedAchievements.petpet) unlockAchievement('petpet', false);
+            if (progress.unlockedAchievements.jumpscare) unlockAchievement('jumpscare', false);
+        }
+    } catch (error) {
+        console.error('Failed to load progress:', error);
     }
 }
 

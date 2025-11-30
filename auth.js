@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const loginButton = document.getElementById('login-button');
     const logoutButton = document.getElementById('logout-button');
 
+    loginButton.href = '/api/login';
+
     try {
         const response = await fetch('/api/me');
         if (response.ok) {
@@ -18,10 +20,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         logoutButton.style.display = 'none';
     }
 
-    logoutButton.addEventListener('click', async (event) => {
-        event.preventDefault();
+    logoutButton.addEventListener('click', async (e) => {
+        e.preventDefault();
         try {
-            await fetch('/logout');
+            await fetch('/api/logout');
             window.location.reload();
         } catch (error) {
             console.error('Error logging out:', error);
