@@ -13,7 +13,7 @@ client.on('interactionCreate', async interaction => {
     const { commandName } = interaction;
 
     if (commandName === 'progress') {
-        await interaction.reply('Checking your progress...');
+        await interaction.reply('Click here to view your progress: https://ask-cat.vercel.app/');
     } else if (commandName === 'login') {
         await interaction.reply('Please visit our website to log in.');
     }
