@@ -1,5 +1,8 @@
+const express = require('express');
 const swaggerUi = require('swagger-ui-express');
 const YAML = require('yamljs');
+
+const app = express();
 
 const swaggerDocument = YAML.parse(`
 openapi: 3.0.0
@@ -285,4 +288,6 @@ paths:
                     type: string
 `);
 
-module.exports = swaggerUi.serve, swaggerUi.setup(swaggerDocument);
+app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+module.exports = app;
