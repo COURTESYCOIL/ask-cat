@@ -90,6 +90,15 @@ function toggleChristmasEvent() {
 }
 
 // --- Achievement & Progress Logic ---
+function applyProgressData(progress) {
+    interactionCount = progress.interactionCount || 0;
+    if (progress.jumpscareHasOccurred) { localStorage.setItem('jumpscareHasOccurred', 'true'); }
+    if (progress.unlockedAchievements.firstWords) unlockAchievement('firstWords', false);
+    if (progress.unlockedAchievements.interactions100) unlockAchievement('interactions100', false);
+    if (progress.unlockedAchievements.petpet) unlockAchievement('petpet', false);
+    if (progress.unlockedAchievements.jumpscare) unlockAchievement('jumpscare', false);
+}
+
 async function saveProgress() {
     const progress = {
         interactionCount: interactionCount,
@@ -97,6 +106,7 @@ async function saveProgress() {
         unlockedAchievements: { firstWords: achievements.firstWords.unlocked, interactions100: achievements.interactions100.unlocked, petpet: achievements.petpet.unlocked, jumpscare: achievements.jumpscare.unlocked }
     };
     try {
+        localStorage.setItem('askCatProgress', JSON.stringify(progress));
         await fetch('/api/progress', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -108,20 +118,29 @@ async function saveProgress() {
 }
 
 async function loadProgress() {
+    let progressLoaded = false;
     try {
         const response = await fetch('/api/progress');
         if (response.ok) {
             isNewPlayer = false;
             const progress = await response.json();
-            interactionCount = progress.interactionCount || 0;
-            if (progress.jumpscareHasOccurred) { localStorage.setItem('jumpscareHasOccurred', 'true'); }
-            if (progress.unlockedAchievements.firstWords) unlockAchievement('firstWords', false);
-            if (progress.unlockedAchievements.interactions100) unlockAchievement('interactions100', false);
-            if (progress.unlockedAchievements.petpet) unlockAchievement('petpet', false);
-            if (progress.unlockedAchievements.jumpscare) unlockAchievement('jumpscare', false);
+            applyProgressData(progress);
+            localStorage.setItem('askCatProgress', JSON.stringify(progress)); // Sync backend progress to local storage
+            progressLoaded = true;
         }
     } catch (error) {
-        console.error('Failed to load progress:', error);
+        console.error('Failed to load progress from backend:', error);
+    }
+
+    if (!progressLoaded) {
+        const localProgress = localStorage.getItem('askCatProgress');
+        if (localProgress) {
+            isNewPlayer = false;
+            applyProgressData(JSON.parse(localProgress));
+            console.log('Progress loaded from local storage.');
+        } else {
+            console.log('No local progress found. Starting new player.');
+        }
     }
 }
 
