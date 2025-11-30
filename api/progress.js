@@ -10,10 +10,9 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 module.exports = async (req, res) => {
     let userId;
 
-    // Bot authentication using x-bot-secret header
-    if (req.headers['x-bot-secret'] && req.query.userId) {
-        console.log('Received bot request. BOT_API_SECRET on server:', process.env.BOT_API_SECRET);
-        if (req.headers['x-bot-secret'] !== process.env.BOT_API_SECRET) {
+    // Bot authentication using x-bot-api-key header
+    if (req.headers['x-bot-api-key'] && req.query.userId) {
+        if (req.headers['x-bot-api-key'] !== process.env.BOT_API_KEY) {
             return res.status(403).json({ error: 'Forbidden: Invalid bot secret' });
         }
         userId = req.query.userId;

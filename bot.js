@@ -18,7 +18,7 @@ client.on('interactionCreate', async interaction => {
         try {
             const response = await fetch(`${process.env.API_URL}/api/progress?userId=${user.id}`, {
                 headers: {
-                    'x-bot-secret': process.env.BOT_API_SECRET,
+                    'x-bot-api-key': process.env.BOT_API_KEY,
                 },
             });
 
