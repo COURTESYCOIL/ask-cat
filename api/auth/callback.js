@@ -1,10 +1,14 @@
 
 const jwt = require('jsonwebtoken');
 const cookie = require('cookie');
+const { createClient } = require('@supabase/supabase-js');
 
 module.exports = async (req, res) => {
     const { code } = req.query;
-    const { CLIENT_ID, CLIENT_SECRET, JWT_SECRET } = process.env;
+    const { CLIENT_ID, CLIENT_SECRET, JWT_SECRET, SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY } = process.env;
+
+    // Initialize Supabase client
+    const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
     if (!CLIENT_ID || !CLIENT_SECRET || !JWT_SECRET) {
         return res.status(500).send('Missing critical environment variables.');
@@ -52,6 +56,23 @@ module.exports = async (req, res) => {
         }
 
         const { id, username } = userData;
+
+        // Upsert user progress in Supabase
+        const { error: upsertError } = await supabase
+            .from('user_progress')
+            .upsert(
+                {
+                    user_id: id,
+                    interaction_count: 0, // Default value for new users
+                    unlocked_achievements: {}, // Default value for new users
+                },
+                { onConflict: 'user_id', ignoreDuplicates: true }
+            );
+
+        if (upsertError) {
+            console.error('Supabase upsert error:', upsertError);
+            // Continue even if upsert fails, as authentication is still successful
+        }
 
         const token = jwt.sign({ id, username }, JWT_SECRET, { expiresIn: '7d' });
 
