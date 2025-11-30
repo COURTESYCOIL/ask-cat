@@ -30,6 +30,7 @@
     "postcss-obfuscator": "^1.6.1"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.86.0",
     "cookie": "^1.1.1",
     "cors": "^2.8.5",
     "discord-interactions": "^4.4.0",
