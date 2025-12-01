@@ -27,7 +27,7 @@ async function saveBotProgress(progress) {
     }
 }
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.MessageContent] });
 
 const achievements = {
     'first_words': {
