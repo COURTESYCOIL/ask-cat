@@ -5,6 +5,7 @@ const elements = {
     startScreen: document.getElementById('start-screen'), playButton: document.getElementById('play-button'),
     gameScreen: document.getElementById('game-screen'), catImage: document.getElementById('cat-image'),
     achievementsButton: document.getElementById('achievements-button'), aiBubble: document.getElementById('ai-bubble'),
+    achievementsButtonImg: document.getElementById('achievements-button-img'),
     aiResponseText: document.getElementById('ai-response-text'), promptForm: document.getElementById('prompt-form'),
     promptInput: document.getElementById('prompt-input'), promptSubmit: document.getElementById('prompt-submit'),
     gameBackButton: document.getElementById('game-back-button'), achievementsScreen: document.getElementById('achievements-screen'),
@@ -28,6 +29,7 @@ const allAudio = [elements.tosAudio, elements.menuAudio, elements.achievementsAu
 // --- 2. STATE AND DATA ---
 let interactionCount = 0;
 let isNewPlayer = true;
+let originalAchievementsButtonSrc = 'Assets/Sprites/achievements_default.png';
 let achievements = {
     firstWords: { unlocked: false, card: document.getElementById('ach-first-words'), title: document.getElementById('ach-first-words-title'), desc: document.getElementById('ach-first-words-desc'), status: document.querySelector('#ach-first-words .achievement-status') },
     interactions100: { unlocked: false, card: document.getElementById('ach-100-interactions'), title: document.getElementById('ach-100-interactions-title'), desc: document.getElementById('ach-100-interactions-desc'), status: document.querySelector('#ach-100-interactions .achievement-status') },
@@ -79,12 +81,14 @@ function isHolidaySeason() {
 function toggleChristmasEvent() {
     const lightrope = document.querySelector('.lightrope');
     const christmasLabel = document.querySelector('.christmas-event-label');
-    if (isHolidaySeason() && lightrope && christmasLabel) {
-        lightrope.style.display = 'block';
-        christmasLabel.style.display = 'block';
-    } else if (lightrope && christmasLabel) {
-        lightrope.style.display = 'none';
-        christmasLabel.style.display = 'none';
+    if (isHolidaySeason()) {
+        if (lightrope) lightrope.style.display = 'block';
+        if (christmasLabel) christmasLabel.style.display = 'block';
+        if (elements.achievementsButtonImg) elements.achievementsButtonImg.src = 'Assets/Sprites/ach-btn.christmas.png';
+    } else {
+        if (lightrope) lightrope.style.display = 'none';
+        if (christmasLabel) christmasLabel.style.display = 'none';
+        if (elements.achievementsButtonImg) elements.achievementsButtonImg.src = originalAchievementsButtonSrc;
     }
 }
 

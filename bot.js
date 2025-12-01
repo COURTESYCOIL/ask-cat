@@ -49,11 +49,16 @@ client.on('ready', () => {
 const prefix = '.'; // Define your prefix here
 
 client.on('messageCreate', async message => {
-    if (message.author.bot) return; // Ignore bot messages
-    if (!message.content.startsWith(prefix)) return; // Ignore messages without the prefix
+    console.log(`Received message: ${message.content}`);
+    if (message.author.bot) return;
+    console.log(`Message is not from a bot: ${message.content}`);
+    if (!message.content.startsWith(prefix)) return;
+    console.log(`Message starts with prefix: ${message.content}`);
 
     const args = message.content.slice(prefix.length).trim().split(/ +/);
     const command = args.shift().toLowerCase();
+
+    console.log(`Parsed command: ${command}, Arguments: ${args}`);
 
     if (command === 'ban') {
         if (!message.member.permissions.has(PermissionsBitField.Flags.BanMembers)) {
