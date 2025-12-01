@@ -5,7 +5,6 @@ const elements = {
     startScreen: document.getElementById('start-screen'), playButton: document.getElementById('play-button'),
     gameScreen: document.getElementById('game-screen'), catImage: document.getElementById('cat-image'),
     achievementsButton: document.getElementById('achievements-button'), aiBubble: document.getElementById('ai-bubble'),
-    achievementsButtonImg: document.getElementById('achievements-button-img'),
     aiResponseText: document.getElementById('ai-response-text'), promptForm: document.getElementById('prompt-form'),
     promptInput: document.getElementById('prompt-input'), promptSubmit: document.getElementById('prompt-submit'),
     gameBackButton: document.getElementById('game-back-button'), achievementsScreen: document.getElementById('achievements-screen'),
@@ -29,7 +28,6 @@ const allAudio = [elements.tosAudio, elements.menuAudio, elements.achievementsAu
 // --- 2. STATE AND DATA ---
 let interactionCount = 0;
 let isNewPlayer = true;
-let originalAchievementsButtonSrc = 'Assets/Sprites/achievements_default.png';
 let achievements = {
     firstWords: { unlocked: false, card: document.getElementById('ach-first-words'), title: document.getElementById('ach-first-words-title'), desc: document.getElementById('ach-first-words-desc'), status: document.querySelector('#ach-first-words .achievement-status') },
     interactions100: { unlocked: false, card: document.getElementById('ach-100-interactions'), title: document.getElementById('ach-100-interactions-title'), desc: document.getElementById('ach-100-interactions-desc'), status: document.querySelector('#ach-100-interactions .achievement-status') },
@@ -68,35 +66,6 @@ function getCatResponse(userInput) { const lowerInput = userInput.toLowerCase();
 function typeResponse(text) { let i = 0; elements.aiResponseText.innerHTML = ''; const typingInterval = setInterval(() => { if (i < text.length) { elements.aiResponseText.innerHTML += text.charAt(i); i++; } else { clearInterval(typingInterval); elements.promptInput.disabled = false; elements.promptSubmit.disabled = false; elements.promptInput.focus(); } }, 50); }
 function checkForPetpet(userInput) { const lowerInput = userInput.toLowerCase(); const petpetTriggers = ["petpet", "pet the cat", "good kitty", "good boy", "good girl", "head pats", "who's a good kitty"]; return petpetTriggers.some(trigger => lowerInput.includes(trigger)); }
 
-// Christmas Update - Holiday Season Check
-function isHolidaySeason() {
-    const today = new Date();
-    const month = today.getMonth() + 1; // 1-12
-    const day = today.getDate();
-    // November 28 - December 31 OR January 1-2
-    return (month === 11 && day >= 28) || (month === 12) || (month === 1 && day <= 2);
-}
-
-// Toggle Christmas Lights
-function toggleChristmasEvent() {
-    const lightrope = document.querySelector('.lightrope');
-    const christmasLabel = document.querySelector('.christmas-event-label');
-    if (isHolidaySeason()) {
-        if (lightrope) lightrope.style.display = 'block';
-        if (christmasLabel) christmasLabel.style.display = 'block';
-        if (elements.achievementsButtonImg) {
-            elements.achievementsButtonImg.src = 'Assets/Sprites/ach-btn.christmas.png';
-            elements.achievementsButtonImg.alt = 'Achievements (Christmas)';
-        }
-    } else {
-        if (lightrope) lightrope.style.display = 'none';
-        if (christmasLabel) christmasLabel.style.display = 'none';
-        if (elements.achievementsButtonImg) {
-            elements.achievementsButtonImg.src = originalAchievementsButtonSrc;
-            elements.achievementsButtonImg.alt = 'Achievements';
-        }
-    }
-}
 
 // --- Achievement & Progress Logic ---
 function applyProgressData(progress) {
@@ -307,4 +276,3 @@ function initEventListeners() {
 // --- 5. START THE APP ---
 loadProgress();
 initEventListeners();
-toggleChristmasEvent();
