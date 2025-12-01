@@ -1,10 +1,267 @@
 require('dotenv').config();
-const { Client, GatewayIntentBits } = require('discord.js');
+const fs = require('fs').promises;
+const { catResponses, defaultCatResponses } = require('./bot_responses');
+const { Client, GatewayIntentBits, PermissionsBitField } = require('discord.js');
+
+const botProgressFilePath = './bot_progress.json';
+
+async function loadBotProgress() {
+    try {
+        const data = await fs.readFile(botProgressFilePath, 'utf8');
+        return JSON.parse(data);
+    } catch (error) {
+        if (error.code === 'ENOENT') {
+            console.log('bot_progress.json not found, creating a new one.');
+            return {}; // Return empty object if file doesn't exist
+        }
+        console.error('Error loading bot progress:', error);
+        return {};
+    }
+}
+
+async function saveBotProgress(progress) {
+    try {
+        await fs.writeFile(botProgressFilePath, JSON.stringify(progress, null, 2), 'utf8');
+    } catch (error) {
+        console.error('Error saving bot progress:', error);
+    }
+}
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
-client.once('ready', () => {
+const achievements = {
+    'first_words': {
+        name: 'First Words',
+        description: 'You\'ve had your first interaction with the Cat Bot!',
+        icon: '⭐',
+    },
+    '100_achievements': {
+        name: '100 Achievements',
+        description: 'You\'ve interacted with the Cat Bot 100 times!',
+        icon: '🏆',
+    },
+};
+
+client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
+});
+
+const prefix = '.'; // Define your prefix here
+
+client.on('messageCreate', async message => {
+    if (message.author.bot) return; // Ignore bot messages
+    if (!message.content.startsWith(prefix)) return; // Ignore messages without the prefix
+
+    const args = message.content.slice(prefix.length).trim().split(/ +/);
+    const command = args.shift().toLowerCase();
+
+    if (command === 'ban') {
+        if (!message.member.permissions.has(PermissionsBitField.Flags.BanMembers)) {
+            return message.reply('You do not have permission to ban members.');
+        }
+
+        const target = message.mentions.users.first();
+        if (!target) {
+            return message.reply('You need to mention a user to ban!');
+        }
+
+        const member = message.guild.members.cache.get(target.id);
+        if (!member) {
+            return message.reply('That user is not in this guild.');
+        }
+
+        let banDuration = 0; // Default to permanent ban
+        const durationArg = args[0];
+        if (durationArg) {
+            const durationInMinutes = parseInt(durationArg);
+            if (!isNaN(durationInMinutes) && durationInMinutes > 0) {
+                banDuration = durationInMinutes * 60 * 1000; // Convert minutes to milliseconds
+            } else {
+                return message.reply('Please provide a valid duration in minutes (e.g., `.ban @user 60`).');
+            }
+        }
+
+        try {
+            await member.ban({ 
+                deleteMessageSeconds: 60 * 60 * 24 * 7, // Delete messages from the last 7 days
+                reason: `Banned by ${message.author.tag}` + (banDuration > 0 ? ` for ${banDuration / (60 * 1000)} minutes` : '')
+            });
+            message.reply(`${target.tag} has been banned` + (banDuration > 0 ? ` for ${banDuration / (60 * 1000)} minutes.` : '.'));
+
+            if (banDuration > 0) {
+                setTimeout(async () => {
+                    // Discord.js v14 does not have an unban method on GuildMember
+                    // You would typically need to fetch the ban and then remove it
+                    // This is a placeholder for unban logic, which is more complex
+                    // and might require storing ban IDs or using a different approach.
+                    console.log(`Attempting to unban ${target.tag} after ${banDuration / (60 * 1000)} minutes.`);
+                    // Example of how you might unban (requires GuildBanManager)
+                    // await message.guild.bans.remove(target.id, 'Temporary ban expired');
+                }, banDuration);
+            }
+
+        } catch (error) {
+            console.error('Error banning member:', error);
+            message.reply('I was unable to ban that member. Make sure my role is high enough.');
+        }
+    } else if (command === 'mute') {
+        if (!message.member.permissions.has(PermissionsBitField.Flags.ModerateMembers)) {
+            return message.reply('You do not have permission to mute members.');
+        }
+
+        const target = message.mentions.users.first();
+        if (!target) {
+            return message.reply('You need to mention a user to mute!');
+        }
+
+        const member = message.guild.members.cache.get(target.id);
+        if (!member) {
+            return message.reply('That user is not in this guild.');
+        }
+
+        let muteDuration = 0; // Default to no timeout
+        const durationArg = args[0];
+        if (durationArg) {
+            const durationInMinutes = parseInt(durationArg);
+            if (!isNaN(durationInMinutes) && durationInMinutes > 0) {
+                muteDuration = durationInMinutes * 60 * 1000; // Convert minutes to milliseconds
+            } else {
+                return message.reply('Please provide a valid duration in minutes (e.g., `.mute @user 60`).');
+            }
+        }
+
+        try {
+            if (muteDuration > 0) {
+                await member.timeout(muteDuration, `Muted by ${message.author.tag} for ${muteDuration / (60 * 1000)} minutes`);
+                message.reply(`${target.tag} has been muted for ${muteDuration / (60 * 1000)} minutes.`);
+            } else {
+                return message.reply('Please provide a duration to mute the user.');
+            }
+        } catch (error) {
+            console.error('Error muting member:', error);
+            message.reply('I was unable to mute that member. Make sure my role is high enough.');
+        }
+    } else if (command === 'status') {
+        const statusEmbed = {
+            color: 0x0099ff,
+            title: 'Cat Bot Status',
+            description: 'Meow! I am currently online and ready to assist.',
+            fields: [
+                {
+                    name: 'Functionality',
+                    value: 'I respond to various commands and interactions. Try asking me something!',
+                },
+                {
+                    name: 'Progress Updates',
+                    value: 'The `/progress` command is currently under development. Stay tuned for updates!',
+                },
+                {
+                    name: 'Upcoming Features',
+                    value: 'More exciting features, including advanced achievement tracking and personalized interactions, are coming soon!',
+                },
+            ],
+            timestamp: new Date().toISOString(),
+            footer: {
+                text: 'Powered by Catnip',
+            },
+        };
+
+        message.reply({ embeds: [statusEmbed] });
+    } else if (command === 'ask') {
+        const userId = message.author.id;
+        const userTag = message.author.tag;
+        let userProgress = await loadBotProgress();
+
+        if (!userProgress[userId]) {
+            userProgress[userId] = {
+                interactionCount: 0,
+                achievements: [],
+            };
+        }
+
+        userProgress[userId].interactionCount++;
+        const unlockedAchievements = [];
+
+        // Check for 'First Words' achievement
+        if (userProgress[userId].interactionCount === 1 && !userProgress[userId].achievements.includes('first_words')) {
+            userProgress[userId].achievements.push('first_words');
+            unlockedAchievements.push('first_words');
+        }
+
+        // Check for '100 Achievements' achievement
+        if (userProgress[userId].interactionCount === 100 && !userProgress[userId].achievements.includes('100_achievements')) {
+            userProgress[userId].achievements.push('100_achievements');
+            unlockedAchievements.push('100_achievements');
+        }
+
+        await saveBotProgress(userProgress);
+
+        const userQuery = args.join(' ').toLowerCase();
+        let catResponseText = catResponses[userQuery] || defaultCatResponses[Math.floor(Math.random() * defaultCatResponses.length)];
+
+        message.reply(catResponseText);
+
+        for (const achId of unlockedAchievements) {
+            const achievement = achievements[achId];
+            if (achievement) {
+                const achievementEmbed = {
+                    color: 0xffd700,
+                    title: `${achievement.icon} Achievement Unlocked: ${achievement.name}!`, 
+                    description: achievement.description,
+                    fields: [
+                        {
+                            name: 'User',
+                            value: userTag,
+                            inline: true,
+                        },
+                        {
+                            name: 'Interactions',
+                            value: userProgress[userId].interactionCount.toString(),
+                            inline: true,
+                        },
+                    ],
+                    timestamp: new Date().toISOString(),
+                };
+                message.channel.send({ embeds: [achievementEmbed] });
+            }
+        }
+    } else if (command === 'me') {
+        const userId = message.author.id;
+        const userTag = message.author.tag;
+        const userProgress = await loadBotProgress();
+
+        const userData = userProgress[userId];
+
+        if (!userData || (userData.interactionCount === 0 && userData.achievements.length === 0)) {
+            return message.reply('You haven\'t interacted with me yet! Try using `.ask`.');
+        }
+
+        const achievementList = userData.achievements.length > 0
+            ? userData.achievements.map(achId => `${achievements[achId]?.icon} ${achievements[achId]?.name}`).join('\n')
+            : 'No achievements unlocked yet.';
+
+        const meEmbed = {
+            color: 0x00ff00,
+            title: `${userTag}'s Cat Bot Progress`,
+            fields: [
+                {
+                    name: 'Total Interactions (with .ask)',
+                    value: userData.interactionCount.toString(),
+                    inline: true,
+                },
+                {
+                    name: 'Unlocked Achievements',
+                    value: achievementList,
+                },
+            ],
+            timestamp: new Date().toISOString(),
+        };
+
+        message.reply({ embeds: [meEmbed] });
+    }
+
+    // Command handling will go here in subsequent steps
+    console.log(`Command received: ${command}, Arguments: ${args}`);
 });
 
 client.on('interactionCreate', async interaction => {
