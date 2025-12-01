@@ -84,11 +84,17 @@ function toggleChristmasEvent() {
     if (isHolidaySeason()) {
         if (lightrope) lightrope.style.display = 'block';
         if (christmasLabel) christmasLabel.style.display = 'block';
-        if (elements.achievementsButtonImg) elements.achievementsButtonImg.src = 'Assets/Sprites/ach-btn.christmas.png';
+        if (elements.achievementsButtonImg) {
+            elements.achievementsButtonImg.src = 'Assets/Sprites/ach-btn.christmas.png';
+            elements.achievementsButtonImg.alt = 'Achievements (Christmas)';
+        }
     } else {
         if (lightrope) lightrope.style.display = 'none';
         if (christmasLabel) christmasLabel.style.display = 'none';
-        if (elements.achievementsButtonImg) elements.achievementsButtonImg.src = originalAchievementsButtonSrc;
+        if (elements.achievementsButtonImg) {
+            elements.achievementsButtonImg.src = originalAchievementsButtonSrc;
+            elements.achievementsButtonImg.alt = 'Achievements';
+        }
     }
 }
 
